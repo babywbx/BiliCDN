@@ -25,7 +25,6 @@
   - [运行扫描](#运行扫描)
   - [格式转换](#格式转换)
   - [命令行参数](#命令行参数)
-- [🔧 配置](#-配置)
 - [🤝 参与贡献](#-参与贡献)
 - [📄 许可证](#-许可证)
 
@@ -143,6 +142,9 @@ go build -o bilicdn .
 
 # CI 模式（无 TUI 进度条）
 ./bilicdn -quiet
+
+# 中断后从断点继续（全量扫描约 76 分钟，支持随时中断续扫）
+./bilicdn -resume
 ```
 
 ### 格式转换
@@ -176,6 +178,7 @@ go build -o bilicdn .
 | `-gotcha` | `true` | 启用 Gotcha 模式扫描 |
 | `-quiet` | `false` | 日志模式（无 TUI） |
 | `-debug` | `false` | 输出错误日志到 scanner_errors.log |
+| `-resume` | `false` | 从上次断点继续扫描 |
 
 **格式转换：**
 
@@ -191,17 +194,6 @@ go build -o bilicdn .
 
 </div>
 
-## 🔧 配置
-
-要让 GitHub Actions 工作流正常运行，你需要在仓库设置（`Settings` > `Secrets and variables` > `Actions`）中配置一个 Secret：
-
-- `BOT_SSH_SIGNING_KEY`：`wbxBot` 用于创建签名提交的 SSH 签名密钥。
-
-<div align="right">
-
-[![][back-to-top]](#readme-top)
-
-</div>
 
 ## 🤝 参与贡献
 

@@ -25,7 +25,6 @@ A high-performance tool to discover and catalog Bilibili's CDN nodes across Chin
   - [Running the Scanner](#running-the-scanner)
   - [Converting Formats](#converting-formats)
   - [Command-line Flags](#command-line-flags)
-- [🔧 Configuration](#-configuration)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
@@ -143,6 +142,9 @@ go build -o bilicdn .
 
 # CI-friendly mode (no TUI progress bar)
 ./bilicdn -quiet
+
+# Resume from last checkpoint (full scan ~76 min, safe to interrupt)
+./bilicdn -resume
 ```
 
 ### Converting Formats
@@ -176,6 +178,7 @@ go build -o bilicdn .
 | `-gotcha` | `true` | Enable Gotcha pattern scanning |
 | `-quiet` | `false` | Log mode (no TUI) |
 | `-debug` | `false` | Write errors to scanner_errors.log |
+| `-resume` | `false` | Resume from last checkpoint |
 
 **Convert:**
 
@@ -184,18 +187,6 @@ go build -o bilicdn .
 | `-i` | `data/domains.txt` | Input domains file |
 | `-o` | `data/nodes.json` | Output file (.json/.yml/.txt/.md) |
 | `-f` | (auto) | Force format (json/yaml/txt/md) |
-
-<div align="right">
-
-[![][back-to-top]](#readme-top)
-
-</div>
-
-## 🔧 Configuration
-
-For the GitHub Actions workflow to run, you must set one secret in your repository settings (`Settings` > `Secrets and variables` > `Actions`):
-
-- `BOT_SSH_SIGNING_KEY`: SSH signing key for `wbxBot` to create signed commits.
 
 <div align="right">
 
