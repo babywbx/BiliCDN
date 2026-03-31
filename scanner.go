@@ -243,6 +243,7 @@ func Run() error {
 	}
 
 	// Pipeline: jobs → [DNS workers] → resolved → [HTTP workers] → results → writer
+	fmt.Fprintf(os.Stderr, "\n[Scan]\n%s\n", strings.Repeat("─", 50))
 	jobs := make(chan string, jobBufferSize)
 	resolvedCh := make(chan resolved, httpWorkerCount*4)
 	results := make(chan string, httpWorkerCount*2)
