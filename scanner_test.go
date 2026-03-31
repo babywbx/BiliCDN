@@ -207,6 +207,30 @@ func TestEstimateTotalDomains(t *testing.T) {
 	}
 }
 
+func TestEstimateTotalDomainsMatchesGeneration(t *testing.T) {
+	restore := snapshotState()
+	defer restore()
+
+	locations := allLocations()
+	estimated := estimateTotalDomains(locations)
+
+	jobs := make(chan string, 1024)
+	done := make(chan struct{})
+	go func() {
+		for range jobs {
+		}
+		close(done)
+	}()
+
+	generated := generateAllJobs(context.Background(), jobs, locations, 0)
+	close(jobs)
+	<-done
+
+	if estimated != generated {
+		t.Fatalf("estimateTotalDomains = %d, generateAllJobs = %d", estimated, generated)
+	}
+}
+
 // --- I/O ---
 
 func TestWriteResultsCancelsContextOnFlushError(t *testing.T) {
@@ -224,7 +248,7 @@ func TestWriteResultsCancelsContextOnFlushError(t *testing.T) {
 	results <- "a.example.com"
 	close(results)
 
-	count, err := writeResults(ctx, file, results, cancel)
+	count, err := writeResults(ctx, file, results, nil, cancel)
 	if err == nil {
 		t.Fatal("expected writeResults to fail")
 	}
@@ -251,7 +275,7 @@ func TestWriteResultsNormalFlow(t *testing.T) {
 	results <- "a.example.com"
 	close(results)
 
-	count, err := writeResults(ctx, file, results, cancel)
+	count, err := writeResults(ctx, file, results, nil, cancel)
 	if err != nil {
 		t.Fatalf("writeResults: %v", err)
 	}

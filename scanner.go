@@ -19,6 +19,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"syscall"
 	"time"
 )
@@ -107,9 +108,6 @@ func (o *outputFile) Commit() error {
 	if o.file != nil {
 		return errors.New("output file is still open")
 	}
-	if err := sortFileAtomic(o.tempPath); err != nil {
-		return err
-	}
 	if err := replaceFile(o.tempPath, o.finalPath); err != nil {
 		return err
 	}
@@ -154,20 +152,19 @@ func Run() error {
 		}
 	}
 
+	var existingResults []string
+	if flagResume && skipCount > 0 {
+		existingResults, err = loadExistingResults(flagOutput)
+		if err != nil {
+			return fmt.Errorf("load existing results from %s: %w", flagOutput, err)
+		}
+	}
+
 	output, err := newOutputFile(flagOutput)
 	if err != nil {
 		return fmt.Errorf("create temp output for %s: %w", flagOutput, err)
 	}
 	defer output.Cleanup()
-
-	// If resuming, copy existing results to the new temp file
-	if flagResume && skipCount > 0 {
-		if existing, err := os.ReadFile(flagOutput); err == nil && len(existing) > 0 {
-			if _, err := output.file.Write(existing); err != nil {
-				return fmt.Errorf("copy existing results: %w", err)
-			}
-		}
-	}
 
 	ctx, cancelRun, cleanup := newSignalContextFunc()
 	defer cleanup()
@@ -229,6 +226,9 @@ func Run() error {
 	results := make(chan string, httpWorkerCount*2)
 	bar := NewProgressBar(totalEstimate, flagQuiet)
 	defer bar.Finish()
+	var generatorDone atomic.Bool
+	var activeDNSWorkers atomic.Int32
+	var activeHTTPWorkers atomic.Int32
 
 	// Writer
 	var writerWg sync.WaitGroup
@@ -239,7 +239,7 @@ func Run() error {
 		writerErr   error
 	)
 	go func() {
-		resultCount, writerErr = writeResults(ctx, output.file, results, cancelRun)
+		resultCount, writerErr = writeResults(ctx, output.file, results, existingResults, cancelRun)
 		output.file = nil
 		writerWg.Done()
 	}()
@@ -248,7 +248,7 @@ func Run() error {
 	var httpWg sync.WaitGroup
 	for range httpWorkerCount {
 		httpWg.Add(1)
-		go httpWorker(ctx, &httpWg, resolvedCh, results, client, logger, bar)
+		go httpWorker(ctx, &httpWg, &activeHTTPWorkers, resolvedCh, results, client, logger, bar)
 	}
 
 	// DNS workers (stage 1)
@@ -257,12 +257,12 @@ func Run() error {
 	case 0, 1, 2: // Auto, Global, CN
 		for range flagConcurrency {
 			dnsWg.Add(1)
-			go customDNSOnlyWorker(ctx, &dnsWg, jobs, resolvedCh, logger, bar, dnsPool)
+			go customDNSOnlyWorker(ctx, &dnsWg, &activeDNSWorkers, jobs, resolvedCh, logger, bar, dnsPool)
 		}
 	case 3: // System
 		for range flagConcurrency {
 			dnsWg.Add(1)
-			go systemDNSOnlyWorker(ctx, &dnsWg, jobs, resolvedCh, logger, bar)
+			go systemDNSOnlyWorker(ctx, &dnsWg, &activeDNSWorkers, jobs, resolvedCh, logger, bar)
 		}
 	default:
 		return fmt.Errorf("unsupported DNS strategy %d", flagDNSStrategy)
@@ -273,6 +273,8 @@ func Run() error {
 		count := generateAllJobs(ctx, jobs, locations, skipCount)
 		bar.SetTotal(count)
 		close(jobs)
+		generatorDone.Store(true)
+		fmt.Fprintf(os.Stderr, "\n[Generator] Scheduled %d domains\n", count)
 	}()
 
 	// Periodic checkpoint saver (every 10s)
@@ -293,12 +295,43 @@ func Run() error {
 	}()
 
 	// Wait: DNS done → close resolved → HTTP done → close results → writer done
-	dnsWg.Wait()
+	waitForDrain("DNS workers", func() {
+		dnsWg.Wait()
+	}, func() string {
+		state := "running"
+		if generatorDone.Load() {
+			state = "done"
+		}
+		return fmt.Sprintf("generator=%s active=%d jobs=%d resolved=%d tested=%s/%s",
+			state,
+			activeDNSWorkers.Load(),
+			len(jobs),
+			len(resolvedCh),
+			formatNum(bar.tested.Load()),
+			formatNum(bar.total.Load()))
+	})
 	close(resolvedCh)
-	httpWg.Wait()
+	waitForDrain("HTTP workers", func() {
+		httpWg.Wait()
+	}, func() string {
+		return fmt.Sprintf("active=%d resolved=%d results=%d tested=%s/%s",
+			activeHTTPWorkers.Load(),
+			len(resolvedCh),
+			len(results),
+			formatNum(bar.tested.Load()),
+			formatNum(bar.total.Load()))
+	})
 	close(results)
-	writerWg.Wait()
 	bar.Finish()
+	fmt.Fprintln(os.Stderr, "[Finalize] Sorting and writing results...")
+	waitForDrain("result writer", func() {
+		writerWg.Wait()
+	}, func() string {
+		return fmt.Sprintf("results=%d tested=%s/%s",
+			len(results),
+			formatNum(bar.tested.Load()),
+			formatNum(bar.total.Load()))
+	})
 
 	// Check for errors before stopping checkpoint (cancelRun taints ctx)
 	if writerErr != nil {
@@ -377,6 +410,36 @@ func loadCheckpoint(path string) int {
 
 func saveCheckpoint(path string, count int) {
 	os.WriteFile(path, []byte(strconv.Itoa(count)+"\n"), 0o644)
+}
+
+func loadExistingResults(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	defer file.Close()
+
+	seen := make(map[string]struct{})
+	var results []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+		if _, ok := seen[line]; ok {
+			continue
+		}
+		seen[line] = struct{}{}
+		results = append(results, line)
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 // detectLocalDNS discovers system DNS servers via multiple methods.
@@ -951,8 +1014,10 @@ type resolved struct {
 	ip     string
 }
 
-func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar) {
+func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar) {
 	defer wg.Done()
+	active.Add(1)
+	defer active.Add(-1)
 	for domain := range jobs {
 		if ctx.Err() != nil {
 			return
@@ -991,8 +1056,10 @@ func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan st
 	}
 }
 
-func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar, dnsPool *DNSResolverPool) {
+func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar, dnsPool *DNSResolverPool) {
 	defer wg.Done()
+	active.Add(1)
+	defer active.Add(-1)
 	for domain := range jobs {
 		if ctx.Err() != nil {
 			return
@@ -1015,8 +1082,10 @@ func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan st
 	}
 }
 
-func httpWorker(ctx context.Context, wg *sync.WaitGroup, in <-chan resolved, results chan<- string, client *http.Client, logger *log.Logger, bar *ProgressBar) {
+func httpWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, in <-chan resolved, results chan<- string, client *http.Client, logger *log.Logger, bar *ProgressBar) {
 	defer wg.Done()
+	active.Add(1)
+	defer active.Add(-1)
 	for r := range in {
 		if ctx.Err() != nil {
 			return
@@ -1045,51 +1114,76 @@ func httpWorker(ctx context.Context, wg *sync.WaitGroup, in <-chan resolved, res
 
 // --- I/O ---
 
-func writeResults(ctx context.Context, file *os.File, results <-chan string, cancel context.CancelCauseFunc) (int, error) {
-	w := bufio.NewWriterSize(file, 64*1024)
-	count := 0
+func writeResults(ctx context.Context, file *os.File, results <-chan string, existing []string, cancel context.CancelCauseFunc) (int, error) {
+	seen := make(map[string]struct{}, len(existing))
+	all := make([]string, 0, len(existing)+1024)
+	for _, line := range existing {
+		if _, ok := seen[line]; ok {
+			continue
+		}
+		seen[line] = struct{}{}
+		all = append(all, line)
+	}
+
 	for {
 		select {
 		case <-ctx.Done():
-			w.Flush()
 			file.Close()
 			if cause := context.Cause(ctx); cause != nil && !errors.Is(cause, context.Canceled) {
-				return count, cause
+				return len(all), cause
 			}
-			return count, nil
+			return len(all), nil
 		case res, ok := <-results:
 			if !ok {
+				sort.Strings(all)
+				w := bufio.NewWriterSize(file, 64*1024)
+				for _, line := range all {
+					if _, err := w.WriteString(line); err != nil {
+						cancel(err)
+						file.Close()
+						return len(all), err
+					}
+					if err := w.WriteByte('\n'); err != nil {
+						cancel(err)
+						file.Close()
+						return len(all), err
+					}
+				}
 				if err := w.Flush(); err != nil {
 					cancel(err)
 					file.Close()
-					return count, err
+					return len(all), err
 				}
 				if err := file.Close(); err != nil {
 					cancel(err)
-					return count, err
+					return len(all), err
 				}
-				return count, nil
+				return len(all), nil
 			}
+			if _, ok := seen[res]; ok {
+				continue
+			}
+			seen[res] = struct{}{}
+			all = append(all, res)
+		}
+	}
+}
 
-			if _, err := w.WriteString(res); err != nil {
-				cancel(err)
-				file.Close()
-				return count, err
-			}
-			if err := w.WriteByte('\n'); err != nil {
-				cancel(err)
-				file.Close()
-				return count, err
-			}
-			count++
+func waitForDrain(name string, wait func(), snapshot func() string) {
+	done := make(chan struct{})
+	go func() {
+		wait()
+		close(done)
+	}()
 
-			if w.Buffered() >= 32*1024 {
-				if err := w.Flush(); err != nil {
-					cancel(err)
-					file.Close()
-					return count, err
-				}
-			}
+	ticker := time.NewTicker(30 * time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-done:
+			return
+		case <-ticker.C:
+			fmt.Fprintf(os.Stderr, "[Drain] Waiting for %s... %s\n", name, snapshot())
 		}
 	}
 }
