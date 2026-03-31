@@ -176,7 +176,9 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </footer>
 
 <script>
-const BASE = 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
+// Use same-origin proxy if available (CF Pages), fallback to GitHub raw
+const BASE = location.hostname.includes('pages.dev') || location.hostname.includes('localhost')
+  ? '' : 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
 const FORMATTED_FILES = [
   { name: 'nodes.json', label: 'JSON' },
   { name: 'nodes.yml', label: 'YAML' },
@@ -432,10 +434,16 @@ function goPage(p) {
 
 async function updateTimestamp() {
   try {
-    const resp = await fetch('https://api.github.com/repos/babywbx/BiliCDN/branches/data');
+    // Use same-origin proxy if on CF Pages, fallback to GitHub API
+    const apiUrl = BASE === ''
+      ? '/api/updated'
+      : 'https://api.github.com/repos/babywbx/BiliCDN/branches/data';
+    const resp = await fetch(apiUrl);
     if (!resp.ok) return;
     const data = await resp.json();
-    const date = new Date(data.commit.commit.committer.date);
+    const dateStr = data.date || data.commit?.commit?.committer?.date;
+    if (!dateStr) return;
+    const date = new Date(dateStr);
     document.getElementById('updated').textContent = '更新于 ' + date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC+8';
   } catch { /* ignore */ }
 }
