@@ -176,12 +176,12 @@ func Run() error {
 			dnsPool = NewDNSResolverPool(dnsOverseas, dnsDomestic)
 			removedP := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
 			removedF := dnsPool.fallback.probeAndFilter(probeDomain, probeThreshold)
-			fmt.Fprintf(os.Stderr, "  Overseas:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removedP)
-			fmt.Fprintf(os.Stderr, "  Domestic:  %d alive, %d removed\n", len(dnsPool.fallback.nodes), removedF)
+			fmt.Fprintf(os.Stderr, "  Global:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removedP)
+			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.fallback.nodes), removedF)
 		case 2: // CN: domestic only, flat group
 			dnsPool = NewFlatDNSPool(dnsDomestic)
 			removed := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
-			fmt.Fprintf(os.Stderr, "  Domestic:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removed)
+			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removed)
 		case 3: // System: still create pool for probe display, but workers use system resolver
 			dnsPool = NewDNSResolverPool(dnsOverseas, dnsDomestic)
 			fmt.Fprint(os.Stderr, "  Using system resolver\n")
@@ -315,7 +315,7 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 			aliveDomestic = append(aliveDomestic, node)
 		}
 	}
-	fmt.Fprintf(os.Stderr, "  Alive: %d overseas, %d domestic\n", len(aliveOverseas), len(aliveDomestic))
+	fmt.Fprintf(os.Stderr, "  Alive: %d global, %d cn\n", len(aliveOverseas), len(aliveDomestic))
 
 	// Step 3: Validate DNS with a known-resolvable domain
 	fmt.Fprint(os.Stderr, "  Validating DNS resolution...\n")
@@ -342,7 +342,6 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 		rate    float64
 		pool    *DNSResolverPool
 		servers int
-		workers int
 	}
 	var candidates []benchResult
 
@@ -354,38 +353,27 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 			pool.Close()
 			return
 		}
-		// Workers scale with both rate and server count.
-		// More servers can sustain higher concurrency without packet loss.
-		workers := int(rate) * servers / 3
-		if workers < 300 {
-			workers = 300
-		}
-		if workers > 1500 {
-			workers = 1500
-		}
-		candidates = append(candidates, benchResult{name, rate, pool, servers, workers})
+		candidates = append(candidates, benchResult{name, rate, pool, servers})
 	}
 
 	// Benchmark: flat pool (all servers, no cascade)
-	benchAndAdd("flat (all)", allPool)
+	benchAndAdd("all", allPool)
 
-	// Benchmark: domestic-only (if we have domestic servers)
 	if len(aliveDomestic) > 0 {
 		domesticPool := NewFlatDNSPool(dnsDomestic)
 		domesticPool.primary.probeAndFilter(domain, threshold)
 		if len(domesticPool.primary.nodes) > 0 {
-			benchAndAdd("domestic-only", domesticPool)
+			benchAndAdd("cn", domesticPool)
 		} else {
 			domesticPool.Close()
 		}
 	}
 
-	// Benchmark: overseas-only (if we have overseas servers)
 	if len(aliveOverseas) > 0 {
 		overseasPool := NewFlatDNSPool(dnsOverseas)
 		overseasPool.primary.probeAndFilter(domain, threshold)
 		if len(overseasPool.primary.nodes) > 0 {
-			benchAndAdd("overseas-only", overseasPool)
+			benchAndAdd("global", overseasPool)
 		} else {
 			overseasPool.Close()
 		}
@@ -395,11 +383,14 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 		return nil, fmt.Errorf("all DNS benchmarks failed")
 	}
 
-	// Pick the fastest
+	// Pick best: when rates are within 10%, prefer more servers (scales better at high concurrency)
 	best := candidates[0]
 	for _, c := range candidates[1:] {
-		if c.rate > best.rate {
-			best = c
+		margin := best.rate * 0.1
+		if c.rate > best.rate+margin {
+			best = c // clearly faster
+		} else if c.rate >= best.rate-margin && c.servers > best.servers {
+			best = c // similar speed, more servers = better at scale
 		}
 	}
 
@@ -410,8 +401,15 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 		}
 	}
 
+	// Scale workers to server count: ~100 concurrent queries per server
 	if flagConcurrency <= 0 {
-		flagConcurrency = best.workers
+		flagConcurrency = best.servers * 100
+		if flagConcurrency < 300 {
+			flagConcurrency = 300
+		}
+		if flagConcurrency > 2000 {
+			flagConcurrency = 2000
+		}
 	}
 
 	fmt.Fprintf(os.Stderr, "  Selected:  %s (%d servers, %d workers)\n",
@@ -489,10 +487,10 @@ func printConfig(pool *DNSResolverPool, locations []string, total int) {
 		fmt.Fprintf(os.Stderr, "  DNS:         %s (%d servers, ~%d QPS)\n",
 			dnsStrategyName(flagDNSStrategy), pool.TotalServers(), pool.TotalQPS())
 	case 1: // Global
-		fmt.Fprintf(os.Stderr, "  DNS:         %s (%d overseas + %d domestic, ~%d QPS)\n",
+		fmt.Fprintf(os.Stderr, "  DNS:         %s (%d global + %d cn, ~%d QPS)\n",
 			dnsStrategyName(flagDNSStrategy), len(pool.primary.nodes), len(pool.fallback.nodes), pool.TotalQPS())
 	case 2: // CN
-		fmt.Fprintf(os.Stderr, "  DNS:         %s (%d domestic, ~%d QPS)\n",
+		fmt.Fprintf(os.Stderr, "  DNS:         %s (%d cn, ~%d QPS)\n",
 			dnsStrategyName(flagDNSStrategy), pool.TotalServers(), pool.TotalQPS())
 	case 3: // System
 		fmt.Fprintf(os.Stderr, "  DNS:         %s (system resolver)\n", dnsStrategyName(flagDNSStrategy))
