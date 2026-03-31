@@ -46,6 +46,7 @@ jobs:
           path: data_branch
 
       - name: Sync, Commit and Push to data branch
+        id: push
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.BOT_SSH_SIGNING_KEY }}" > ~/.ssh/signing_key
@@ -63,9 +64,53 @@ jobs:
           git add .
           if git diff --staged --quiet; then
             echo "No changes in data. Nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "Changes detected. Proceeding with commit."
-          git commit -m "🤖 chore(data): auto-update CDN nodes"
+          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+          git commit -m "🤖 chore(data): auto-update CDN nodes ($TIMESTAMP)"
           git push origin data
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Count domains
+        if: steps.push.outputs.changed == 'true'
+        id: count
+        run: |
+          TOTAL=$(wc -l < data/domains.txt | tr -d ' ')
+          REGIONS=$(jq 'keys | length' data/nodes.json)
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
+
+      - name: Create signed tag and Release
+        if: steps.push.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TOTAL: ${{ steps.count.outputs.total }}
+          REGIONS: ${{ steps.count.outputs.regions }}
+        run: |
+          TAG="data-$(TZ=Asia/Shanghai date +%Y-%m-%d)"
+          cd data_branch
+
+          # Delete existing tag/release for today if re-run
+          gh release delete "$TAG" --yes 2>/dev/null || true
+          git push origin ":refs/tags/$TAG" 2>/dev/null || true
+
+          # Create signed tag
+          git tag -s "$TAG" -m "CDN data $TAG" HEAD
+          git push origin "$TAG"
+
+          # Create release with assets
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "Automated CDN node scan results.
+
+          - **$TOTAL** domains
+          - **$REGIONS** regions
+          - Formats: domains.txt, nodes.json, nodes.yml, nodes.txt, nodes.md" \
+            ../data/domains.txt \
+            ../data/nodes.json \
+            ../data/nodes.yml \
+            ../data/nodes.txt \
+            ../data/nodes.md
