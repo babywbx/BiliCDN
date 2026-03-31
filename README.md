@@ -4,7 +4,7 @@
 
 BiliCDN 的交互式节点浏览页面。
 
-**简体中文** · [English](./README.en.md)
+**简体中文** · [English](./README.en.md) · [在线浏览](https://bilicdn.pages.dev)
 
 [![][github-license-shield]][github-license-link]
 

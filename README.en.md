@@ -4,7 +4,7 @@
 
 Interactive node browser for BiliCDN.
 
-[简体中文](./README.md) · **English**
+[简体中文](./README.md) · **English** · [Live Demo](https://bilicdn.pages.dev)
 
 [![][github-license-shield]][github-license-link]
 
