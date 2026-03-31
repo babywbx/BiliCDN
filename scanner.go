@@ -333,15 +333,16 @@ func Run() error {
 			formatNum(bar.total.Load()))
 	})
 
-	// Check for errors before stopping checkpoint (cancelRun taints ctx)
+	// Capture scan error before stopping checkpoint (cancelRun taints ctx)
+	scanErr := context.Cause(ctx)
+
+	// Stop checkpoint saver and wait for it to finish
+	cancelRun(nil)
+	<-ckptDone
+
 	if writerErr != nil {
 		return fmt.Errorf("write %s: %w", resultsFile, writerErr)
 	}
-	scanErr := context.Cause(ctx)
-
-	// Stop checkpoint saver
-	cancelRun(nil)
-	<-ckptDone
 
 	if scanErr != nil {
 		if errors.Is(scanErr, context.Canceled) {
@@ -1130,6 +1131,14 @@ func writeResults(ctx context.Context, file *os.File, results <-chan string, exi
 	for {
 		select {
 		case <-ctx.Done():
+			// Save whatever we have so far before exiting
+			sort.Strings(all)
+			w := bufio.NewWriterSize(file, 64*1024)
+			for _, line := range all {
+				w.WriteString(line)
+				w.WriteByte('\n')
+			}
+			w.Flush()
 			file.Close()
 			if cause := context.Cause(ctx); cause != nil && !errors.Is(cause, context.Canceled) {
 				return len(all), cause
