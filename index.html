@@ -171,7 +171,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div class="controls">
     <div class="search-box">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="search" placeholder="搜索域名、区域...">
+      <input type="text" id="search" placeholder="搜索域名、区域..." aria-label="搜索域名或区域">
     </div>
     <div class="filter-group" id="filters"></div>
   </div>
@@ -279,7 +279,7 @@ function initDownloads() {
     const a = document.createElement('a');
     a.className = 'dropdown-item';
     a.href = BASE + '/' + file.name;
-    a.target = '_blank';
+    a.download = file.name;
     a.textContent = file.label;
     menu.appendChild(a);
   }
@@ -291,12 +291,11 @@ function initDownloads() {
   const a = document.createElement('a');
   a.className = 'dropdown-item';
   a.href = BASE + '/' + RAW_FILE.name;
-  a.target = '_blank';
+  a.download = RAW_FILE.name;
   a.textContent = RAW_FILE.label;
   menu.appendChild(a);
 
-  trigger.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
-  document.addEventListener('click', () => dropdown.classList.remove('open'));
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); });
 }
 
 function renderStats() {
@@ -491,9 +490,13 @@ function initRefLinks() {
     menu.appendChild(item);
   });
 
-  trigger.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
-  document.addEventListener('click', () => dropdown.classList.remove('open'));
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); });
 }
+
+function closeAllDropdowns(except) {
+  document.querySelectorAll('.dropdown.open').forEach(d => { if (d !== except) d.classList.remove('open'); });
+}
+document.addEventListener('click', () => closeAllDropdowns());
 
 initRefLinks();
 initDownloads();
