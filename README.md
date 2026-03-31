@@ -30,6 +30,7 @@ BiliCDN 的交互式节点浏览页面。
 - **统计概览** — 域名总数、区域数、类型分布，悬停查看中文释义
 - **实时数据** — 每次访问自动获取最新数据，无需重新部署
 - **深色主题** — 现代暗色 UI，响应式适配
+- **Lighthouse 满分** — Accessibility 100 / Best Practices 100 / SEO 100
 
 <div align="right">
 

@@ -30,6 +30,7 @@ This is the web frontend for [BiliCDN](https://github.com/babywbx/BiliCDN), prov
 - **Stats overview** — Domain count, region count, type breakdown with hover tooltips
 - **Live data** — Automatically fetches latest data on every visit, no redeployment needed
 - **Dark theme** — Modern dark UI, fully responsive
+- **Lighthouse perfect score** — Accessibility 100 / Best Practices 100 / SEO 100
 
 <div align="right">
 

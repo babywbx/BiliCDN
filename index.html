@@ -10,7 +10,8 @@
 <meta property="og:title" content="BiliCDN - Bilibili CDN Nodes">
 <meta property="og:description" content="Interactive catalog of Bilibili CDN nodes across 315+ locations, updated weekly by automated scanning.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://github.com/babywbx/BiliCDN">
+<meta property="og:url" content="https://bilicdn.pages.dev">
+<meta name="robots" content="index, follow">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BiliCDN - Bilibili CDN Nodes">
 <meta name="twitter:description" content="Interactive catalog of Bilibili CDN nodes across 315+ locations, updated weekly.">
@@ -20,7 +21,7 @@
 :root{
   --bg:#09090b;--surface:#0f0f13;--surface2:#18181b;--surface3:#1e1e24;
   --border:#27272a;--border2:#3f3f46;
-  --text:#fafafa;--text2:#a1a1aa;--text3:#8b8b9a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#9e9eb0;
   --accent:#818cf8;--accent2:#34d399;--accent-bg:rgba(129,140,248,.1);
   --danger:#f87171;--success:#34d399;
   --radius:8px;--radius-lg:12px;
@@ -66,7 +67,7 @@ a:hover{text-decoration:underline}
 
 /* Main */
 .main{max-width:1400px;margin:0 auto;padding:24px}
-.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;min-height:40px}
 .stat-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;color:var(--text2);position:relative}
 .stat-chip strong{color:var(--text);font-variant-numeric:tabular-nums}
 .stat-chip .tip{position:absolute;top:calc(100% + 8px);left:0;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);font-size:.78rem;padding:6px 12px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.3)}
@@ -269,52 +270,30 @@ function showError(msg) {
   document.getElementById('content').replaceChildren();
 }
 
-async function initDownloads() {
+function initDownloads() {
   const menu = document.getElementById('dl-menu');
   const trigger = document.getElementById('dl-trigger');
   const dropdown = document.getElementById('dl-dropdown');
-  let hasFormatted = false;
-  let hasRaw = false;
 
-  // Probe formatted files
   for (const file of FORMATTED_FILES) {
-    try {
-      const resp = await fetch(BASE + '/' + file.name, { method: 'HEAD' });
-      if (!resp.ok) continue;
-    } catch { continue; }
     const a = document.createElement('a');
     a.className = 'dropdown-item';
     a.href = BASE + '/' + file.name;
     a.target = '_blank';
     a.textContent = file.label;
     menu.appendChild(a);
-    hasFormatted = true;
   }
 
-  // Probe raw file
-  try {
-    const resp = await fetch(BASE + '/' + RAW_FILE.name, { method: 'HEAD' });
-    if (resp.ok) hasRaw = true;
-  } catch { /* ignore */ }
+  const sep = document.createElement('div');
+  sep.className = 'dropdown-sep';
+  menu.appendChild(sep);
 
-  if (hasRaw) {
-    if (hasFormatted) {
-      const sep = document.createElement('div');
-      sep.className = 'dropdown-sep';
-      menu.appendChild(sep);
-    }
-    const a = document.createElement('a');
-    a.className = 'dropdown-item';
-    a.href = BASE + '/' + RAW_FILE.name;
-    a.target = '_blank';
-    a.textContent = RAW_FILE.label;
-    menu.appendChild(a);
-  }
-
-  if (!hasFormatted && !hasRaw) {
-    dropdown.style.display = 'none';
-    return;
-  }
+  const a = document.createElement('a');
+  a.className = 'dropdown-item';
+  a.href = BASE + '/' + RAW_FILE.name;
+  a.target = '_blank';
+  a.textContent = RAW_FILE.label;
+  menu.appendChild(a);
 
   trigger.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
   document.addEventListener('click', () => dropdown.classList.remove('open'));
