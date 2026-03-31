@@ -26,6 +26,7 @@ A high-performance tool to discover and catalog Bilibili's CDN nodes across Chin
   - [Converting Formats](#converting-formats)
   - [Command-line Flags](#command-line-flags)
 - [🤝 Contributing](#-contributing)
+- [⚠️ Disclaimer](#️-disclaimer)
 - [📄 License](#-license)
 
 </details>
@@ -197,6 +198,23 @@ go build -o bilicdn .
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to open an issue or submit a pull request.
+
+<div align="right">
+
+[![][back-to-top]](#readme-top)
+
+</div>
+
+## ⚠️ Disclaimer
+
+This project is intended solely for educational and network research purposes.
+
+- This project is **not affiliated with** bilibili.com in any way. It is not an official project and has not been authorized or endorsed by bilibili.
+- This project **does not** engage in any form of cracking, reverse engineering, penetration testing, intrusion, or circumvention of security mechanisms.
+- This project only discovers publicly reachable CDN domain names through standard DNS resolution and HTTP requests. It **does not access, retrieve, or store** any protected content or user data.
+- Users must comply with the laws and regulations of their jurisdiction and bilibili's Terms of Service. **All consequences arising from the use of this project are borne solely by the user.**
+- The project author **shall not be held liable for any direct or indirect damages** resulting from the use of this project, including but not limited to service disruption, data loss, or legal disputes.
+- If the existence or use of this project infringes upon the legitimate rights of any third party, please contact us via Issue and we will address it promptly.
 
 <div align="right">
 
