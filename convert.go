@@ -324,7 +324,9 @@ func runConvert(args []string) error {
 	}
 
 	if dir := filepath.Dir(*output); dir != "." {
-		os.MkdirAll(dir, 0o755)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			return fmt.Errorf("create directory %s: %w", dir, err)
+		}
 	}
 	if err := os.WriteFile(*output, data, 0o644); err != nil {
 		return fmt.Errorf("write %s: %w", *output, err)
@@ -339,13 +341,19 @@ func renderJSON(grouped map[string][]string) ([]byte, error) {
 	regions := sortedRegions(grouped)
 	b.WriteString("{\n")
 	for i, region := range regions {
-		key, _ := json.Marshal(region)
+		key, err := json.Marshal(region)
+		if err != nil {
+			return nil, fmt.Errorf("marshal region %q: %w", region, err)
+		}
 		b.WriteString("  ")
 		b.Write(key)
 		b.WriteString(": [\n")
 		domains := grouped[region]
 		for j, d := range domains {
-			val, _ := json.Marshal(d)
+			val, err := json.Marshal(d)
+			if err != nil {
+				return nil, fmt.Errorf("marshal domain %q: %w", d, err)
+			}
 			b.WriteString("    ")
 			b.Write(val)
 			if j < len(domains)-1 {

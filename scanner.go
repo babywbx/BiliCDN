@@ -983,9 +983,11 @@ func httpCheck(ctx context.Context, client *http.Client, ip, host string) (int, 
 				return 0, err
 			}
 			// Small delay before retry — yield to let other workers proceed
+			timer := time.NewTimer(50 * time.Millisecond)
 			select {
-			case <-time.After(50 * time.Millisecond):
+			case <-timer.C:
 			case <-ctx.Done():
+				timer.Stop()
 				return 0, ctx.Err()
 			}
 			continue

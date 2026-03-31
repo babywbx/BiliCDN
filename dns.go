@@ -231,6 +231,9 @@ func (g *dnsGroup) pick(counter uint64) int {
 // Starts from the weighted pick position, scans all servers.
 // Returns the node, or nil if all servers are busy.
 func (g *dnsGroup) acquireAny(counter uint64) *dnsNode {
+	if len(g.nodes) == 0 {
+		return nil
+	}
 	start := g.pick(counter)
 	for i := 0; i < len(g.nodes); i++ {
 		idx := (start + i) % len(g.nodes)
@@ -280,7 +283,8 @@ func (p *DNSResolverPool) Lookup(ctx context.Context, domain string, logger *log
 		if time.Now().Before(exp.(time.Time)) {
 			return "", errNXDOMAIN
 		}
-		p.nxcache.Delete(domain)
+		// Expired — don't delete here (TOCTOU race with concurrent Store).
+		// Let the next Store overwrite it naturally.
 	}
 
 	ip, err := p.lookupGroup(ctx, p.primary, domain, logger)
@@ -333,9 +337,11 @@ func (p *DNSResolverPool) lookupGroup(ctx context.Context, group *dnsGroup, doma
 			}
 			logger.Printf("FAIL dns    %s (@%s)  %v", domain, node.label, err)
 			// Small delay before retry — yield to let new queries go first
+			timer := time.NewTimer(dnsRetryDelay)
 			select {
-			case <-time.After(dnsRetryDelay):
+			case <-timer.C:
 			case <-ctx.Done():
+				timer.Stop()
 				return "", ctx.Err()
 			}
 			continue
