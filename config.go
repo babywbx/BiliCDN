@@ -271,15 +271,6 @@ var uposNodes = []string{
 	"upos-sz-302kodo",
 }
 
-// Misc service subdomains (non-CDN but part of bilivideo.com infrastructure)
-var miscNodes = []string{
-	"api", "bvc", "bvc-drm", "core", "data", "activity", "cloudapp",
-	"openupos", "qoe", "skynet", "transfer", "vanadium",
-	"proxy-tf-all-ws", "bfs-tf-all-js", "txy-fmp4hls",
-	"jscs-luffy-upcdntx",
-	"live-push", "bdy.live-push", "txy2.live-push", "txy3.live-push",
-}
-
 // Commercial CDN domains — hosted by major cloud/CDN providers, always stable.
 // Written directly to output without DNS/HTTP verification.
 var commercialCDN = []string{
