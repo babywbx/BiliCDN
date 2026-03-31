@@ -23,14 +23,16 @@ export async function onRequest(context) {
     const cache = caches.default;
     const cleanUrl = url.origin + url.pathname;
     const cacheKey = new Request(cleanUrl);
-    if (url.searchParams.has('purge')) {
+    const apiPurge = url.searchParams.has('purge');
+    if (apiPurge) {
       await cache.delete(cacheKey);
     } else {
       const cached = await cache.match(cacheKey);
       if (cached) return cached;
     }
 
-    const resp = await fetch(GITHUB_API, {
+    const apiUrl = GITHUB_API + (apiPurge ? '?t=' + Date.now() : '');
+    const resp = await fetch(apiUrl, {
       headers: { 'User-Agent': 'BiliCDN-Proxy', 'Accept': 'application/json' },
     });
     if (!resp.ok) return new Response('{}', { status: 502 });
@@ -59,15 +61,18 @@ export async function onRequest(context) {
   const cleanUrl = url.origin + url.pathname;
   const cacheKey = new Request(cleanUrl);
 
-  // ?purge: delete cached version and fetch fresh
-  if (url.searchParams.has('purge')) {
+  // ?purge: delete cached version and fetch fresh (bypass GitHub raw cache too)
+  const isPurge = url.searchParams.has('purge');
+  if (isPurge) {
     await cache.delete(cacheKey);
   } else {
     const cached = await cache.match(cacheKey);
     if (cached) return cached;
   }
 
-  const ghResp = await fetch(GITHUB_RAW + '/' + file, {
+  // Bypass GitHub raw cache on purge
+  const ghUrl = GITHUB_RAW + '/' + file + (isPurge ? '?t=' + Date.now() : '');
+  const ghResp = await fetch(ghUrl, {
     headers: { 'User-Agent': 'BiliCDN-Proxy' },
   });
 
