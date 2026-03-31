@@ -161,37 +161,21 @@ jobs:
 
       - name: Update Release
         if: steps.push.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TOTAL: ${{ steps.count.outputs.total }}
-          REGIONS: ${{ steps.count.outputs.regions }}
-        run: |
-          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
-          TAG="latest-data"
-          cd data_branch
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ github.token }}
+          release_name: CDN Data (${{ steps.count.outputs.total }} domains, ${{ steps.count.outputs.regions }} regions)
+          tag: latest-data
+          file: data/*
+          file_glob: true
+          overwrite: true
+          make_latest: false
+          body: |
+            Automated CDN node scan results.
 
-          # Delete old release and tag, recreate with latest data
-          gh release delete "$TAG" --yes 2>/dev/null || true
-          git push origin ":refs/tags/$TAG" 2>/dev/null || true
-
-          # Create signed tag
-          git tag -s "$TAG" -m "CDN data $TIMESTAMP" HEAD
-          git push origin "refs/tags/$TAG"
-
-          # Create release (not marked as latest)
-          gh release create "$TAG" \
-            --title "CDN Data" \
-            --latest=false \
-            --notes "Automated CDN node scan results. Updated $TIMESTAMP.
-
-          - **$TOTAL** domains
-          - **$REGIONS** regions
-          - Formats: domains.txt, nodes.json, nodes.yml, nodes.txt, nodes.md" \
-            ../data/domains.txt \
-            ../data/nodes.json \
-            ../data/nodes.yml \
-            ../data/nodes.txt \
-            ../data/nodes.md
+            - **${{ steps.count.outputs.total }}** domains
+            - **${{ steps.count.outputs.regions }}** regions
+            - Formats: domains.txt, nodes.json, nodes.yml, nodes.txt, nodes.md
 
       - name: Purge CDN cache
         if: always()
