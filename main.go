@@ -53,6 +53,9 @@ func parseFlags(args []string) error {
 	fs.BoolVar(&flagGotcha, "gotcha", flagGotcha, "Enable gotcha pattern scanning")
 	fs.BoolVar(&flagResume, "resume", flagResume, "Resume from last checkpoint")
 	fs.StringVar(&flagDiff, "diff", flagDiff, "Recheck domains from previous file before scanning")
+	fs.BoolVar(&flagRecheckOnly, "recheck-only", flagRecheckOnly, "Only recheck domains from -diff file, skip full scan")
+	fs.IntVar(&flagHTTPRetries, "http-retries", flagHTTPRetries, "Override HTTP retry count (0 = default)")
+	fs.DurationVar(&flagHTTPTimeout, "http-timeout", flagHTTPTimeout, "Override HTTP request timeout (0 = default)")
 	fs.IntVar(&flagBlockStart, "bs", flagBlockStart, "Block range start")
 	fs.IntVar(&flagBlockEnd, "be", flagBlockEnd, "Block range end")
 	fs.IntVar(&flagServerStart, "ss", flagServerStart, "Server range start")
@@ -87,6 +90,9 @@ func validateFlags() error {
 	}
 	if err := validateRange("-bs", flagBlockStart, "-be", flagBlockEnd); err != nil {
 		return err
+	}
+	if flagRecheckOnly && flagDiff == "" {
+		return errors.New("-recheck-only requires -diff")
 	}
 	return validateRange("-ss", flagServerStart, "-se", flagServerEnd)
 }

@@ -30,6 +30,10 @@ var (
 
 	newSignalContextFunc = newSignalContext
 	setupLoggerFunc      = setupLogger
+
+	// Overridable HTTP settings (set by flags in Run)
+	httpRetries = maxHTTPRetries
+	httpTimeout = requestTimeout
 )
 
 // Pre-computed strings for domain generation (avoids fmt.Sprintf in hot loops)
@@ -125,6 +129,13 @@ func (o *outputFile) Commit() error {
 
 // Run executes the pipeline: generate → verify → output
 func Run() error {
+	// Apply HTTP overrides from flags
+	if flagHTTPRetries > 0 {
+		httpRetries = flagHTTPRetries
+	}
+	if flagHTTPTimeout > 0 {
+		httpTimeout = flagHTTPTimeout
+	}
 	outDir := filepath.Dir(flagOutput)
 	if err := os.MkdirAll(outDir, 0755); err != nil {
 		return fmt.Errorf("create %s: %w", outDir, err)
@@ -175,7 +186,35 @@ func Run() error {
 	ctx, cancelRun, cleanup := newSignalContextFunc()
 	defer cleanup()
 
-	// Setup
+	client := newHTTPClient()
+
+	// Diff/recheck: HTTP-check old domains (before DNS pool setup)
+	if flagDiff != "" {
+		recheckAlive, err := recheckDomains(ctx, client, flagDiff)
+		if err != nil {
+			return fmt.Errorf("recheck: %w", err)
+		}
+		for domain := range recheckAlive {
+			if _, err := output.file.WriteString(domain + "\n"); err != nil {
+				return fmt.Errorf("write recheck results: %w", err)
+			}
+		}
+
+		// Recheck-only mode: skip full scan
+		if flagRecheckOnly {
+			output.file.Close()
+			output.file = nil
+			if err := output.Commit(); err != nil {
+				return fmt.Errorf("commit %s: %w", flagOutput, err)
+			}
+			fmt.Fprint(os.Stderr, "\n")
+			fmt.Fprintf(os.Stderr, "  Total:   %d valid domains (recheck only)\n", len(recheckAlive))
+			fmt.Fprintf(os.Stderr, "  Saved to %s\n", flagOutput)
+			return nil
+		}
+	}
+
+	// Setup DNS pool (only needed for full scan)
 	locations := allLocations()
 	totalEstimate := estimateTotalDomains(locations)
 
@@ -185,7 +224,6 @@ func Run() error {
 	var dnsPool *DNSResolverPool
 
 	if flagDNSStrategy == 0 {
-		// Auto mode: probe, benchmark, and pick the best strategy
 		var err error
 		dnsPool, err = autoTuneDNS(ctx, probeDomain, probeThreshold)
 		if err != nil {
@@ -196,17 +234,17 @@ func Run() error {
 		fmt.Fprintf(os.Stderr, "\n[DNS Probe]\n%s\n", sep)
 
 		switch flagDNSStrategy {
-		case 1: // Global: overseas primary + domestic fallback
+		case 1:
 			dnsPool = NewDNSResolverPool(dnsGlobal, dnsCN)
 			removedP := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
 			removedF := dnsPool.fallback.probeAndFilter(probeDomain, probeThreshold)
 			fmt.Fprintf(os.Stderr, "  Global:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removedP)
 			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.fallback.nodes), removedF)
-		case 2: // CN: domestic only, flat group
+		case 2:
 			dnsPool = NewFlatDNSPool(dnsCN)
 			removed := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
 			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removed)
-		case 3: // System: still create pool for probe display, but workers use system resolver
+		case 3:
 			dnsPool = NewDNSResolverPool(dnsGlobal, dnsCN)
 			fmt.Fprint(os.Stderr, "  Using system resolver\n")
 		}
@@ -223,24 +261,7 @@ func Run() error {
 		flagConcurrency = autoConcurrency(flagDNSStrategy, dnsPool)
 	}
 
-	client := newHTTPClient()
 	printConfig(dnsPool, locations, totalEstimate)
-
-	// Diff mode: recheck old domains before full scan
-	var recheckAlive map[string]bool
-	if flagDiff != "" {
-		var err error
-		recheckAlive, err = recheckDomains(ctx, client, flagDiff)
-		if err != nil {
-			return fmt.Errorf("recheck: %w", err)
-		}
-		// Write alive domains to output file immediately
-		for domain := range recheckAlive {
-			if _, err := output.file.WriteString(domain + "\n"); err != nil {
-				return fmt.Errorf("write recheck results: %w", err)
-			}
-		}
-	}
 
 	// Suppress Go's internal "Unsolicited response" warnings from HTTP keep-alive
 	log.SetOutput(io.Discard)
@@ -914,7 +935,7 @@ func newHTTPClient() *http.Client {
 		}).DialContext,
 	}
 	return &http.Client{
-		Timeout:   requestTimeout,
+		Timeout:   httpTimeout,
 		Transport: transport,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
@@ -1066,7 +1087,7 @@ func isHTTPAlive(statusCode int) bool {
 
 func httpCheck(ctx context.Context, client *http.Client, ip, host string) (int, error) {
 	var lastErr error
-	for range maxHTTPRetries {
+	for range httpRetries {
 		req, err := http.NewRequestWithContext(ctx, "HEAD", "http://"+ip, nil)
 		if err != nil {
 			return 0, err

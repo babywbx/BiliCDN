@@ -1,0 +1,103 @@
+name: Recheck CDN Data
+
+on:
+  schedule:
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: update-data
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  recheck-data:
+    name: Recheck / Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        run: go build -o bilicdn .
+
+      - name: Checkout data branch
+        uses: actions/checkout@v6
+        with:
+          ref: data
+          path: data_branch
+          fetch-depth: 0
+
+      - name: Build historical domain list
+        run: |
+          cd data_branch
+          git log --all -p -- domains.txt 2>/dev/null \
+            | grep "^+" | grep -v "^+++" | sed 's/^+//' \
+            | sort -u > ../historical_domains.txt
+          COUNT=$(wc -l < ../historical_domains.txt | tr -d ' ')
+          echo "Historical domains: $COUNT"
+          cd ..
+
+      - name: Recheck domains
+        run: |
+          if [ -s historical_domains.txt ]; then
+            ./bilicdn -quiet -recheck-only \
+              -diff historical_domains.txt \
+              -http-retries 3 \
+              -http-timeout 5s \
+              -o data/domains.txt
+          else
+            echo "No historical data, skipping recheck"
+            exit 0
+          fi
+
+      - name: Convert formats
+        run: |
+          ./bilicdn convert -i data/domains.txt -o data/nodes.json
+          ./bilicdn convert -i data/domains.txt -o data/nodes.yml
+          ./bilicdn convert -i data/domains.txt -o data/nodes.txt
+          ./bilicdn convert -i data/domains.txt -o data/nodes.md
+
+      - name: Sync, Commit and Push to data branch
+        id: push
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.BOT_SSH_SIGNING_KEY }}" > ~/.ssh/signing_key
+          chmod 600 ~/.ssh/signing_key
+
+          rsync -av --delete --exclude='.git/' data/ data_branch/
+          cd data_branch
+
+          git config user.name 'wbxBot'
+          git config user.email '224158880+wbxbot@users.noreply.github.com'
+          git config gpg.format ssh
+          git config user.signingkey ~/.ssh/signing_key
+          git config commit.gpgsign true
+
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes in data. Nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Changes detected. Proceeding with commit."
+          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+          git commit -m "🤖 chore(data): recheck CDN nodes ($TIMESTAMP)"
+          git push origin data
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Purge CDN cache
+        if: steps.push.outputs.changed == 'true'
+        run: |
+          for f in nodes.json nodes.yml nodes.txt nodes.md domains.txt api/updated; do
+            curl -s "https://bilicdn.pages.dev/${f}?purge" -o /dev/null -w "${f}: HTTP %{http_code}\n"
+          done

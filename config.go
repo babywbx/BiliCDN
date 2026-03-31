@@ -4,19 +4,22 @@ import "time"
 
 // Configurable via flags (set in main.go)
 var (
-	flagConcurrency = 0 // 0 = auto (match DNS QPS capacity)
-	flagDomain      = "bilivideo.com"
-	flagDNSStrategy = 0 // 0=Auto, 1=Global, 2=CN, 3=System
-	flagDebug       = false
-	flagQuiet       = false // true = log mode (no TUI, periodic log lines)
-	flagOutput      = "data/domains.txt"
-	flagGotcha      = true
-	flagResume      = false
-	flagDiff        = "" // path to previous domains file for recheck
-	flagBlockStart  = 1
-	flagBlockEnd    = 10
-	flagServerStart = 1
-	flagServerEnd   = 50
+	flagConcurrency               = 0 // 0 = auto (match DNS QPS capacity)
+	flagDomain                    = "bilivideo.com"
+	flagDNSStrategy               = 0 // 0=Auto, 1=Global, 2=CN, 3=System
+	flagDebug                     = false
+	flagQuiet                     = false // true = log mode (no TUI, periodic log lines)
+	flagOutput                    = "data/domains.txt"
+	flagGotcha                    = true
+	flagResume                    = false
+	flagDiff                      = "" // path to previous domains file for recheck
+	flagRecheckOnly               = false
+	flagHTTPRetries               = 0 // 0 = use maxHTTPRetries default
+	flagHTTPTimeout time.Duration = 0 // 0 = use requestTimeout default
+	flagBlockStart                = 1
+	flagBlockEnd                  = 10
+	flagServerStart               = 1
+	flagServerEnd                 = 50
 )
 
 // Internal defaults
