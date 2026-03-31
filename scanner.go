@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -142,11 +143,30 @@ func Run() error {
 	}
 	defer closeLog()
 
+	// Checkpoint for resume support
+	ckptPath := flagOutput + ".ckpt"
+	var skipCount int
+	if flagResume {
+		skipCount = loadCheckpoint(ckptPath)
+		if skipCount > 0 {
+			fmt.Fprintf(os.Stderr, "\n[Resume] Skipping %d already-scanned domains\n", skipCount)
+		}
+	}
+
 	output, err := newOutputFile(flagOutput)
 	if err != nil {
 		return fmt.Errorf("create temp output for %s: %w", flagOutput, err)
 	}
 	defer output.Cleanup()
+
+	// If resuming, copy existing results to the new temp file
+	if flagResume && skipCount > 0 {
+		if existing, err := os.ReadFile(flagOutput); err == nil && len(existing) > 0 {
+			if _, err := output.file.Write(existing); err != nil {
+				return fmt.Errorf("copy existing results: %w", err)
+			}
+		}
+	}
 
 	ctx, cancelRun, cleanup := newSignalContextFunc()
 	defer cleanup()
@@ -249,9 +269,26 @@ func Run() error {
 
 	// Generator
 	go func() {
-		count := generateAllJobs(ctx, jobs, locations)
+		count := generateAllJobs(ctx, jobs, locations, skipCount)
 		bar.SetTotal(count)
 		close(jobs)
+	}()
+
+	// Periodic checkpoint saver (every 10s)
+	ckptDone := make(chan struct{})
+	go func() {
+		defer close(ckptDone)
+		ticker := time.NewTicker(10 * time.Second)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ticker.C:
+				saveCheckpoint(ckptPath, int(bar.tested.Load())+skipCount)
+			case <-ctx.Done():
+				saveCheckpoint(ckptPath, int(bar.tested.Load())+skipCount)
+				return
+			}
+		}
 	}()
 
 	// Wait: DNS done → close resolved → HTTP done → close results → writer done
@@ -261,6 +298,7 @@ func Run() error {
 	close(results)
 	writerWg.Wait()
 	bar.Finish()
+	<-ckptDone
 
 	if writerErr != nil {
 		return fmt.Errorf("write %s: %w", resultsFile, writerErr)
@@ -275,11 +313,30 @@ func Run() error {
 		return fmt.Errorf("commit %s: %w", resultsFile, err)
 	}
 
+	// Completed successfully — remove checkpoint
+	os.Remove(ckptPath)
+
 	// Summary
 	fmt.Fprint(os.Stderr, "\n")
 	fmt.Fprintf(os.Stderr, "  Found %d valid domains\n", resultCount)
 	fmt.Fprintf(os.Stderr, "  Saved to %s\n", resultsFile)
 	return nil
+}
+
+func loadCheckpoint(path string) int {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return 0
+	}
+	n, err := strconv.Atoi(strings.TrimSpace(string(data)))
+	if err != nil || n < 0 {
+		return 0
+	}
+	return n
+}
+
+func saveCheckpoint(path string, count int) {
+	os.WriteFile(path, []byte(strconv.Itoa(count)+"\n"), 0o644)
 }
 
 // --- Auto-tune ---
@@ -584,14 +641,20 @@ func estimateTotalDomains(locations []string) int {
 // --- Domain Generation ---
 
 // generateAllJobs produces candidates in priority order and returns the count sent.
-// Families are structurally disjoint so no cross-family dedup is needed.
-func generateAllJobs(ctx context.Context, jobs chan<- string, locations []string) int {
+// If skip > 0, the first `skip` domains are skipped (for resume support).
+func generateAllJobs(ctx context.Context, jobs chan<- string, locations []string, skip int) int {
 	count := 0
+	skipped := 0
 	suffix := "." + flagDomain
 
 	send := func(domain string) bool {
 		if ctx.Err() != nil {
 			return false
+		}
+		if skipped < skip {
+			skipped++
+			count++
+			return true
 		}
 		select {
 		case jobs <- domain:

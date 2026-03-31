@@ -11,6 +11,7 @@ var (
 	flagQuiet       = false // true = log mode (no TUI, periodic log lines)
 	flagOutput      = "data/domains.txt"
 	flagGotcha      = true
+	flagResume      = false
 	flagBlockStart  = 1
 	flagBlockEnd    = 10
 	flagServerStart = 1

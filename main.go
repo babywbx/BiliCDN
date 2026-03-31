@@ -51,6 +51,7 @@ func parseFlags(args []string) error {
 	fs.BoolVar(&flagQuiet, "quiet", flagQuiet, "Log mode (no TUI, for CI/pipes)")
 	fs.StringVar(&flagOutput, "o", flagOutput, "Output file path")
 	fs.BoolVar(&flagGotcha, "gotcha", flagGotcha, "Enable gotcha pattern scanning")
+	fs.BoolVar(&flagResume, "resume", flagResume, "Resume from last checkpoint")
 	fs.IntVar(&flagBlockStart, "bs", flagBlockStart, "Block range start")
 	fs.IntVar(&flagBlockEnd, "be", flagBlockEnd, "Block range end")
 	fs.IntVar(&flagServerStart, "ss", flagServerStart, "Server range start")

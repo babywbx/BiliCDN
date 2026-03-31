@@ -5,6 +5,7 @@ bilicdn
 *.log
 *.tmp
 *.lock
+*.ckpt
 
 # OS
 .DS_Store

@@ -135,7 +135,7 @@ func TestGenerateAllJobsCount(t *testing.T) {
 
 	jobs := make(chan string, 10000)
 	ctx := context.Background()
-	count := generateAllJobs(ctx, jobs, allLocations())
+	count := generateAllJobs(ctx, jobs, allLocations(), 0)
 	close(jobs)
 
 	// Standard: 1 loc × len(standardISPs) × 1 block × 1 server
@@ -181,7 +181,7 @@ func TestGenerateAllJobsCancellation(t *testing.T) {
 		}
 	}()
 
-	count := generateAllJobs(ctx, jobs, allLocations())
+	count := generateAllJobs(ctx, jobs, allLocations(), 0)
 	close(jobs)
 	// Should stop early
 	if count >= estimateTotalDomains(allLocations()) {
