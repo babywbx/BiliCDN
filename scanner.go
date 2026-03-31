@@ -98,9 +98,15 @@ func (o *outputFile) Cleanup() {
 		o.file.Close()
 		o.file = nil
 	}
-	if !o.committed && o.tempPath != "" {
-		os.Remove(o.tempPath)
+	if o.committed || o.tempPath == "" {
+		return
 	}
+	// If temp file has content (interrupted scan), preserve it as the output
+	if info, err := os.Stat(o.tempPath); err == nil && info.Size() > 0 {
+		os.Rename(o.tempPath, o.finalPath)
+		return
+	}
+	os.Remove(o.tempPath)
 }
 
 func (o *outputFile) Commit() error {
