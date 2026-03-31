@@ -286,9 +286,6 @@ func Run() error {
 		count := generateAllJobs(ctx, jobs, locations, skipCount)
 		bar.SetTotal(count)
 		close(jobs)
-		if bar.quiet {
-			fmt.Fprintf(os.Stderr, "\n[Generator] Scheduled %d domains\n", count)
-		}
 	}()
 
 	// Periodic checkpoint saver (every 10s)
@@ -340,11 +337,21 @@ func Run() error {
 	// Completed successfully — remove checkpoint
 	os.Remove(ckptPath)
 
-	// Summary
+	// Summary: count lines in final output for accurate total
+	finalCount := resultCount
+	if data, err := os.ReadFile(flagOutput); err == nil {
+		lines := strings.Split(strings.TrimSpace(string(data)), "\n")
+		if len(lines) > 0 && lines[0] != "" {
+			finalCount = len(lines)
+		}
+	}
 	elapsed := time.Since(bar.startTime)
 	tested := bar.tested.Load()
 	fmt.Fprint(os.Stderr, "\n")
-	fmt.Fprintf(os.Stderr, "  Found %d valid domains\n", resultCount)
+	if flagDiff != "" && finalCount != resultCount {
+		fmt.Fprintf(os.Stderr, "  Scanned: %d new + recheck merged\n", resultCount)
+	}
+	fmt.Fprintf(os.Stderr, "  Total:   %d valid domains\n", finalCount)
 	fmt.Fprintf(os.Stderr, "  Saved to %s\n", resultsFile)
 	printStats(elapsed, tested)
 	return nil
