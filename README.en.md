@@ -183,6 +183,7 @@ go build -o bilicdn .
 | `-quiet` | `false` | Log mode (no TUI) |
 | `-debug` | `false` | Write errors to scanner_errors.log |
 | `-resume` | `false` | Resume from last checkpoint |
+| `-diff` | | Incremental update: recheck domains from file before scanning |
 
 **Convert:**
 
