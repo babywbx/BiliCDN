@@ -847,7 +847,7 @@ func printConfig(pool *DNSResolverPool, locations []string, total int) {
 			len(gotchaRegions)*numRange*len(gotchaSuffixes)
 		fmt.Fprintf(os.Stderr, "  Gotcha:     %d\n", gotcha)
 	}
-	fmt.Fprintf(os.Stderr, "  UPOS+Misc:  %d (+%d external)\n", len(uposNodes)+len(miscNodes), len(externalNodes))
+	fmt.Fprintf(os.Stderr, "  UPOS+Misc:  %d (+%d commercial)\n", len(uposNodes)+len(miscNodes), len(commercialCDN))
 }
 
 func dnsStrategyName(strategy int) string {
@@ -906,7 +906,7 @@ func estimateTotalDomains(locations []string) int {
 		total += len(gotchaRegions) * numRange * len(gotchaSuffixes)
 	}
 
-	total += len(uposNodes) + len(miscNodes) + len(externalNodes)
+	total += len(uposNodes) + len(miscNodes) + len(commercialCDN)
 	return total
 }
 
@@ -1019,8 +1019,8 @@ func generateAllJobs(ctx context.Context, jobs chan<- string, locations []string
 		}
 	}
 
-	// 6. External (full domains, not under flagDomain)
-	for _, node := range externalNodes {
+	// 6. Commercial CDN (full domains, verified via normal DNS+HTTP pipeline)
+	for _, node := range commercialCDN {
 		if !send(node) {
 			return count
 		}

@@ -70,12 +70,12 @@ func TestUPOSNodesNonEmpty(t *testing.T) {
 	}
 }
 
-func TestExternalNodesAreFullDomains(t *testing.T) {
-	for _, node := range externalNodes {
+func TestCommercialCDNAreFullDomains(t *testing.T) {
+	for _, node := range commercialCDN {
 		if node == "" {
-			t.Error("empty string in externalNodes")
+			t.Error("empty string in commercialCDN")
 		}
-		// External nodes should contain a dot (full domain)
+		// Commercial CDN nodes should contain a dot (full domain)
 		found := false
 		for _, c := range node {
 			if c == '.' {
@@ -84,7 +84,7 @@ func TestExternalNodesAreFullDomains(t *testing.T) {
 			}
 		}
 		if !found {
-			t.Errorf("external node %q looks like a subdomain prefix, not a full domain", node)
+			t.Errorf("commercial CDN node %q looks like a subdomain prefix, not a full domain", node)
 		}
 	}
 }

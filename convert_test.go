@@ -41,11 +41,14 @@ func TestClassifyDomainUPOS(t *testing.T) {
 		{"upos-sz-mirrorcosov.bilivideo.com", "UPOS-腾讯云"},
 		{"upos-sz-mirrorhwdisp.bilivideo.com", "UPOS-华为云"},
 		{"upos-sz-mirrorbd.bilivideo.com", "UPOS-百度云"},
+		{"upos-sz-mirrorbos.bilivideo.com", "UPOS-百度云"},
 		{"upos-hz-mirrorakam.akamaized.net", "UPOS-Akamai"},
 		{"upos-sz-mirrorcf1ov.bilivideo.com", "UPOS-Cloudflare"},
 		{"upos-sz-302kodo.bilivideo.com", "UPOS-七牛云"},
+		{"upos-sz-mirrorkodo.bilivideo.com", "UPOS-七牛云"},
 		{"upos-sz-dynqn.bilivideo.com", "UPOS-七牛云"},
 		{"upos-sz-mirrorctos.bilivideo.com", "UPOS-天翼云"},
+		{"upos-sz-mirrorks3.bilivideo.com", "UPOS-金山云"},
 		{"upos-sz-static.bilivideo.com", "UPOS-其他"},
 	}
 	for _, tt := range tests {

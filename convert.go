@@ -122,6 +122,7 @@ var uposProviderMap = map[string]string{
 	"cos":  "腾讯云",
 	"hw":   "华为云",
 	"bd":   "百度云",
+	"bos":  "百度云",
 	"akam": "Akamai",
 	"cf":   "Cloudflare",
 	"kodo": "七牛云",
@@ -438,7 +439,7 @@ var mdAreaGroups = []mdAreaGroup{
 			strings.HasPrefix(r, "宁夏") || strings.HasPrefix(r, "新疆")
 	}},
 	{"🇭🇰", "特别行政区", func(r string) bool { return r == "香港" || r == "澳门" }},
-	{"☁️", "UPOS 云存储", func(r string) bool { return strings.HasPrefix(r, "UPOS") }},
+	{"☁️", "UPOS 商业 CDN", func(r string) bool { return strings.HasPrefix(r, "UPOS") }},
 	{"🔗", "Gotcha 外部 CDN", func(r string) bool { return strings.HasPrefix(r, "Gotcha") }},
 	{"📦", "其他", func(r string) bool { return true }},
 }

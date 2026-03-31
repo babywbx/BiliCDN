@@ -247,12 +247,13 @@ var uposNodes = []string{
 	"upos-sz-mirrorali", "upos-sz-mirrorali02", "upos-sz-mirroralib",
 	"upos-sz-mirroralibstar1", "upos-sz-mirroraliov",
 	"upos-sz-mirrorasiabstar1", "upos-sz-mirrorasiaov",
-	"upos-sz-mirrorbd",
+	"upos-sz-mirrorbd", "upos-sz-mirrorbos",
 	"upos-sz-mirrorcf1ov",
 	"upos-sz-mirrorcos", "upos-sz-mirrorcosb", "upos-sz-mirrorcosbstar", "upos-sz-mirrorcosbstar1",
-	"upos-sz-mirrorcosdisp", "upos-sz-mirrorcoso1", "upos-sz-mirrorcosov",
+	"upos-sz-mirrorcosdisp", "upos-sz-mirrorcoso1", "upos-sz-mirrorcoso2", "upos-sz-mirrorcosov",
 	"upos-sz-mirrorctos",
 	"upos-sz-mirrorhw", "upos-sz-mirrorhwb", "upos-sz-mirrorhwdisp",
+	"upos-sz-mirrorks3", "upos-sz-mirrorkodo",
 	"upos-sz-mirror08c", "upos-sz-mirror08h",
 	// Origin nodes (source storage)
 	"upos-sz-originbstar", "upos-sz-origincosgzhw", "upos-sz-origincosv",
@@ -279,9 +280,15 @@ var miscNodes = []string{
 	"live-push", "bdy.live-push", "txy2.live-push", "txy3.live-push",
 }
 
-// External CDN domains not under bilivideo.com (stored as full domains)
-var externalNodes = []string{
+// Commercial CDN domains — hosted by major cloud/CDN providers, always stable.
+// Written directly to output without DNS/HTTP verification.
+var commercialCDN = []string{
+	// Akamai
 	"upos-hz-mirrorakam.akamaized.net",
+	// Alibaba Cloud
+	"upos-sz-mirroraliov.bilivideo.com",
+	// Tencent Cloud COS
+	"upos-sz-mirrorcosov.bilivideo.com",
 }
 
 // ---------------------------------------------------------------------------
