@@ -4,7 +4,7 @@
 
 A high-performance tool to discover and catalog Bilibili's CDN nodes across China and worldwide.
 
-[简体中文](./README.md) · **English**
+[简体中文](./README.md) · **English** · [Live Demo](https://bilicdn.pages.dev)
 
 [![][ci-shield]][ci-link]
 [![][update-data-shield]][update-data-link]
@@ -77,7 +77,11 @@ This project aims to provide an up-to-date, reliable catalog of Bilibili CDN inf
 
 ## 🚀 How to Use the Data
 
-The generated data is available on the `data` branch of this repository. This branch contains **only** the data files for easy integration.
+Browse all CDN nodes interactively with search, filtering, and sorting:
+
+**[🌐 Live Node Browser](https://bilicdn.pages.dev)**
+
+Or download raw data files from the `data` branch for programmatic use:
 
 **[➡️ Go to the `data` branch to view the data][data-branch-link]**
 
