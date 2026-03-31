@@ -19,7 +19,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"syscall"
 	"time"
 )
@@ -227,9 +226,6 @@ func Run() error {
 	results := make(chan string, httpWorkerCount*2)
 	bar := NewProgressBar(totalEstimate, flagQuiet)
 	defer bar.Finish()
-	var generatorDone atomic.Bool
-	var activeDNSWorkers atomic.Int32
-	var activeHTTPWorkers atomic.Int32
 
 	// Writer
 	var writerWg sync.WaitGroup
@@ -249,7 +245,7 @@ func Run() error {
 	var httpWg sync.WaitGroup
 	for range httpWorkerCount {
 		httpWg.Add(1)
-		go httpWorker(ctx, &httpWg, &activeHTTPWorkers, resolvedCh, results, client, logger, bar)
+		go httpWorker(ctx, &httpWg, resolvedCh, results, client, logger, bar)
 	}
 
 	// DNS workers (stage 1)
@@ -258,12 +254,12 @@ func Run() error {
 	case 0, 1, 2: // Auto, Global, CN
 		for range flagConcurrency {
 			dnsWg.Add(1)
-			go customDNSOnlyWorker(ctx, &dnsWg, &activeDNSWorkers, jobs, resolvedCh, logger, bar, dnsPool)
+			go customDNSOnlyWorker(ctx, &dnsWg, jobs, resolvedCh, logger, bar, dnsPool)
 		}
 	case 3: // System
 		for range flagConcurrency {
 			dnsWg.Add(1)
-			go systemDNSOnlyWorker(ctx, &dnsWg, &activeDNSWorkers, jobs, resolvedCh, logger, bar)
+			go systemDNSOnlyWorker(ctx, &dnsWg, jobs, resolvedCh, logger, bar)
 		}
 	default:
 		return fmt.Errorf("unsupported DNS strategy %d", flagDNSStrategy)
@@ -274,7 +270,6 @@ func Run() error {
 		count := generateAllJobs(ctx, jobs, locations, skipCount)
 		bar.SetTotal(count)
 		close(jobs)
-		generatorDone.Store(true)
 		if bar.quiet {
 			fmt.Fprintf(os.Stderr, "\n[Generator] Scheduled %d domains\n", count)
 		}
@@ -298,45 +293,12 @@ func Run() error {
 	}()
 
 	// Wait: DNS done → close resolved → HTTP done → close results → writer done
-	waitForDrain(bar.quiet, "DNS workers", func() {
-		dnsWg.Wait()
-	}, func() string {
-		state := "running"
-		if generatorDone.Load() {
-			state = "done"
-		}
-		return fmt.Sprintf("generator=%s active=%d jobs=%d resolved=%d tested=%s/%s",
-			state,
-			activeDNSWorkers.Load(),
-			len(jobs),
-			len(resolvedCh),
-			formatNum(bar.tested.Load()),
-			formatNum(bar.total.Load()))
-	})
+	dnsWg.Wait()
 	close(resolvedCh)
-	waitForDrain(bar.quiet, "HTTP workers", func() {
-		httpWg.Wait()
-	}, func() string {
-		return fmt.Sprintf("active=%d resolved=%d results=%d tested=%s/%s",
-			activeHTTPWorkers.Load(),
-			len(resolvedCh),
-			len(results),
-			formatNum(bar.tested.Load()),
-			formatNum(bar.total.Load()))
-	})
+	httpWg.Wait()
 	close(results)
 	bar.Finish()
-	if bar.quiet {
-		fmt.Fprintln(os.Stderr, "[Finalize] Sorting and deduplicating results...")
-	}
-	waitForDrain(bar.quiet, "result writer", func() {
-		writerWg.Wait()
-	}, func() string {
-		return fmt.Sprintf("results=%d tested=%s/%s",
-			len(results),
-			formatNum(bar.tested.Load()),
-			formatNum(bar.total.Load()))
-	})
+	writerWg.Wait()
 
 	// Capture scan error before stopping checkpoint (cancelRun taints ctx)
 	scanErr := context.Cause(ctx)
@@ -543,9 +505,11 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 	if len(localDNS) > 0 {
 		names := make([]string, len(localDNS))
 		for i, s := range localDNS {
-			names[i] = s.Addr
+			names[i] = strings.TrimSuffix(s.Addr, ":53")
 		}
-		fmt.Fprintf(os.Stderr, "  Local DNS: %s\n", strings.Join(names, ", "))
+		fmt.Fprintf(os.Stderr, "  Local DNS: %s (QPS %d each)\n", strings.Join(names, ", "), localDNS[0].QPS)
+	} else {
+		fmt.Fprint(os.Stderr, "  Local DNS: none detected\n")
 	}
 
 	// Step 1: Probe all servers (including local)
@@ -1022,10 +986,8 @@ type resolved struct {
 	ip     string
 }
 
-func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar) {
+func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar) {
 	defer wg.Done()
-	active.Add(1)
-	defer active.Add(-1)
 	for domain := range jobs {
 		if ctx.Err() != nil {
 			return
@@ -1064,10 +1026,8 @@ func systemDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic
 	}
 }
 
-func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar, dnsPool *DNSResolverPool) {
+func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, jobs <-chan string, out chan<- resolved, logger *log.Logger, bar *ProgressBar, dnsPool *DNSResolverPool) {
 	defer wg.Done()
-	active.Add(1)
-	defer active.Add(-1)
 	for domain := range jobs {
 		if ctx.Err() != nil {
 			return
@@ -1090,10 +1050,8 @@ func customDNSOnlyWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic
 	}
 }
 
-func httpWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, in <-chan resolved, results chan<- string, client *http.Client, logger *log.Logger, bar *ProgressBar) {
+func httpWorker(ctx context.Context, wg *sync.WaitGroup, in <-chan resolved, results chan<- string, client *http.Client, logger *log.Logger, bar *ProgressBar) {
 	defer wg.Done()
-	active.Add(1)
-	defer active.Add(-1)
 	for r := range in {
 		if ctx.Err() != nil {
 			return
@@ -1167,30 +1125,6 @@ func writeResults(ctx context.Context, file *os.File, results <-chan string, can
 					return count, err
 				}
 			}
-		}
-	}
-}
-
-func waitForDrain(quiet bool, name string, wait func(), snapshot func() string) {
-	if !quiet {
-		wait()
-		return
-	}
-
-	done := make(chan struct{})
-	go func() {
-		wait()
-		close(done)
-	}()
-
-	ticker := time.NewTicker(30 * time.Second)
-	defer ticker.Stop()
-	for {
-		select {
-		case <-done:
-			return
-		case <-ticker.C:
-			fmt.Fprintf(os.Stderr, "[Drain] Waiting for %s... %s\n", name, snapshot())
 		}
 	}
 }
