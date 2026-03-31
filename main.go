@@ -52,6 +52,7 @@ func parseFlags(args []string) error {
 	fs.StringVar(&flagOutput, "o", flagOutput, "Output file path")
 	fs.BoolVar(&flagGotcha, "gotcha", flagGotcha, "Enable gotcha pattern scanning")
 	fs.BoolVar(&flagResume, "resume", flagResume, "Resume from last checkpoint")
+	fs.StringVar(&flagDiff, "diff", flagDiff, "Recheck domains from previous file before scanning")
 	fs.IntVar(&flagBlockStart, "bs", flagBlockStart, "Block range start")
 	fs.IntVar(&flagBlockEnd, "be", flagBlockEnd, "Block range end")
 	fs.IntVar(&flagServerStart, "ss", flagServerStart, "Server range start")

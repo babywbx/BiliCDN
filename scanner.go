@@ -220,6 +220,22 @@ func Run() error {
 	client := newHTTPClient()
 	printConfig(dnsPool, locations, totalEstimate)
 
+	// Diff mode: recheck old domains before full scan
+	var recheckAlive map[string]bool
+	if flagDiff != "" {
+		var err error
+		recheckAlive, err = recheckDomains(ctx, client, flagDiff)
+		if err != nil {
+			return fmt.Errorf("recheck: %w", err)
+		}
+		// Write alive domains to output file immediately
+		for domain := range recheckAlive {
+			if _, err := output.file.WriteString(domain + "\n"); err != nil {
+				return fmt.Errorf("write recheck results: %w", err)
+			}
+		}
+	}
+
 	// Pipeline: jobs → [DNS workers] → resolved → [HTTP workers] → results → writer
 	jobs := make(chan string, jobBufferSize)
 	resolvedCh := make(chan resolved, httpWorkerCount*4)
@@ -378,6 +394,91 @@ func loadCheckpoint(path string) int {
 
 func saveCheckpoint(path string, count int) {
 	os.WriteFile(path, []byte(strconv.Itoa(count)+"\n"), 0o644)
+}
+
+// recheckDomains reads a previous domains file and quickly HTTP-checks each one.
+// Returns a set of still-alive domains.
+func recheckDomains(ctx context.Context, client *http.Client, path string) (map[string]bool, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	var domains []string
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line != "" {
+			domains = append(domains, line)
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	if len(domains) == 0 {
+		return nil, nil
+	}
+
+	sep := strings.Repeat("─", 50)
+	fmt.Fprintf(os.Stderr, "\n[Recheck] %d domains from %s\n%s\n", len(domains), path, sep)
+
+	alive := make(map[string]bool)
+	var mu sync.Mutex
+	var dead int
+
+	// Concurrent HTTP recheck
+	sem := make(chan struct{}, httpWorkerCount)
+	var wg sync.WaitGroup
+	for _, domain := range domains {
+		if ctx.Err() != nil {
+			break
+		}
+		wg.Add(1)
+		sem <- struct{}{}
+		go func(d string) {
+			defer wg.Done()
+			defer func() { <-sem }()
+
+			// DNS resolve first
+			dnsCtx, cancel := context.WithTimeout(ctx, dnsTimeout*2)
+			ips, err := net.DefaultResolver.LookupIPAddr(dnsCtx, d)
+			cancel()
+
+			var ip string
+			if err == nil {
+				for _, addr := range ips {
+					if addr.IP.To4() != nil {
+						ip = addr.IP.String()
+						break
+					}
+				}
+			}
+			if ip == "" {
+				mu.Lock()
+				dead++
+				mu.Unlock()
+				return
+			}
+
+			// HTTP check
+			status, err := httpCheck(ctx, client, ip, d)
+			if err != nil || !isHTTPAlive(status) {
+				mu.Lock()
+				dead++
+				mu.Unlock()
+				return
+			}
+
+			mu.Lock()
+			alive[d] = true
+			mu.Unlock()
+		}(domain)
+	}
+	wg.Wait()
+
+	fmt.Fprintf(os.Stderr, "  ✓ %d alive, ✗ %d dead\n", len(alive), dead)
+	return alive, nil
 }
 
 func copyExistingResults(path string, dst *os.File) error {

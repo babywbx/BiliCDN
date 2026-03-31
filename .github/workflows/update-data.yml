@@ -26,14 +26,38 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Show runner IP
-        run: curl -s https://api.ipify.org && echo
-
       - name: Build
         run: go build -o bilicdn .
 
+      - name: Show runner IP
+        run: curl -s https://api.ipify.org && echo
+
+      - name: Checkout data branch
+        uses: actions/checkout@v6
+        with:
+          ref: data
+          path: data_branch
+
+      - name: Build historical domain list
+        run: |
+          cd data_branch
+          # Extract all unique domains ever committed to domains.txt
+          git log --all -p -- domains.txt 2>/dev/null \
+            | grep "^+" | grep -v "^+++" | sed 's/^+//' \
+            | sort -u > ../historical_domains.txt
+          COUNT=$(wc -l < ../historical_domains.txt | tr -d ' ')
+          echo "Historical domains: $COUNT"
+          cd ..
+
       - name: Scan CDN nodes
-        run: ./bilicdn -quiet -o data/domains.txt
+        run: |
+          if [ -s historical_domains.txt ]; then
+            echo "Rechecking historical domains + full scan"
+            ./bilicdn -quiet -diff historical_domains.txt -o data/domains.txt
+          else
+            echo "No history, running full scan"
+            ./bilicdn -quiet -o data/domains.txt
+          fi
 
       - name: Convert formats
         run: |
@@ -41,12 +65,6 @@ jobs:
           ./bilicdn convert -i data/domains.txt -o data/nodes.yml
           ./bilicdn convert -i data/domains.txt -o data/nodes.txt
           ./bilicdn convert -i data/domains.txt -o data/nodes.md
-
-      - name: Checkout data branch
-        uses: actions/checkout@v6
-        with:
-          ref: data
-          path: data_branch
 
       - name: Sync, Commit and Push to data branch
         id: push

@@ -12,6 +12,7 @@ var (
 	flagOutput      = "data/domains.txt"
 	flagGotcha      = true
 	flagResume      = false
+	flagDiff        = "" // path to previous domains file for recheck
 	flagBlockStart  = 1
 	flagBlockEnd    = 10
 	flagServerStart = 1

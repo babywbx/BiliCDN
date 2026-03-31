@@ -144,8 +144,11 @@ go build -o bilicdn .
 # CI-friendly mode (no TUI progress bar)
 ./bilicdn -quiet
 
-# Resume from last checkpoint (full scan ~76 min, safe to interrupt)
+# Resume from last checkpoint
 ./bilicdn -resume
+
+# Incremental update: recheck old domains first, then full scan for new ones
+./bilicdn -diff data/domains.txt
 ```
 
 ### Converting Formats

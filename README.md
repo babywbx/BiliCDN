@@ -144,8 +144,11 @@ go build -o bilicdn .
 # CI 模式（无 TUI 进度条）
 ./bilicdn -quiet
 
-# 中断后从断点继续（全量扫描约 76 分钟，支持随时中断续扫）
+# 中断后从断点继续
 ./bilicdn -resume
+
+# 增量更新：先快速复验旧域名，再全量扫描找新的
+./bilicdn -diff data/domains.txt
 ```
 
 ### 格式转换
@@ -180,6 +183,7 @@ go build -o bilicdn .
 | `-quiet` | `false` | 日志模式（无 TUI） |
 | `-debug` | `false` | 输出错误日志到 scanner_errors.log |
 | `-resume` | `false` | 从上次断点继续扫描 |
+| `-diff` | | 增量更新：先复验指定文件中的域名，再全量扫描 |
 
 **格式转换：**
 
