@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 4 * * 1'
   workflow_dispatch:
+    inputs:
+      attempt:
+        description: 'Retry attempt number'
+        default: '1'
 
 concurrency:
   group: update-data
@@ -60,7 +64,7 @@ jobs:
             ./bilicdn -quiet -o data/domains.txt
           fi
 
-      - name: Dump partial results on failure
+      - name: Show scan results
         if: always()
         run: |
           # Check final output first, then temp files
@@ -81,6 +85,33 @@ jobs:
           else
             echo "::warning::No output file found"
           fi
+
+      - name: Validate scan results
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ATTEMPT: ${{ inputs.attempt || '1' }}
+        run: |
+          OUT="data/domains.txt"
+          if [ ! -f "$OUT" ]; then
+            echo "::error::No domains.txt found"
+            exit 1
+          fi
+          COUNT=$(wc -l < "$OUT" | tr -d ' ')
+          MIN=100
+          if [ "$COUNT" -ge "$MIN" ]; then
+            echo "Validated: $COUNT domains (>= $MIN)"
+            exit 0
+          fi
+
+          echo "::warning::Only $COUNT domains found (minimum $MIN)"
+          if [ "$ATTEMPT" -lt 2 ]; then
+            NEXT=$((ATTEMPT + 1))
+            echo "::notice::Auto-retrying (attempt $NEXT) on a fresh runner..."
+            gh workflow run update-data.yml -f attempt="$NEXT"
+            exit 1
+          fi
+          echo "::error::Still below threshold after retry. Giving up."
+          exit 1
 
       - name: Convert formats
         run: |
@@ -144,7 +175,7 @@ jobs:
 
           # Create signed tag
           git tag -s "$TAG" -m "CDN data $TIMESTAMP" HEAD
-          git push origin "$TAG"
+          git push origin "refs/tags/$TAG"
 
           # Create release (not marked as latest)
           gh release create "$TAG" \
