@@ -1,0 +1,13 @@
+# Build
+bilicdn
+
+# Runtime
+*.log
+*.tmp
+*.lock
+
+# OS
+.DS_Store
+
+# Generated data (lives on `data` branch, not main)
+data/
