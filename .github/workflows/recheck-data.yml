@@ -120,7 +120,7 @@ jobs:
           git push origin ":refs/tags/$TAG" 2>/dev/null || true
 
           git tag -s "$TAG" -m "CDN data $TIMESTAMP" HEAD
-          git push origin "$TAG"
+          git push origin "refs/tags/$TAG"
 
           gh release create "$TAG" \
             --title "CDN Data" \
