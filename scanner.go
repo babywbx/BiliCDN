@@ -108,6 +108,9 @@ func (o *outputFile) Commit() error {
 	if o.file != nil {
 		return errors.New("output file is still open")
 	}
+	if err := sortFileAtomic(o.tempPath); err != nil {
+		return err
+	}
 	if err := replaceFile(o.tempPath, o.finalPath); err != nil {
 		return err
 	}
@@ -152,19 +155,17 @@ func Run() error {
 		}
 	}
 
-	var existingResults []string
-	if flagResume && skipCount > 0 {
-		existingResults, err = loadExistingResults(flagOutput)
-		if err != nil {
-			return fmt.Errorf("load existing results from %s: %w", flagOutput, err)
-		}
-	}
-
 	output, err := newOutputFile(flagOutput)
 	if err != nil {
 		return fmt.Errorf("create temp output for %s: %w", flagOutput, err)
 	}
 	defer output.Cleanup()
+
+	if flagResume && skipCount > 0 {
+		if err := copyExistingResults(flagOutput, output.file); err != nil {
+			return fmt.Errorf("copy existing results from %s: %w", flagOutput, err)
+		}
+	}
 
 	ctx, cancelRun, cleanup := newSignalContextFunc()
 	defer cleanup()
@@ -239,7 +240,7 @@ func Run() error {
 		writerErr   error
 	)
 	go func() {
-		resultCount, writerErr = writeResults(ctx, output.file, results, existingResults, cancelRun)
+		resultCount, writerErr = writeResults(ctx, output.file, results, cancelRun)
 		output.file = nil
 		writerWg.Done()
 	}()
@@ -274,7 +275,9 @@ func Run() error {
 		bar.SetTotal(count)
 		close(jobs)
 		generatorDone.Store(true)
-		fmt.Fprintf(os.Stderr, "\n[Generator] Scheduled %d domains\n", count)
+		if bar.quiet {
+			fmt.Fprintf(os.Stderr, "\n[Generator] Scheduled %d domains\n", count)
+		}
 	}()
 
 	// Periodic checkpoint saver (every 10s)
@@ -295,7 +298,7 @@ func Run() error {
 	}()
 
 	// Wait: DNS done → close resolved → HTTP done → close results → writer done
-	waitForDrain("DNS workers", func() {
+	waitForDrain(bar.quiet, "DNS workers", func() {
 		dnsWg.Wait()
 	}, func() string {
 		state := "running"
@@ -311,7 +314,7 @@ func Run() error {
 			formatNum(bar.total.Load()))
 	})
 	close(resolvedCh)
-	waitForDrain("HTTP workers", func() {
+	waitForDrain(bar.quiet, "HTTP workers", func() {
 		httpWg.Wait()
 	}, func() string {
 		return fmt.Sprintf("active=%d resolved=%d results=%d tested=%s/%s",
@@ -323,8 +326,10 @@ func Run() error {
 	})
 	close(results)
 	bar.Finish()
-	fmt.Fprintln(os.Stderr, "[Finalize] Sorting and writing results...")
-	waitForDrain("result writer", func() {
+	if bar.quiet {
+		fmt.Fprintln(os.Stderr, "[Finalize] Sorting and deduplicating results...")
+	}
+	waitForDrain(bar.quiet, "result writer", func() {
 		writerWg.Wait()
 	}, func() string {
 		return fmt.Sprintf("results=%d tested=%s/%s",
@@ -413,34 +418,34 @@ func saveCheckpoint(path string, count int) {
 	os.WriteFile(path, []byte(strconv.Itoa(count)+"\n"), 0o644)
 }
 
-func loadExistingResults(path string) ([]string, error) {
+func copyExistingResults(path string, dst *os.File) error {
 	file, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			return nil, nil
+			return nil
 		}
-		return nil, err
+		return err
 	}
 	defer file.Close()
 
-	seen := make(map[string]struct{})
-	var results []string
 	scanner := bufio.NewScanner(file)
+	writer := bufio.NewWriterSize(dst, 64*1024)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line == "" {
 			continue
 		}
-		if _, ok := seen[line]; ok {
-			continue
+		if _, err := writer.WriteString(line); err != nil {
+			return err
 		}
-		seen[line] = struct{}{}
-		results = append(results, line)
+		if err := writer.WriteByte('\n'); err != nil {
+			return err
+		}
 	}
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return err
 	}
-	return results, nil
+	return writer.Flush()
 }
 
 // detectLocalDNS discovers system DNS servers via multiple methods.
@@ -1117,70 +1122,61 @@ func httpWorker(ctx context.Context, wg *sync.WaitGroup, active *atomic.Int32, i
 
 // --- I/O ---
 
-func writeResults(ctx context.Context, file *os.File, results <-chan string, existing []string, cancel context.CancelCauseFunc) (int, error) {
-	seen := make(map[string]struct{}, len(existing))
-	all := make([]string, 0, len(existing)+1024)
-	for _, line := range existing {
-		if _, ok := seen[line]; ok {
-			continue
-		}
-		seen[line] = struct{}{}
-		all = append(all, line)
-	}
-
+func writeResults(ctx context.Context, file *os.File, results <-chan string, cancel context.CancelCauseFunc) (int, error) {
+	w := bufio.NewWriterSize(file, 64*1024)
+	count := 0
 	for {
 		select {
 		case <-ctx.Done():
-			// Save whatever we have so far before exiting
-			sort.Strings(all)
-			w := bufio.NewWriterSize(file, 64*1024)
-			for _, line := range all {
-				w.WriteString(line)
-				w.WriteByte('\n')
-			}
 			w.Flush()
 			file.Close()
 			if cause := context.Cause(ctx); cause != nil && !errors.Is(cause, context.Canceled) {
-				return len(all), cause
+				return count, cause
 			}
-			return len(all), nil
+			return count, nil
 		case res, ok := <-results:
 			if !ok {
-				sort.Strings(all)
-				w := bufio.NewWriterSize(file, 64*1024)
-				for _, line := range all {
-					if _, err := w.WriteString(line); err != nil {
-						cancel(err)
-						file.Close()
-						return len(all), err
-					}
-					if err := w.WriteByte('\n'); err != nil {
-						cancel(err)
-						file.Close()
-						return len(all), err
-					}
-				}
 				if err := w.Flush(); err != nil {
 					cancel(err)
 					file.Close()
-					return len(all), err
+					return count, err
 				}
 				if err := file.Close(); err != nil {
 					cancel(err)
-					return len(all), err
+					return count, err
 				}
-				return len(all), nil
+				return count, nil
 			}
-			if _, ok := seen[res]; ok {
-				continue
+
+			if _, err := w.WriteString(res); err != nil {
+				cancel(err)
+				file.Close()
+				return count, err
 			}
-			seen[res] = struct{}{}
-			all = append(all, res)
+			if err := w.WriteByte('\n'); err != nil {
+				cancel(err)
+				file.Close()
+				return count, err
+			}
+			count++
+
+			if w.Buffered() >= 32*1024 {
+				if err := w.Flush(); err != nil {
+					cancel(err)
+					file.Close()
+					return count, err
+				}
+			}
 		}
 	}
 }
 
-func waitForDrain(name string, wait func(), snapshot func() string) {
+func waitForDrain(quiet bool, name string, wait func(), snapshot func() string) {
+	if !quiet {
+		wait()
+		return
+	}
+
 	done := make(chan struct{})
 	go func() {
 		wait()

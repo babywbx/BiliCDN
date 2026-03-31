@@ -248,7 +248,7 @@ func TestWriteResultsCancelsContextOnFlushError(t *testing.T) {
 	results <- "a.example.com"
 	close(results)
 
-	count, err := writeResults(ctx, file, results, nil, cancel)
+	count, err := writeResults(ctx, file, results, cancel)
 	if err == nil {
 		t.Fatal("expected writeResults to fail")
 	}
@@ -273,20 +273,20 @@ func TestWriteResultsNormalFlow(t *testing.T) {
 	results := make(chan string, 3)
 	results <- "b.example.com"
 	results <- "a.example.com"
+	results <- "a.example.com"
 	close(results)
 
-	count, err := writeResults(ctx, file, results, nil, cancel)
+	count, err := writeResults(ctx, file, results, cancel)
 	if err != nil {
 		t.Fatalf("writeResults: %v", err)
 	}
-	if count != 2 {
-		t.Errorf("count = %d, want 2", count)
+	if count != 3 {
+		t.Errorf("count = %d, want 3", count)
 	}
 
 	data, _ := os.ReadFile(path)
-	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	if len(lines) != 2 {
-		t.Errorf("got %d lines, want 2", len(lines))
+	if string(data) != "b.example.com\na.example.com\na.example.com\n" {
+		t.Fatalf("streamed output = %q", string(data))
 	}
 }
 
@@ -319,7 +319,7 @@ func TestSortFileAtomicEmpty(t *testing.T) {
 	}
 }
 
-func TestOutputFileLifecycle(t *testing.T) {
+func TestOutputFileCommitSortsAndDedups(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "out.txt")
 
@@ -329,10 +329,12 @@ func TestOutputFileLifecycle(t *testing.T) {
 	}
 	defer out.Cleanup()
 
-	if _, err := out.file.WriteString("hello\n"); err != nil {
+	if _, err := out.file.WriteString("c.example.com\na.example.com\nb.example.com\na.example.com\n"); err != nil {
 		t.Fatal(err)
 	}
-	out.file.Close()
+	if err := out.file.Close(); err != nil {
+		t.Fatal(err)
+	}
 	out.file = nil
 
 	if err := out.Commit(); err != nil {
@@ -340,8 +342,54 @@ func TestOutputFileLifecycle(t *testing.T) {
 	}
 
 	data, _ := os.ReadFile(path)
-	if !strings.Contains(string(data), "hello") {
-		t.Error("committed file missing content")
+	if string(data) != "a.example.com\nb.example.com\nc.example.com\n" {
+		t.Fatalf("committed output = %q", string(data))
+	}
+}
+
+func TestResumeMergeSortsAndDedupsResults(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "domains.txt")
+	if err := os.WriteFile(path, []byte("c.example.com\na.example.com\na.example.com\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	out, err := newOutputFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer out.Cleanup()
+
+	if err := copyExistingResults(path, out.file); err != nil {
+		t.Fatalf("copyExistingResults: %v", err)
+	}
+
+	ctx, cancel := context.WithCancelCause(context.Background())
+	results := make(chan string, 3)
+	results <- "b.example.com"
+	results <- "a.example.com"
+	results <- "d.example.com"
+	close(results)
+
+	count, err := writeResults(ctx, out.file, results, cancel)
+	if err != nil {
+		t.Fatalf("writeResults: %v", err)
+	}
+	if count != 3 {
+		t.Fatalf("count = %d, want 3", count)
+	}
+
+	out.file = nil
+	if err := out.Commit(); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read merged output: %v", err)
+	}
+	if string(data) != "a.example.com\nb.example.com\nc.example.com\nd.example.com\n" {
+		t.Fatalf("merged output = %q", string(data))
 	}
 }
 
@@ -696,6 +744,7 @@ func snapshotState() func() {
 	savedFlagQuiet := flagQuiet
 	savedFlagOutput := flagOutput
 	savedFlagGotcha := flagGotcha
+	savedFlagResume := flagResume
 	savedFlagBlockStart := flagBlockStart
 	savedFlagBlockEnd := flagBlockEnd
 	savedFlagServerStart := flagServerStart
@@ -717,6 +766,7 @@ func snapshotState() func() {
 		flagQuiet = savedFlagQuiet
 		flagOutput = savedFlagOutput
 		flagGotcha = savedFlagGotcha
+		flagResume = savedFlagResume
 		flagBlockStart = savedFlagBlockStart
 		flagBlockEnd = savedFlagBlockEnd
 		flagServerStart = savedFlagServerStart
