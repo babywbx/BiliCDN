@@ -1,6 +1,6 @@
 # BiliCDN 节点列表
 
-> 共 **608** 个节点，**47** 个分区
+> 共 **612** 个节点，**48** 个分区
 
 ## 🏙️ 直辖市 (72)
 
@@ -14,8 +14,8 @@
 | 4 | `cn-bj-fx-01-05.bilivideo.com` |
 | 5 | `cn-bj-fx-01-06.bilivideo.com` |
 | 6 | `cn-bj-fx-01-07.bilivideo.com` |
-| 7 | `cn-bj-fx-01-09.bilivideo.com` |
-| 8 | `cn-bj-fx-01-11.bilivideo.com` |
+| 7 | `cn-bj-fx-01-08.bilivideo.com` |
+| 8 | `cn-bj-fx-01-09.bilivideo.com` |
 | 9 | `cn-bj-fx-01-12.bilivideo.com` |
 | 10 | `cn-bj-fx-bcache-02.bilivideo.com` |
 | 11 | `cn-bj-fx-bcache-03.bilivideo.com` |
@@ -91,7 +91,7 @@
 | 28 | `cn-cq-ct-01-34.bilivideo.com` |
 | 29 | `cn-cq-ct-02-01.bilivideo.com` |
 
-## 🌏 华北 (40)
+## 🌏 华北 (41)
 
 ### 河北-廊坊
 
@@ -114,12 +114,13 @@
 | 6 | `cn-hbsjz-cm-02-15.bilivideo.com` |
 | 7 | `cn-hbsjz-cm-02-16.bilivideo.com` |
 | 8 | `cn-hbsjz2-cmcc-bcache-01.bilivideo.com` |
-| 9 | `cn-hbsjz2-cmcc-bcache-05.bilivideo.com` |
-| 10 | `cn-hbsjz2-cmcc-bcache-08.bilivideo.com` |
-| 11 | `cn-hbsjz2-cmcc-bcache-10.bilivideo.com` |
-| 12 | `cn-hbsjz2-cmcc-bcache-11.bilivideo.com` |
-| 13 | `cn-hbsjz2-cmcc-bcache-13.bilivideo.com` |
-| 14 | `cn-hbsjz2-cmcc-bcache-14.bilivideo.com` |
+| 9 | `cn-hbsjz2-cmcc-bcache-03.bilivideo.com` |
+| 10 | `cn-hbsjz2-cmcc-bcache-05.bilivideo.com` |
+| 11 | `cn-hbsjz2-cmcc-bcache-08.bilivideo.com` |
+| 12 | `cn-hbsjz2-cmcc-bcache-10.bilivideo.com` |
+| 13 | `cn-hbsjz2-cmcc-bcache-11.bilivideo.com` |
+| 14 | `cn-hbsjz2-cmcc-bcache-13.bilivideo.com` |
+| 15 | `cn-hbsjz2-cmcc-bcache-14.bilivideo.com` |
 
 ### 山西-太原
 
@@ -153,7 +154,7 @@
 | 14 | `cn-nmghhht-cu-v-04.bilivideo.com` |
 | 15 | `cn-nmghhht-cu-v-08.bilivideo.com` |
 
-## ❄️ 东北 (21)
+## ❄️ 东北 (20)
 
 ### 辽宁-大连
 
@@ -169,14 +170,13 @@
 | --- | --- |
 | 1 | `cn-lnsy-cm-01-02.bilivideo.com` |
 | 2 | `cn-lnsy-cm-01-03.bilivideo.com` |
-| 3 | `cn-lnsy-cm-01-06.bilivideo.com` |
-| 4 | `cn-lnsy-cm-01-10.bilivideo.com` |
-| 5 | `cn-lnsy-cmcc-v-02.bilivideo.com` |
-| 6 | `cn-lnsy-cu-01-03.bilivideo.com` |
-| 7 | `cn-lnsy-cu-01-04.bilivideo.com` |
-| 8 | `cn-lnsy-cu-01-06.bilivideo.com` |
-| 9 | `cn-lnsy-cu-01-07.bilivideo.com` |
-| 10 | `cn-lnsy-cu-live-04.bilivideo.com` |
+| 3 | `cn-lnsy-cm-01-10.bilivideo.com` |
+| 4 | `cn-lnsy-cmcc-v-02.bilivideo.com` |
+| 5 | `cn-lnsy-cu-01-03.bilivideo.com` |
+| 6 | `cn-lnsy-cu-01-04.bilivideo.com` |
+| 7 | `cn-lnsy-cu-01-06.bilivideo.com` |
+| 8 | `cn-lnsy-cu-01-07.bilivideo.com` |
+| 9 | `cn-lnsy-cu-live-04.bilivideo.com` |
 
 ### 黑龙江-哈尔滨
 
@@ -191,7 +191,7 @@
 | 7 | `cn-hljheb-dx-live-02.bilivideo.com` |
 | 8 | `cn-hljheb-dx-v-03.bilivideo.com` |
 
-## 🌊 华东 (192)
+## 🌊 华东 (189)
 
 ### 江苏-南京
 
@@ -221,9 +221,8 @@
 | 12 | `cn-jsnt-ct-01-47.bilivideo.com` |
 | 13 | `cn-jsnt-dx-live-02.bilivideo.com` |
 | 14 | `cn-jsnt-dx-live-08.bilivideo.com` |
-| 15 | `cn-jsnt-dx-v-06.bilivideo.com` |
-| 16 | `cn-jsnt-dx-v-17.bilivideo.com` |
-| 17 | `cn-jsnt-dx-v-19.bilivideo.com` |
+| 15 | `cn-jsnt-dx-v-17.bilivideo.com` |
+| 16 | `cn-jsnt-dx-v-19.bilivideo.com` |
 
 ### 江苏-扬州
 
@@ -346,10 +345,9 @@
 | --- | --- |
 | 1 | `cn-fjfz-fx-01-01.bilivideo.com` |
 | 2 | `cn-fjfz-fx-01-02.bilivideo.com` |
-| 3 | `cn-fjfz-fx-01-03.bilivideo.com` |
-| 4 | `cn-fjfz-fx-01-04.bilivideo.com` |
-| 5 | `cn-fjfz-fx-01-05.bilivideo.com` |
-| 6 | `cn-fjfz-fx-01-06.bilivideo.com` |
+| 3 | `cn-fjfz-fx-01-04.bilivideo.com` |
+| 4 | `cn-fjfz-fx-01-05.bilivideo.com` |
+| 5 | `cn-fjfz-fx-01-06.bilivideo.com` |
 
 ### 江西-九江
 
@@ -360,9 +358,8 @@
 | 3 | `cn-jxjj-ct-01-05.bilivideo.com` |
 | 4 | `cn-jxjj-ct-01-06.bilivideo.com` |
 | 5 | `cn-jxjj-ct-01-07.bilivideo.com` |
-| 6 | `cn-jxjj-ct-01-08.bilivideo.com` |
-| 7 | `cn-jxjj-ct-01-14.bilivideo.com` |
-| 8 | `cn-jxjj-dx-v-07.bilivideo.com` |
+| 6 | `cn-jxjj-ct-01-14.bilivideo.com` |
+| 7 | `cn-jxjj-dx-v-07.bilivideo.com` |
 
 ### 江西-南昌
 
@@ -450,7 +447,7 @@
 | 25 | `cn-sdqd-cu-01-38.bilivideo.com` |
 | 26 | `cn-sdqd-cu-01-40.bilivideo.com` |
 
-## 🏔️ 华中 (130)
+## 🏔️ 华中 (129)
 
 ### 河南-洛阳
 
@@ -481,22 +478,21 @@
 
 | # | 域名 |
 | --- | --- |
-| 1 | `cn-hnzz-cm-01-01.bilivideo.com` |
-| 2 | `cn-hnzz-cm-01-02.bilivideo.com` |
-| 3 | `cn-hnzz-cm-01-04.bilivideo.com` |
-| 4 | `cn-hnzz-cm-01-05.bilivideo.com` |
-| 5 | `cn-hnzz-cm-01-06.bilivideo.com` |
-| 6 | `cn-hnzz-cm-01-09.bilivideo.com` |
-| 7 | `cn-hnzz-cm-01-11.bilivideo.com` |
-| 8 | `cn-hnzz-cm-01-15.bilivideo.com` |
-| 9 | `cn-hnzz-cm-01-16.bilivideo.com` |
-| 10 | `cn-hnzz-cmcc-bcache-02.bilivideo.com` |
-| 11 | `cn-hnzz-cmcc-bcache-04.bilivideo.com` |
-| 12 | `cn-hnzz-cmcc-live-04.bilivideo.com` |
-| 13 | `cn-hnzz-cmcc-v-07.bilivideo.com` |
-| 14 | `cn-hnzz-cmcc-v-08.bilivideo.com` |
-| 15 | `cn-hnzz-cmcc-v-10.bilivideo.com` |
-| 16 | `cn-hnzz-cmcc-v-12.bilivideo.com` |
+| 1 | `cn-hnzz-cm-01-02.bilivideo.com` |
+| 2 | `cn-hnzz-cm-01-04.bilivideo.com` |
+| 3 | `cn-hnzz-cm-01-05.bilivideo.com` |
+| 4 | `cn-hnzz-cm-01-06.bilivideo.com` |
+| 5 | `cn-hnzz-cm-01-09.bilivideo.com` |
+| 6 | `cn-hnzz-cm-01-11.bilivideo.com` |
+| 7 | `cn-hnzz-cm-01-15.bilivideo.com` |
+| 8 | `cn-hnzz-cm-01-16.bilivideo.com` |
+| 9 | `cn-hnzz-cmcc-bcache-02.bilivideo.com` |
+| 10 | `cn-hnzz-cmcc-bcache-04.bilivideo.com` |
+| 11 | `cn-hnzz-cmcc-live-04.bilivideo.com` |
+| 12 | `cn-hnzz-cmcc-v-07.bilivideo.com` |
+| 13 | `cn-hnzz-cmcc-v-08.bilivideo.com` |
+| 14 | `cn-hnzz-cmcc-v-10.bilivideo.com` |
+| 15 | `cn-hnzz-cmcc-v-12.bilivideo.com` |
 
 ### 湖北-宜昌
 
@@ -612,7 +608,7 @@
 | 15 | `cn-hncs3-cmcc-v-01.bilivideo.com` |
 | 16 | `cn-hncs3-cmcc-v-09.bilivideo.com` |
 
-## 🌴 华南 (68)
+## 🌴 华南 (69)
 
 ### 广东-东莞
 
@@ -688,11 +684,12 @@
 | # | 域名 |
 | --- | --- |
 | 1 | `cn-gdjm-cm-01-01.bilivideo.com` |
-| 2 | `cn-gdjm-cm-01-03.bilivideo.com` |
-| 3 | `cn-gdjm-cm-01-04.bilivideo.com` |
-| 4 | `cn-gdjm-cm-01-05.bilivideo.com` |
-| 5 | `cn-gdjm-cm-01-09.bilivideo.com` |
-| 6 | `cn-gdjm-cm-01-10.bilivideo.com` |
+| 2 | `cn-gdjm-cm-01-02.bilivideo.com` |
+| 3 | `cn-gdjm-cm-01-03.bilivideo.com` |
+| 4 | `cn-gdjm-cm-01-04.bilivideo.com` |
+| 5 | `cn-gdjm-cm-01-05.bilivideo.com` |
+| 6 | `cn-gdjm-cm-01-09.bilivideo.com` |
+| 7 | `cn-gdjm-cm-01-10.bilivideo.com` |
 
 ### 广东-深圳
 
@@ -739,7 +736,7 @@
 | 29 | `cn-sccd3-cmcc-v-06.bilivideo.com` |
 | 30 | `cn-sccd3-cmcc-v-14.bilivideo.com` |
 
-## 🏜️ 西北 (18)
+## 🏜️ 西北 (20)
 
 ### 陕西-西安
 
@@ -755,10 +752,11 @@
 | 8 | `cn-sxxa-cm-01-14.bilivideo.com` |
 | 9 | `cn-sxxa-cmcc-bcache-01.bilivideo.com` |
 | 10 | `cn-sxxa-cmcc-bcache-07.bilivideo.com` |
-| 11 | `cn-sxxa-ct-03-03.bilivideo.com` |
-| 12 | `cn-sxxa-ct-03-04.bilivideo.com` |
-| 13 | `cn-sxxa-ct-03-13.bilivideo.com` |
-| 14 | `cn-sxxa-ct-03-14.bilivideo.com` |
+| 11 | `cn-sxxa-ct-03-02.bilivideo.com` |
+| 12 | `cn-sxxa-ct-03-03.bilivideo.com` |
+| 13 | `cn-sxxa-ct-03-04.bilivideo.com` |
+| 14 | `cn-sxxa-ct-03-13.bilivideo.com` |
+| 15 | `cn-sxxa-ct-03-14.bilivideo.com` |
 
 ### 新疆
 
@@ -768,6 +766,7 @@
 | 2 | `cn-xj-ct-01-02.bilivideo.com` |
 | 3 | `cn-xj-ct-01-03.bilivideo.com` |
 | 4 | `cn-xj-ct-01-04.bilivideo.com` |
+| 5 | `cn-xj-ct-01-05.bilivideo.com` |
 
 ## 🇭🇰 特别行政区 (7)
 
@@ -783,7 +782,7 @@
 | 6 | `cn-hk-eq-01-13.bilivideo.com` |
 | 7 | `cn-hk-eq-01-14.bilivideo.com` |
 
-## ☁️ UPOS 商业 CDN (16)
+## ☁️ UPOS 商业 CDN (17)
 
 ### UPOS-Akamai
 
@@ -812,6 +811,12 @@
 | 3 | `upos-sz-estgoss02.bilivideo.com` |
 | 4 | `upos-sz-originbstar.bilivideo.com` |
 
+### UPOS-华为云
+
+| # | 域名 |
+| --- | --- |
+| 1 | `upos-sz-mirrorhwdisp.bilivideo.com` |
+
 ### UPOS-百度云
 
 | # | 域名 |
@@ -836,7 +841,7 @@
 | 1 | `upos-sz-mirroralibstar1.bilivideo.com` |
 | 2 | `upos-sz-mirroraliov.bilivideo.com` |
 
-## 🔗 Gotcha 外部 CDN (14)
+## 🔗 Gotcha 外部 CDN (18)
 
 ### Gotcha-TF
 
@@ -850,19 +855,23 @@
 | # | 域名 |
 | --- | --- |
 | 1 | `c0--cn-gotcha01.bilivideo.com` |
-| 2 | `d1--cn-gotcha04b.bilivideo.com` |
-| 3 | `d1--cn-gotcha105.bilivideo.com` |
-| 4 | `d1--cn-gotcha204-1.bilivideo.com` |
-| 5 | `d1--cn-gotcha204-3.bilivideo.com` |
-| 6 | `d1--cn-gotcha204-4.bilivideo.com` |
+| 2 | `d0--cn-gotcha09.bilivideo.com` |
+| 3 | `d1--cn-gotcha04b.bilivideo.com` |
+| 4 | `d1--cn-gotcha07b.bilivideo.com` |
+| 5 | `d1--cn-gotcha105.bilivideo.com` |
+| 6 | `d1--cn-gotcha204-1.bilivideo.com` |
 | 7 | `d1--cn-gotcha204b.bilivideo.com` |
-| 8 | `d1--cn-gotcha303.bilivideo.com` |
-| 9 | `d1--p1--cn-gotcha04.bilivideo.com` |
+| 8 | `d1--cn-gotcha207.bilivideo.com` |
+| 9 | `d1--cn-gotcha209-1.bilivideo.com` |
+| 10 | `d1--cn-gotcha303.bilivideo.com` |
+| 11 | `d1--p1--cn-gotcha04.bilivideo.com` |
 
 ### Gotcha-海外
 
 | # | 域名 |
 | --- | --- |
 | 1 | `d1--ov-gotcha105.bilivideo.com` |
-| 2 | `d1--ov-gotcha209.bilivideo.com` |
-| 3 | `d1--ov-gotcha210.bilivideo.com` |
+| 2 | `d1--ov-gotcha207.bilivideo.com` |
+| 3 | `d1--ov-gotcha207b.bilivideo.com` |
+| 4 | `d1--ov-gotcha209.bilivideo.com` |
+| 5 | `d1--ov-gotcha210.bilivideo.com` |
