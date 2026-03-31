@@ -37,6 +37,7 @@ jobs:
         with:
           ref: data
           path: data_branch
+          fetch-depth: 0
 
       - name: Build historical domain list
         run: |
