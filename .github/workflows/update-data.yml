@@ -59,6 +59,18 @@ jobs:
             ./bilicdn -quiet -o data/domains.txt
           fi
 
+      - name: Dump partial results on failure
+        if: always()
+        run: |
+          if [ -f data/domains.txt ]; then
+            COUNT=$(wc -l < data/domains.txt | tr -d ' ')
+            echo "::notice::Found $COUNT domains (may be partial if scan was interrupted)"
+            echo "--- domains.txt ($COUNT lines) ---"
+            cat data/domains.txt
+          else
+            echo "::warning::No output file found"
+          fi
+
       - name: Convert formats
         run: |
           ./bilicdn convert -i data/domains.txt -o data/nodes.json
