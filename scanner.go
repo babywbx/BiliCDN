@@ -242,6 +242,9 @@ func Run() error {
 		}
 	}
 
+	// Suppress Go's internal "Unsolicited response" warnings from HTTP keep-alive
+	log.SetOutput(io.Discard)
+
 	// Pipeline: jobs → [DNS workers] → resolved → [HTTP workers] → results → writer
 	fmt.Fprintf(os.Stderr, "\n[Scan]\n%s\n", strings.Repeat("─", 50))
 	jobs := make(chan string, jobBufferSize)
@@ -437,9 +440,14 @@ func recheckDomains(ctx context.Context, client *http.Client, path string) (map[
 	sep := strings.Repeat("─", 50)
 	fmt.Fprintf(os.Stderr, "\n[Recheck] %d domains from %s\n%s\n", len(domains), path, sep)
 
+	// Suppress Go's internal "Unsolicited response" warnings during recheck
+	prevOutput := log.Writer()
+	log.SetOutput(io.Discard)
+	defer log.SetOutput(prevOutput)
+
 	alive := make(map[string]bool)
 	var mu sync.Mutex
-	var dead int
+	var dnsFail, httpFail, httpWarn int
 
 	// Concurrent HTTP recheck
 	sem := make(chan struct{}, httpWorkerCount)
@@ -454,7 +462,7 @@ func recheckDomains(ctx context.Context, client *http.Client, path string) (map[
 			defer wg.Done()
 			defer func() { <-sem }()
 
-			// DNS resolve first
+			// DNS resolve
 			dnsCtx, cancel := context.WithTimeout(ctx, dnsTimeout*2)
 			ips, err := net.DefaultResolver.LookupIPAddr(dnsCtx, d)
 			cancel()
@@ -470,16 +478,22 @@ func recheckDomains(ctx context.Context, client *http.Client, path string) (map[
 			}
 			if ip == "" {
 				mu.Lock()
-				dead++
+				dnsFail++
 				mu.Unlock()
 				return
 			}
 
 			// HTTP check
 			status, err := httpCheck(ctx, client, ip, d)
-			if err != nil || !isHTTPAlive(status) {
+			if err != nil {
 				mu.Lock()
-				dead++
+				httpFail++
+				mu.Unlock()
+				return
+			}
+			if !isHTTPAlive(status) {
+				mu.Lock()
+				httpWarn++
 				mu.Unlock()
 				return
 			}
@@ -491,7 +505,12 @@ func recheckDomains(ctx context.Context, client *http.Client, path string) (map[
 	}
 	wg.Wait()
 
-	fmt.Fprintf(os.Stderr, "  ✓ %d alive, ✗ %d dead\n", len(alive), dead)
+	dead := dnsFail + httpFail + httpWarn
+	fmt.Fprintf(os.Stderr, "  ✓ %d alive, ✗ %d dead", len(alive), dead)
+	if dead > 0 {
+		fmt.Fprintf(os.Stderr, " (dns=%d, http=%d, warn=%d)", dnsFail, httpFail, httpWarn)
+	}
+	fmt.Fprint(os.Stderr, "\n")
 	return alive, nil
 }
 
