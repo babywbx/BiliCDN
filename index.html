@@ -148,14 +148,14 @@ tr:hover td{background:rgba(255,255,255,.02)}
     </div>
     <div class="header-right">
       <div class="dropdown" id="dl-dropdown">
-        <button class="dropdown-trigger" id="dl-trigger">
+        <button class="dropdown-trigger" id="dl-trigger" aria-haspopup="true" aria-expanded="false">
           下载
           <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="dropdown-menu" id="dl-menu"></div>
       </div>
       <div class="dropdown" id="ref-dropdown">
-        <button class="dropdown-trigger" id="ref-trigger">
+        <button class="dropdown-trigger" id="ref-trigger" aria-haspopup="true" aria-expanded="false">
           API
           <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
         </button>
@@ -295,7 +295,7 @@ function initDownloads() {
   a.textContent = RAW_FILE.label;
   menu.appendChild(a);
 
-  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); });
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); trigger.setAttribute('aria-expanded', dropdown.classList.contains('open')); });
 }
 
 function renderStats() {
@@ -362,9 +362,9 @@ function renderTable() {
   const table = document.createElement('table');
   const thead = document.createElement('thead'); const hr = document.createElement('tr');
 
-  const thIdx = document.createElement('th'); thIdx.textContent = '#'; thIdx.style.cursor = 'default'; hr.appendChild(thIdx);
+  const thIdx = document.createElement('th'); thIdx.textContent = '#'; thIdx.scope = 'col'; thIdx.style.cursor = 'default'; hr.appendChild(thIdx);
   [{ key: 'domain', label: '域名' }, { key: 'region', label: '区域' }, { key: 'type', label: '类型' }].forEach(col => {
-    const th = document.createElement('th'); th.dataset.col = col.key;
+    const th = document.createElement('th'); th.scope = 'col'; th.dataset.col = col.key;
     if (sortCol === col.key) th.classList.add('sorted');
     th.textContent = col.label + ' ';
     const icon = document.createElement('span'); icon.className = 'sort-icon';
@@ -490,11 +490,13 @@ function initRefLinks() {
     menu.appendChild(item);
   });
 
-  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); });
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); trigger.setAttribute('aria-expanded', dropdown.classList.contains('open')); });
 }
 
 function closeAllDropdowns(except) {
-  document.querySelectorAll('.dropdown.open').forEach(d => { if (d !== except) d.classList.remove('open'); });
+  document.querySelectorAll('.dropdown.open').forEach(d => {
+    if (d !== except) { d.classList.remove('open'); d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false'); }
+  });
 }
 document.addEventListener('click', () => closeAllDropdowns());
 
