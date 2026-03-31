@@ -113,7 +113,7 @@ jobs:
           REGIONS: ${{ steps.count.outputs.regions }}
         run: |
           TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
-          TAG="data"
+          TAG="latest-data"
           cd data_branch
 
           gh release delete "$TAG" --yes 2>/dev/null || true
