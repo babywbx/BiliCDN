@@ -22,13 +22,34 @@ This is the web frontend for [BiliCDN](https://github.com/babywbx/BiliCDN), prov
 
 ## ✨ Features
 
-- **Interactive table** — Search, sort, filter, paginate
+- **Interactive table** — Search, sort, filter, and paginate all nodes
 - **Click to copy** — Click any domain to copy to clipboard
 - **Region filtering** — Filter by geographic area (Municipalities, East, South...)
-- **Multi-format download** — JSON / YAML / Text / Markdown / Raw
+- **Multi-format download** — "Download" button in the header for JSON / YAML / Text / Markdown / Raw
+- **API endpoints** — "API" button to copy CDN-accelerated data endpoint URLs
 - **Stats overview** — Domain count, region count, type breakdown with hover tooltips
-- **Live data** — Fetches latest data from GitHub on every visit, no redeployment needed
+- **Live data** — Automatically fetches latest data on every visit, no redeployment needed
 - **Dark theme** — Modern dark UI, fully responsive
+
+<div align="right">
+
+[![][back-to-top]](#readme-top)
+
+</div>
+
+## 🔗 API Endpoints
+
+When deployed on Cloudflare Pages, all data files are served via CDN for fast global access:
+
+```
+https://bilicdn.pages.dev/nodes.json
+https://bilicdn.pages.dev/nodes.yml
+https://bilicdn.pages.dev/nodes.txt
+https://bilicdn.pages.dev/nodes.md
+https://bilicdn.pages.dev/domains.txt
+```
+
+Powered by Cloudflare Pages Functions that reverse-proxy GitHub data with 6-hour edge caching. No direct GitHub access needed from China.
 
 <div align="right">
 
@@ -39,15 +60,17 @@ This is the web frontend for [BiliCDN](https://github.com/babywbx/BiliCDN), prov
 ## ⚙️ Architecture
 
 ```
-web branch (this branch)     data branch
-  index.html     ──fetch──→   nodes.json     (table data)
-  (static template)           domains.txt    (download links)
-                              nodes.yml/txt/md
+User → bilicdn.pages.dev (Cloudflare CDN)
+         ├── /              → index.html (static page)
+         ├── /nodes.json    → CF Functions → GitHub raw (proxy + cache)
+         ├── /domains.txt   → CF Functions → GitHub raw (proxy + cache)
+         └── /api/updated   → CF Functions → GitHub API (proxy + cache)
 ```
 
-- **Zero build** — Single `index.html`, no framework, no dependencies
+- **Zero build** — Single `index.html` + CF Functions, no framework, no dependencies
 - **Zero maintenance** — Template never needs updating when data changes
-- **Deploy anywhere** — Cloudflare Pages/Workers, GitHub Pages, Vercel, or any static host
+- **Global acceleration** — Cloudflare edge caching, China-friendly
+- **Deploy to** — Cloudflare Pages (recommended), GitHub Pages, Vercel
 
 <div align="right">
 

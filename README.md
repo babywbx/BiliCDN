@@ -22,13 +22,34 @@ BiliCDN 的交互式节点浏览页面。
 
 ## ✨ 功能
 
-- **交互式表格** — 搜索、排序、筛选、分页
+- **交互式表格** — 搜索、排序、筛选、分页浏览所有节点
 - **点击复制** — 点击域名即可复制到剪贴板
 - **区域筛选** — 按地理大区快速过滤（直辖市、华东、华南...）
-- **多格式下载** — JSON / YAML / Text / Markdown / Raw
+- **多格式下载** — 页面顶部「下载」按钮，支持 JSON / YAML / Text / Markdown / Raw
+- **API 引用** — 页面顶部「API」按钮，一键复制 CDN 加速的数据接口链接
 - **统计概览** — 域名总数、区域数、类型分布，悬停查看中文释义
-- **实时数据** — 每次访问从 GitHub 获取最新数据，无需重新部署
+- **实时数据** — 每次访问自动获取最新数据，无需重新部署
 - **深色主题** — 现代暗色 UI，响应式适配
+
+<div align="right">
+
+[![][back-to-top]](#readme-top)
+
+</div>
+
+## 🔗 API 端点
+
+部署在 Cloudflare Pages 后，所有数据文件可通过 CDN 加速直接访问，适合程序引用：
+
+```
+https://bilicdn.pages.dev/nodes.json
+https://bilicdn.pages.dev/nodes.yml
+https://bilicdn.pages.dev/nodes.txt
+https://bilicdn.pages.dev/nodes.md
+https://bilicdn.pages.dev/domains.txt
+```
+
+通过 Cloudflare Pages Functions 反向代理 GitHub 数据，边缘缓存 6 小时，中国用户无需直连 GitHub。
 
 <div align="right">
 
@@ -39,15 +60,17 @@ BiliCDN 的交互式节点浏览页面。
 ## ⚙️ 架构
 
 ```
-web 分支 (本分支)           data 分支
-  index.html     ──fetch──→  nodes.json     (交互式表格数据)
-  (纯静态模板)               domains.txt    (下载链接)
-                             nodes.yml/txt/md
+用户 → bilicdn.pages.dev (Cloudflare CDN)
+         ├── /              → index.html (静态页面)
+         ├── /nodes.json    → CF Functions → GitHub raw (反代+缓存)
+         ├── /domains.txt   → CF Functions → GitHub raw (反代+缓存)
+         └── /api/updated   → CF Functions → GitHub API (反代+缓存)
 ```
 
-- **零构建** — 单个 `index.html`，无框架、无依赖
+- **零构建** — 单个 `index.html` + CF Functions，无框架、无依赖
 - **零维护** — 数据更新时无需修改模板
-- **可部署到** — Cloudflare Pages / Workers、GitHub Pages、Vercel 等任何静态托管
+- **全球加速** — Cloudflare 边缘节点缓存，中国用户友好
+- **可部署到** — Cloudflare Pages（推荐）、GitHub Pages、Vercel
 
 <div align="right">
 
