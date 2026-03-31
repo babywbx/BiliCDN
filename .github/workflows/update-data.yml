@@ -16,7 +16,7 @@ jobs:
   update-data:
     name: Scan / Update
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v6
@@ -25,6 +25,9 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+
+      - name: Show runner IP
+        run: curl -s https://api.ipify.org && echo
 
       - name: Build
         run: go build -o bilicdn .
