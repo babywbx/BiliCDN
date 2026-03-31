@@ -52,6 +52,8 @@ a:hover{text-decoration:underline}
 .dropdown-item{display:block;width:100%;padding:8px 12px;border-radius:6px;font-size:.85rem;color:var(--text2);transition:all .1s}
 .dropdown-item:hover{background:var(--surface3);color:var(--text);text-decoration:none}
 .dropdown-sep{height:1px;background:var(--border);margin:4px 8px}
+.dropdown-item .ref-url{font-family:var(--mono);font-size:.72rem;color:var(--text3);display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis}
+.dropdown-item.copied{color:var(--success)}
 
 /* Error overlay */
 .error-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:999}
@@ -150,6 +152,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
           <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="dropdown-menu" id="dl-menu"></div>
+      </div>
+      <div class="dropdown" id="ref-dropdown">
+        <button class="dropdown-trigger" id="ref-trigger">
+          API
+          <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-menu" id="ref-menu"></div>
       </div>
       <a class="hdr-link" href="https://github.com/babywbx/BiliCDN" target="_blank">GitHub</a>
     </div>
@@ -465,6 +474,49 @@ async function loadData() {
 let searchTimer;
 document.getElementById('search').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { currentPage = 1; applyFilters(); }, 200); });
 
+function initRefLinks() {
+  const menu = document.getElementById('ref-menu');
+  const trigger = document.getElementById('ref-trigger');
+  const dropdown = document.getElementById('ref-dropdown');
+  const origin = location.origin;
+
+  const files = [
+    { name: 'nodes.json', label: 'JSON' },
+    { name: 'nodes.yml', label: 'YAML' },
+    { name: 'nodes.txt', label: 'Text' },
+    { name: 'nodes.md', label: 'Markdown' },
+  ];
+
+  files.forEach(f => {
+    const item = document.createElement('button');
+    item.className = 'dropdown-item';
+    item.style.cssText = 'background:none;border:none;cursor:pointer;font-family:inherit;width:100%';
+
+    const label = document.createElement('span');
+    label.textContent = f.label;
+    item.appendChild(label);
+
+    const url = document.createElement('span');
+    url.className = 'ref-url';
+    url.textContent = origin + '/' + f.name;
+    item.appendChild(url);
+
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navigator.clipboard.writeText(origin + '/' + f.name).then(() => {
+        label.textContent = f.label + ' — 已复制';
+        item.classList.add('copied');
+        setTimeout(() => { label.textContent = f.label; item.classList.remove('copied'); }, 1200);
+      });
+    });
+    menu.appendChild(item);
+  });
+
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
+}
+
+initRefLinks();
 initDownloads();
 loadData();
 </script>

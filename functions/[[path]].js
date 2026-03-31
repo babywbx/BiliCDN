@@ -1,6 +1,11 @@
 const GITHUB_RAW = 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
 const GITHUB_API = 'https://api.github.com/repos/babywbx/BiliCDN/branches/data';
 
+// Cache: browser 10min, CF edge 6h, serve stale up to 1 day while revalidating
+const DATA_CACHE = 'public, max-age=600, s-maxage=21600, stale-while-revalidate=86400';
+// API: shorter cache, update time changes less frequently
+const API_CACHE = 'public, max-age=600, s-maxage=3600, stale-while-revalidate=86400';
+
 const ALLOWED_FILES = {
   'domains.txt': 'text/plain; charset=utf-8',
   'nodes.json': 'application/json; charset=utf-8',
@@ -17,7 +22,7 @@ export async function onRequest(context) {
   if (file === 'api/updated') {
     const cache = caches.default;
     const cacheKey = new Request(url.toString());
-    let cached = await cache.match(cacheKey);
+    const cached = await cache.match(cacheKey);
     if (cached) return cached;
 
     const resp = await fetch(GITHUB_API, {
@@ -30,7 +35,7 @@ export async function onRequest(context) {
     const result = new Response(JSON.stringify({ date }), {
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'Cache-Control': API_CACHE,
         'Access-Control-Allow-Origin': '*',
       },
     });
@@ -38,21 +43,17 @@ export async function onRequest(context) {
     return result;
   }
 
+  // Data files: proxy from GitHub with CF edge caching
   const contentType = ALLOWED_FILES[file];
   if (!contentType) {
     return context.next();
   }
 
-  const cacheKey = new Request(url.toString(), context.request);
   const cache = caches.default;
+  const cacheKey = new Request(url.toString());
+  const cached = await cache.match(cacheKey);
+  if (cached) return cached;
 
-  // Try cache first
-  let response = await cache.match(cacheKey);
-  if (response) {
-    return response;
-  }
-
-  // Fetch from GitHub
   const ghResp = await fetch(GITHUB_RAW + '/' + file, {
     headers: { 'User-Agent': 'BiliCDN-Proxy' },
   });
@@ -62,18 +63,14 @@ export async function onRequest(context) {
   }
 
   const body = await ghResp.arrayBuffer();
-
-  response = new Response(body, {
+  const response = new Response(body, {
     headers: {
       'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Cache-Control': DATA_CACHE,
       'Access-Control-Allow-Origin': '*',
-      'X-Source': 'github-proxy',
     },
   });
 
-  // Store in CF cache
   context.waitUntil(cache.put(cacheKey, response.clone()));
-
   return response;
 }
