@@ -62,11 +62,21 @@ jobs:
       - name: Dump partial results on failure
         if: always()
         run: |
-          if [ -f data/domains.txt ]; then
-            COUNT=$(wc -l < data/domains.txt | tr -d ' ')
+          # Check final output first, then temp files
+          OUT="data/domains.txt"
+          if [ ! -f "$OUT" ]; then
+            # Scan was interrupted — find the temp file
+            TEMP=$(ls data/.domains.txt.*.tmp 2>/dev/null | head -1)
+            if [ -n "$TEMP" ]; then
+              echo "::notice::Scan interrupted, recovering from temp file"
+              sort -u "$TEMP" > "$OUT"
+            fi
+          fi
+          if [ -f "$OUT" ]; then
+            COUNT=$(wc -l < "$OUT" | tr -d ' ')
             echo "::notice::Found $COUNT domains (may be partial if scan was interrupted)"
             echo "--- domains.txt ($COUNT lines) ---"
-            cat data/domains.txt
+            cat "$OUT"
           else
             echo "::warning::No output file found"
           fi
