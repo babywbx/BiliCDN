@@ -299,16 +299,22 @@ func Run() error {
 	close(results)
 	writerWg.Wait()
 	bar.Finish()
-	<-ckptDone
 
+	// Check for errors before stopping checkpoint (cancelRun taints ctx)
 	if writerErr != nil {
 		return fmt.Errorf("write %s: %w", resultsFile, writerErr)
 	}
-	if cause := context.Cause(ctx); cause != nil {
-		if errors.Is(cause, context.Canceled) {
+	scanErr := context.Cause(ctx)
+
+	// Stop checkpoint saver
+	cancelRun(nil)
+	<-ckptDone
+
+	if scanErr != nil {
+		if errors.Is(scanErr, context.Canceled) {
 			return context.Canceled
 		}
-		return cause
+		return scanErr
 	}
 	if err := output.Commit(); err != nil {
 		return fmt.Errorf("commit %s: %w", resultsFile, err)
