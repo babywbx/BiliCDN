@@ -1,10 +1,9 @@
 const GITHUB_RAW = 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
 const GITHUB_API = 'https://api.github.com/repos/babywbx/BiliCDN/branches/data';
 
-// Cache: browser 10min, CF edge 6h, serve stale up to 1 day while revalidating
-const DATA_CACHE = 'public, max-age=600, s-maxage=21600, stale-while-revalidate=86400';
-// API: shorter cache, update time changes less frequently
-const API_CACHE = 'public, max-age=600, s-maxage=3600, stale-while-revalidate=86400';
+// Cache: browser 5min, CF edge 10min, serve stale up to 1h while revalidating
+const DATA_CACHE = 'public, max-age=300, s-maxage=600, stale-while-revalidate=3600';
+const API_CACHE = 'public, max-age=300, s-maxage=600, stale-while-revalidate=3600';
 
 const ALLOWED_FILES = {
   'domains.txt': 'text/plain; charset=utf-8',
