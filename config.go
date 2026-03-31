@@ -23,9 +23,8 @@ var (
 const (
 	requestTimeout = 3 * time.Second
 	dnsTimeout     = 400 * time.Millisecond
-	maxDNSRetries  = 3
+	maxDNSRetries  = 2
 	maxHTTPRetries = 3
-	dnsRetryDelay  = 50 * time.Millisecond
 	maxTwoDigit    = 99
 
 	// HTTP connection pool (sized for high concurrency)

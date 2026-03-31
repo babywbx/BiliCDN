@@ -331,18 +331,19 @@ func (p *DNSResolverPool) lookupGroup(ctx context.Context, group *dnsGroup, doma
 		cancel()
 
 		if err != nil {
-			if dnsErr, ok := err.(*net.DNSError); ok && dnsErr.IsNotFound {
+			dnsErr, isDNSErr := err.(*net.DNSError)
+
+			// NXDOMAIN: domain does not exist — cache and skip, no retry
+			if isDNSErr && dnsErr.IsNotFound {
 				p.nxcache.Store(domain, time.Now().Add(nxdomainCacheTTL))
 				return "", errNXDOMAIN
 			}
-			logger.Printf("FAIL dns    %s (@%s)  %v", domain, node.label, err)
-			// Small delay before retry — yield to let new queries go first
-			timer := time.NewTimer(dnsRetryDelay)
-			select {
-			case <-timer.C:
-			case <-ctx.Done():
-				timer.Stop()
-				return "", ctx.Err()
+
+			// Timeout / refused / network error: retry on a different server immediately
+			if isDNSErr && dnsErr.IsTimeout {
+				logger.Printf("FAIL dns(timeout) %s (@%s)", domain, node.label)
+			} else {
+				logger.Printf("FAIL dns(error)   %s (@%s)  %v", domain, node.label, err)
 			}
 			continue
 		}
