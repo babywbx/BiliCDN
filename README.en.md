@@ -77,15 +77,30 @@ This project aims to provide an up-to-date, reliable catalog of Bilibili CDN inf
 
 ## 🚀 How to Use the Data
 
-Browse all CDN nodes interactively with search, filtering, and sorting:
+### Web Browser
 
-**[🌐 Live Node Browser](https://bilicdn.pages.dev)**
+Browse all CDN nodes at [**bilicdn.pages.dev**](https://bilicdn.pages.dev):
 
-Or download raw data files from the `data` branch for programmatic use:
+- Interactive table with search, sort, and region filtering
+- Click any domain to copy it
+- Download files via the "Download" button in the header
+- Copy API endpoint URLs via the "API" button
 
-**[➡️ Go to the `data` branch to view the data][data-branch-link]**
+### API Endpoints
 
-Available formats:
+All data files are served via Cloudflare CDN for fast global access:
+
+```
+https://bilicdn.pages.dev/nodes.json
+https://bilicdn.pages.dev/nodes.yml
+https://bilicdn.pages.dev/nodes.txt
+https://bilicdn.pages.dev/nodes.md
+https://bilicdn.pages.dev/domains.txt
+```
+
+### Direct Download
+
+Or download raw data files from the [`data` branch][data-branch-link]:
 
 | File | Description |
 | --- | --- |
