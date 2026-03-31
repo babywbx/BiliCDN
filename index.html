@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiliCDN - Bilibili CDN Nodes</title>
+<meta name="description" content="Interactive catalog of Bilibili CDN nodes. Discover and browse CDN infrastructure across 315+ locations in China, updated weekly.">
+<meta name="author" content="Babywbx">
+<meta name="keywords" content="Bilibili, CDN, nodes, bilivideo, DNS, network">
+<meta property="og:title" content="BiliCDN - Bilibili CDN Nodes">
+<meta property="og:description" content="Interactive catalog of Bilibili CDN nodes across 315+ locations, updated weekly by automated scanning.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/babywbx/BiliCDN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BiliCDN - Bilibili CDN Nodes">
+<meta name="twitter:description" content="Interactive catalog of Bilibili CDN nodes across 315+ locations, updated weekly.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090b;--surface:#0f0f13;--surface2:#18181b;--surface3:#1e1e24;
+  --border:#27272a;--border2:#3f3f46;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#8b8b9a;
+  --accent:#818cf8;--accent2:#34d399;--accent-bg:rgba(129,140,248,.1);
+  --danger:#f87171;--success:#34d399;
+  --radius:8px;--radius-lg:12px;
+  --font:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans SC',sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header */
+.header{position:sticky;top:0;z-index:100;background:rgba(9,9,11,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.header-left{display:flex;align-items:center;gap:16px}
+.logo{font-size:1.2rem;font-weight:700;color:var(--text)}
+.header-updated{font-size:.78rem;color:var(--text3)}
+.header-right{display:flex;align-items:center;gap:6px}
+.hdr-link{padding:6px 14px;border-radius:var(--radius);font-size:.85rem;color:var(--text2);transition:all .15s}
+.hdr-link:hover{background:var(--surface2);color:var(--text);text-decoration:none}
+
+/* Dropdown */
+.dropdown{position:relative}
+.dropdown-trigger{padding:6px 14px;border-radius:var(--radius);font-size:.85rem;color:var(--text2);cursor:pointer;transition:all .15s;background:none;border:none;font-family:inherit;display:flex;align-items:center;gap:6px}
+.dropdown-trigger:hover{background:var(--surface2);color:var(--text)}
+.dropdown-trigger svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2}
+.dropdown-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);min-width:160px;padding:4px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.dropdown.open .dropdown-menu{display:block}
+.dropdown-item{display:block;width:100%;padding:8px 12px;border-radius:6px;font-size:.85rem;color:var(--text2);transition:all .1s}
+.dropdown-item:hover{background:var(--surface3);color:var(--text);text-decoration:none}
+.dropdown-sep{height:1px;background:var(--border);margin:4px 8px}
+
+/* Error overlay */
+.error-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:999}
+.error-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:48px;max-width:440px;width:90%;text-align:center}
+.error-card h2{font-size:1.3rem;margin-bottom:12px;color:var(--text)}
+.error-card p{color:var(--text2);font-size:.95rem;line-height:1.7;margin-bottom:24px}
+.error-card .err-detail{font-family:var(--mono);font-size:.82rem;color:var(--danger);background:var(--surface2);padding:8px 14px;border-radius:var(--radius);margin-bottom:24px;display:inline-block}
+.error-card .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:var(--radius);font-size:.9rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:all .15s}
+.error-card .btn:hover{opacity:.9;text-decoration:none}
+
+/* Main */
+.main{max-width:1400px;margin:0 auto;padding:24px}
+.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.stat-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;color:var(--text2);position:relative}
+.stat-chip strong{color:var(--text);font-variant-numeric:tabular-nums}
+.stat-chip .tip{position:absolute;top:calc(100% + 8px);left:0;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);font-size:.78rem;padding:6px 12px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.stat-chip .tip::after{content:'';position:absolute;bottom:100%;left:16px;border:5px solid transparent;border-bottom-color:var(--border2)}
+.stat-chip:hover .tip{opacity:1}
+
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.search-box{flex:1;min-width:240px;position:relative}
+.search-box input{width:100%;padding:10px 14px 10px 38px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:.9rem;outline:none;transition:border-color .15s}
+.search-box input:focus{border-color:var(--accent)}
+.search-box input::placeholder{color:var(--text3)}
+.search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3)}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-size:.82rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--border2);color:var(--text)}
+.filter-btn.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+
+/* Table */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{position:sticky;top:0;background:var(--surface2);padding:10px 16px;text-align:left;font-size:.78rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--text2)}
+th .sort-icon{margin-left:4px;opacity:.3}
+th.sorted .sort-icon{opacity:1;color:var(--accent)}
+td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:.88rem}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+.td-domain{font-family:var(--mono);font-size:.82rem;color:var(--accent2);position:relative}
+.td-domain span{cursor:pointer;transition:color .1s}
+.td-domain span:hover{color:#5eead4}
+#copy-toast{position:fixed;pointer-events:none;background:var(--surface3);border:1px solid var(--border2);color:var(--text);font-size:.78rem;padding:4px 10px;border-radius:6px;opacity:0;transition:opacity .15s;z-index:999;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.td-idx{font-size:.75rem;color:var(--text3);font-variant-numeric:tabular-nums;width:50px}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:500}
+.tag-cdn{background:rgba(129,140,248,.12);color:var(--accent)}
+.tag-upos{background:rgba(52,211,153,.12);color:var(--accent2)}
+.tag-gotcha{background:rgba(251,191,36,.12);color:#fbbf24}
+.tag-other{background:rgba(161,161,170,.12);color:var(--text2)}
+
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);font-size:.85rem;color:var(--text2)}
+.pag-left{display:flex;align-items:center;gap:12px}
+.pp-select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);padding:4px 8px;font-size:.82rem;cursor:pointer;outline:none}
+.page-btns{display:flex;gap:4px}
+.page-btn{padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-size:.82rem;cursor:pointer;transition:all .15s}
+.page-btn:hover{border-color:var(--border2);color:var(--text)}
+.page-btn:disabled{opacity:.3;cursor:default}
+.page-btn.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+
+#content{min-height:60vh}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:var(--text2);gap:16px}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:60px 24px;color:var(--text3)}
+
+.footer{max-width:1400px;margin:0 auto;padding:24px;display:flex;align-items:center;justify-content:space-between;font-size:.82rem;color:var(--text3);border-top:1px solid var(--border)}
+.footer a{color:var(--text3)}
+.footer a:hover{color:var(--text2)}
+
+@media(max-width:768px){
+  .main{padding:16px}
+  .header-inner{height:48px}
+  .header-updated{display:none}
+  .controls{flex-direction:column}
+  .search-box{min-width:unset}
+  .footer{flex-direction:column;gap:8px;text-align:center}
+  td,th{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="logo">BiliCDN</div>
+      <span class="header-updated" id="updated"></span>
+    </div>
+    <div class="header-right">
+      <div class="dropdown" id="dl-dropdown">
+        <button class="dropdown-trigger" id="dl-trigger">
+          下载
+          <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-menu" id="dl-menu"></div>
+      </div>
+      <a class="hdr-link" href="https://github.com/babywbx/BiliCDN" target="_blank">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="stats-bar" id="stats"></div>
+  <div class="controls">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="search" placeholder="搜索域名、区域...">
+    </div>
+    <div class="filter-group" id="filters"></div>
+  </div>
+  <div id="content">
+    <div class="loading"><div class="spinner"></div><span>加载数据中...</span></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <span>&copy; 2026 <a href="https://github.com/babywbx">Babywbx</a></span>
+  <a href="https://github.com/babywbx/BiliCDN/blob/main/LICENSE" target="_blank">MIT License</a>
+</footer>
+
+<script>
+const BASE = 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
+const FORMATTED_FILES = [
+  { name: 'nodes.json', label: 'JSON' },
+  { name: 'nodes.yml', label: 'YAML' },
+  { name: 'nodes.txt', label: 'Text' },
+  { name: 'nodes.md', label: 'Markdown' },
+];
+const RAW_FILE = { name: 'domains.txt', label: 'Raw' };
+
+let perPage = 25;
+let allRows = [];
+let filteredRows = [];
+let currentPage = 1;
+let sortCol = 'region';
+let sortAsc = true;
+let activeFilter = 'all';
+
+const TYPE_LABELS = { cdn: 'CDN', upos: 'UPOS', gotcha: 'Gotcha', other: '其他' };
+const TAG_CLASSES = { cdn: 'tag-cdn', upos: 'tag-upos', gotcha: 'tag-gotcha', other: 'tag-other' };
+const AREA_RULES = [
+  [/^(北京|天津|上海|重庆)/, '直辖市'], [/^(河北|山西|内蒙古)/, '华北'],
+  [/^(辽宁|吉林|黑龙江)/, '东北'], [/^(江苏|浙江|安徽|福建|江西|山东)/, '华东'],
+  [/^(河南|湖北|湖南)/, '华中'], [/^(广东|广西|海南)/, '华南'],
+  [/^(四川|贵州|云南|西藏)/, '西南'], [/^(陕西|甘肃|青海|宁夏|新疆)/, '西北'],
+  [/^香港/, '港澳'], [/^UPOS/, 'UPOS'], [/^Gotcha/, 'Gotcha'],
+];
+
+function domainType(r) { return r.startsWith('UPOS') ? 'upos' : r.startsWith('Gotcha') ? 'gotcha' : r === '\u5176\u4ed6' ? 'other' : 'cdn'; }
+function areaOf(r) { for (const [re, a] of AREA_RULES) { if (re.test(r)) return a; } return '其他'; }
+
+let copyToast = null;
+let copyTimer = null;
+function copyDomain(span) {
+  navigator.clipboard.writeText(span.textContent).then(() => {
+    if (!copyToast) {
+      copyToast = document.createElement('div');
+      copyToast.id = 'copy-toast';
+      copyToast.textContent = '已复制';
+      document.body.appendChild(copyToast);
+    }
+    const r = span.getBoundingClientRect();
+    copyToast.style.left = (r.right + 8) + 'px';
+    copyToast.style.top = (r.top + r.height / 2 - copyToast.offsetHeight / 2) + 'px';
+    copyToast.style.opacity = '1';
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => { copyToast.style.opacity = '0'; }, 800);
+  });
+}
+
+function showError(msg) {
+  const overlay = document.createElement('div');
+  overlay.className = 'error-overlay';
+  const card = document.createElement('div');
+  card.className = 'error-card';
+
+  const h = document.createElement('h2');
+  h.textContent = '暂无数据';
+  card.appendChild(h);
+
+  const detail = document.createElement('div');
+  detail.className = 'err-detail';
+  detail.textContent = msg;
+  card.appendChild(detail);
+
+  const p = document.createElement('p');
+  p.textContent = 'data 分支可能为空，请先运行 CDN 扫描器生成节点数据。';
+  card.appendChild(p);
+
+  const btn = document.createElement('a');
+  btn.className = 'btn';
+  btn.href = 'https://github.com/babywbx/BiliCDN';
+  btn.target = '_blank';
+  btn.textContent = '前往 GitHub';
+  card.appendChild(btn);
+
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+
+  // Hide main content behind overlay
+  document.getElementById('content').replaceChildren();
+}
+
+async function initDownloads() {
+  const menu = document.getElementById('dl-menu');
+  const trigger = document.getElementById('dl-trigger');
+  const dropdown = document.getElementById('dl-dropdown');
+  let hasFormatted = false;
+  let hasRaw = false;
+
+  // Probe formatted files
+  for (const file of FORMATTED_FILES) {
+    try {
+      const resp = await fetch(BASE + '/' + file.name, { method: 'HEAD' });
+      if (!resp.ok) continue;
+    } catch { continue; }
+    const a = document.createElement('a');
+    a.className = 'dropdown-item';
+    a.href = BASE + '/' + file.name;
+    a.target = '_blank';
+    a.textContent = file.label;
+    menu.appendChild(a);
+    hasFormatted = true;
+  }
+
+  // Probe raw file
+  try {
+    const resp = await fetch(BASE + '/' + RAW_FILE.name, { method: 'HEAD' });
+    if (resp.ok) hasRaw = true;
+  } catch { /* ignore */ }
+
+  if (hasRaw) {
+    if (hasFormatted) {
+      const sep = document.createElement('div');
+      sep.className = 'dropdown-sep';
+      menu.appendChild(sep);
+    }
+    const a = document.createElement('a');
+    a.className = 'dropdown-item';
+    a.href = BASE + '/' + RAW_FILE.name;
+    a.target = '_blank';
+    a.textContent = RAW_FILE.label;
+    menu.appendChild(a);
+  }
+
+  if (!hasFormatted && !hasRaw) {
+    dropdown.style.display = 'none';
+    return;
+  }
+
+  trigger.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
+}
+
+function renderStats() {
+  const c = document.getElementById('stats'); c.replaceChildren();
+  const regions = new Set(allRows.map(r => r.region));
+  const types = {}; allRows.forEach(r => { types[r.type] = (types[r.type] || 0) + 1; });
+  const STAT_TIPS = {
+    '个域名': '扫描发现的所有存活 CDN 节点域名总数',
+    '个区域': '按省份、城市、云厂商等分类的区域数量',
+    'CDN': '哔哩哔哩自建的标准 CDN 节点（cn-地区-运营商-机房-服务器）',
+    'UPOS': '上传处理与对象存储节点，托管在阿里云、腾讯云、Akamai 等云厂商',
+    'Gotcha': '第三方/外部合作 CDN 节点，覆盖国内、海外和测试线路',
+    '其他': '其他基础设施域名（API、BVC 等服务）',
+  };
+  [[allRows.length, '个域名'], [regions.size, '个区域'], ...Object.entries(types).map(([t, n]) => [n, TYPE_LABELS[t]])].forEach(([v, l]) => {
+    const el = document.createElement('div'); el.className = 'stat-chip';
+    const s = document.createElement('strong'); s.textContent = v; el.appendChild(s); el.append(' ' + l);
+    if (STAT_TIPS[l]) { const tip = document.createElement('span'); tip.className = 'tip'; tip.textContent = STAT_TIPS[l]; el.appendChild(tip); }
+    c.appendChild(el);
+  });
+}
+
+function renderFilters() {
+  const c = document.getElementById('filters'); c.replaceChildren();
+  ['all', ...new Set(allRows.map(r => r.area))].forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (a === activeFilter ? ' active' : '');
+    btn.dataset.area = a; btn.textContent = a === 'all' ? '全部' : a;
+    btn.addEventListener('click', () => {
+      activeFilter = a; currentPage = 1;
+      c.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.area === activeFilter));
+      applyFilters();
+    });
+    c.appendChild(btn);
+  });
+}
+
+function applyFilters() {
+  const q = document.getElementById('search').value.toLowerCase();
+  filteredRows = allRows.filter(r => {
+    if (activeFilter !== 'all' && r.area !== activeFilter) return false;
+    return !q || r.domain.toLowerCase().includes(q) || r.region.toLowerCase().includes(q);
+  });
+  sortRows(); renderTable();
+}
+
+function sortRows() {
+  filteredRows.sort((a, b) => { const c = a[sortCol] < b[sortCol] ? -1 : a[sortCol] > b[sortCol] ? 1 : 0; return sortAsc ? c : -c; });
+}
+
+function renderTable() {
+  const content = document.getElementById('content'); content.replaceChildren();
+  const total = filteredRows.length;
+  const ep = perPage === 0 ? total : perPage;
+  const totalPages = Math.max(1, Math.ceil(total / ep));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * ep;
+  const page = filteredRows.slice(start, start + ep);
+
+  if (total === 0) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = '未找到匹配的域名'; content.appendChild(e); return; }
+
+  const wrap = document.createElement('div'); wrap.className = 'table-wrap';
+  const scroll = document.createElement('div'); scroll.className = 'table-scroll';
+  const table = document.createElement('table');
+  const thead = document.createElement('thead'); const hr = document.createElement('tr');
+
+  const thIdx = document.createElement('th'); thIdx.textContent = '#'; thIdx.style.cursor = 'default'; hr.appendChild(thIdx);
+  [{ key: 'domain', label: '域名' }, { key: 'region', label: '区域' }, { key: 'type', label: '类型' }].forEach(col => {
+    const th = document.createElement('th'); th.dataset.col = col.key;
+    if (sortCol === col.key) th.classList.add('sorted');
+    th.textContent = col.label + ' ';
+    const icon = document.createElement('span'); icon.className = 'sort-icon';
+    icon.textContent = sortCol === col.key ? (sortAsc ? '\u25B2' : '\u25BC') : '\u25B4'; th.appendChild(icon);
+    th.addEventListener('click', () => { if (sortCol === col.key) sortAsc = !sortAsc; else { sortCol = col.key; sortAsc = true; } sortRows(); renderTable(); });
+    hr.appendChild(th);
+  });
+  thead.appendChild(hr); table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  page.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    const ti = document.createElement('td'); ti.className = 'td-idx'; ti.textContent = start + i + 1;
+    const td = document.createElement('td'); td.className = 'td-domain';
+    const domSpan = document.createElement('span'); domSpan.textContent = r.domain; domSpan.title = '点击复制';
+    domSpan.addEventListener('click', () => copyDomain(domSpan));
+    td.appendChild(domSpan);
+    const tReg = document.createElement('td'); tReg.textContent = r.region;
+    const tType = document.createElement('td'); const tag = document.createElement('span'); tag.className = 'tag ' + TAG_CLASSES[r.type]; tag.textContent = TYPE_LABELS[r.type]; tType.appendChild(tag);
+    tr.append(ti, td, tReg, tType); tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); scroll.appendChild(table); wrap.appendChild(scroll);
+
+  // Pagination
+  const pag = document.createElement('div'); pag.className = 'pagination';
+  const pl = document.createElement('div'); pl.className = 'pag-left';
+  const info = document.createElement('span'); info.textContent = '共 ' + total + ' 条'; pl.appendChild(info);
+  const sel = document.createElement('select'); sel.className = 'pp-select'; sel.setAttribute('aria-label', '每页显示条数');
+  [25, 50, 100, ['0', '全部']].forEach(v => {
+    const isAll = Array.isArray(v);
+    const val = isAll ? v[0] : String(v);
+    const label = isAll ? v[1] : v;
+    const o = document.createElement('option'); o.value = val; o.textContent = label;
+    if ((isAll && perPage === 0) || val === String(perPage)) o.selected = true; sel.appendChild(o);
+  });
+  sel.addEventListener('change', () => { perPage = parseInt(sel.value, 10) || 0; currentPage = 1; renderTable(); });
+  pl.appendChild(sel); pag.appendChild(pl);
+
+  const btns = document.createElement('div'); btns.className = 'page-btns';
+  function pb(label, target, dis) { const b = document.createElement('button'); b.className = 'page-btn'; b.textContent = label; b.disabled = dis; if (!dis) b.addEventListener('click', () => goPage(target)); btns.appendChild(b); }
+  pb('\u00AB', 1, currentPage === 1); pb('\u2039', currentPage - 1, currentPage === 1);
+  let ps = Math.max(1, currentPage - 2), pe = Math.min(totalPages, ps + 4); ps = Math.max(1, pe - 4);
+  for (let p = ps; p <= pe; p++) { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.addEventListener('click', () => goPage(p)); btns.appendChild(b); }
+  pb('\u203A', currentPage + 1, currentPage === totalPages); pb('\u00BB', totalPages, currentPage === totalPages);
+  pag.appendChild(btns); wrap.appendChild(pag); content.appendChild(wrap);
+}
+
+function goPage(p) {
+  const ep = perPage === 0 ? filteredRows.length : perPage;
+  currentPage = Math.max(1, Math.min(Math.max(1, Math.ceil(filteredRows.length / ep)), p));
+  renderTable();
+  window.scrollTo({ top: document.querySelector('.controls').offsetTop - 70, behavior: 'smooth' });
+}
+
+async function updateTimestamp() {
+  try {
+    const resp = await fetch('https://api.github.com/repos/babywbx/BiliCDN/branches/data');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const date = new Date(data.commit.commit.committer.date);
+    document.getElementById('updated').textContent = '更新于 ' + date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC+8';
+  } catch { /* ignore */ }
+}
+
+async function loadData() {
+  try {
+    const resp = await fetch(BASE + '/nodes.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    allRows = [];
+    for (const [region, domains] of Object.entries(data)) {
+      const type = domainType(region), area = areaOf(region);
+      for (const domain of domains) allRows.push({ domain, region, type, area });
+    }
+    renderStats(); renderFilters(); applyFilters(); updateTimestamp();
+  } catch (e) { showError(e.message); }
+}
+
+let searchTimer;
+document.getElementById('search').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { currentPage = 1; applyFilters(); }, 200); });
+
+initDownloads();
+loadData();
+</script>
+</body>
+</html>
