@@ -22,7 +22,7 @@ var (
 const (
 	requestTimeout = 3 * time.Second
 	dnsTimeout     = 400 * time.Millisecond
-	maxDNSRetries  = 1
+	maxDNSRetries  = 2
 	maxHTTPRetries = 2
 	maxTwoDigit    = 99
 
