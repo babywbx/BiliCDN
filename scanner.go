@@ -318,10 +318,43 @@ func Run() error {
 	os.Remove(ckptPath)
 
 	// Summary
+	elapsed := time.Since(bar.startTime)
+	tested := bar.tested.Load()
 	fmt.Fprint(os.Stderr, "\n")
 	fmt.Fprintf(os.Stderr, "  Found %d valid domains\n", resultCount)
 	fmt.Fprintf(os.Stderr, "  Saved to %s\n", resultsFile)
+	printStats(elapsed, tested)
 	return nil
+}
+
+func printStats(elapsed time.Duration, tested uint64) {
+	sep := strings.Repeat("─", 50)
+	fmt.Fprintf(os.Stderr, "\n[Stats]\n%s\n", sep)
+
+	// Time
+	rate := float64(tested) / elapsed.Seconds()
+	fmt.Fprintf(os.Stderr, "  Duration:    %s\n", formatDuration(elapsed))
+	fmt.Fprintf(os.Stderr, "  Avg rate:    %.0f domains/s\n", rate)
+
+	// Memory
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	fmt.Fprintf(os.Stderr, "  Memory:      %d MB alloc, %d MB sys\n", m.Alloc/1024/1024, m.Sys/1024/1024)
+	fmt.Fprintf(os.Stderr, "  GC cycles:   %d\n", m.NumGC)
+
+	// Goroutines
+	fmt.Fprintf(os.Stderr, "  Goroutines:  %d (peak)\n", runtime.NumGoroutine())
+
+	// CPU
+	fmt.Fprintf(os.Stderr, "  CPU cores:   %d\n", runtime.NumCPU())
+
+	// Network estimate (DNS: ~60 bytes/query, HTTP HEAD: ~200 bytes/request)
+	dnsBytes := tested * 60 * 2     // query + response
+	httpBytes := tested * 200 / 100 // only ~1% get HTTP checked (rough estimate)
+	totalBytes := dnsBytes + httpBytes
+	fmt.Fprintf(os.Stderr, "  Network:     ~%d MB (estimated)\n", totalBytes/1024/1024)
+	mbps := float64(totalBytes) * 8 / elapsed.Seconds() / 1024 / 1024
+	fmt.Fprintf(os.Stderr, "  Bandwidth:   ~%.1f Mbps (estimated)\n", mbps)
 }
 
 func loadCheckpoint(path string) int {
