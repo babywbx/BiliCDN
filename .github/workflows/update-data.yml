@@ -116,28 +116,30 @@ jobs:
           echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
           echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
 
-      - name: Create signed tag and Release
+      - name: Update Release
         if: steps.push.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TOTAL: ${{ steps.count.outputs.total }}
           REGIONS: ${{ steps.count.outputs.regions }}
         run: |
-          TAG="data-$(TZ=Asia/Shanghai date +%Y-%m-%d)"
+          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+          TAG="data"
           cd data_branch
 
-          # Delete existing tag/release for today if re-run
+          # Delete old release and tag, recreate with latest data
           gh release delete "$TAG" --yes 2>/dev/null || true
           git push origin ":refs/tags/$TAG" 2>/dev/null || true
 
           # Create signed tag
-          git tag -s "$TAG" -m "CDN data $TAG" HEAD
+          git tag -s "$TAG" -m "CDN data $TIMESTAMP" HEAD
           git push origin "$TAG"
 
-          # Create release with assets
+          # Create release (not marked as latest)
           gh release create "$TAG" \
-            --title "$TAG" \
-            --notes "Automated CDN node scan results.
+            --title "CDN Data" \
+            --latest=false \
+            --notes "Automated CDN node scan results. Updated $TIMESTAMP.
 
           - **$TOTAL** domains
           - **$REGIONS** regions
