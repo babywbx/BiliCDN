@@ -392,7 +392,7 @@ function renderTable() {
   const pag = document.createElement('div'); pag.className = 'pagination';
   const pl = document.createElement('div'); pl.className = 'pag-left';
   const info = document.createElement('span'); info.textContent = '共 ' + total + ' 条'; pl.appendChild(info);
-  const sel = document.createElement('select'); sel.className = 'pp-select'; sel.setAttribute('aria-label', '每页显示条数');
+  const sel = document.createElement('select'); sel.className = 'pp-select'; sel.id = 'per-page'; sel.name = 'per-page'; sel.setAttribute('aria-label', '每页显示条数');
   [25, 50, 100, ['0', '全部']].forEach(v => {
     const isAll = Array.isArray(v);
     const val = isAll ? v[0] : String(v);
