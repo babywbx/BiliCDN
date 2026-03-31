@@ -11,6 +11,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"runtime"
@@ -193,17 +194,17 @@ func Run() error {
 
 		switch flagDNSStrategy {
 		case 1: // Global: overseas primary + domestic fallback
-			dnsPool = NewDNSResolverPool(dnsOverseas, dnsDomestic)
+			dnsPool = NewDNSResolverPool(dnsGlobal, dnsCN)
 			removedP := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
 			removedF := dnsPool.fallback.probeAndFilter(probeDomain, probeThreshold)
 			fmt.Fprintf(os.Stderr, "  Global:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removedP)
 			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.fallback.nodes), removedF)
 		case 2: // CN: domestic only, flat group
-			dnsPool = NewFlatDNSPool(dnsDomestic)
+			dnsPool = NewFlatDNSPool(dnsCN)
 			removed := dnsPool.primary.probeAndFilter(probeDomain, probeThreshold)
 			fmt.Fprintf(os.Stderr, "  CN:  %d alive, %d removed\n", len(dnsPool.primary.nodes), removed)
 		case 3: // System: still create pool for probe display, but workers use system resolver
-			dnsPool = NewDNSResolverPool(dnsOverseas, dnsDomestic)
+			dnsPool = NewDNSResolverPool(dnsGlobal, dnsCN)
 			fmt.Fprint(os.Stderr, "  Using system resolver\n")
 		}
 
@@ -339,6 +340,88 @@ func saveCheckpoint(path string, count int) {
 	os.WriteFile(path, []byte(strconv.Itoa(count)+"\n"), 0o644)
 }
 
+// detectLocalDNS discovers system DNS servers via multiple methods.
+// Returns only servers not already in dnsGlobal/dnsCN.
+// Works on Linux, macOS, and Windows.
+func detectLocalDNS() []DNSServer {
+	known := make(map[string]bool)
+	for _, s := range dnsGlobal {
+		known[s.Addr] = true
+	}
+	for _, s := range dnsCN {
+		known[s.Addr] = true
+	}
+
+	seen := make(map[string]bool)
+	var rawIPs []string
+
+	collect := func(ip string) {
+		ip = strings.TrimSpace(ip)
+		if ip != "" && !seen[ip] {
+			seen[ip] = true
+			rawIPs = append(rawIPs, ip)
+		}
+	}
+
+	// Method 1: /etc/resolv.conf (Linux, macOS)
+	if data, err := os.ReadFile("/etc/resolv.conf"); err == nil {
+		for _, line := range strings.Split(string(data), "\n") {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "#") || !strings.HasPrefix(line, "nameserver") {
+				continue
+			}
+			if fields := strings.Fields(line); len(fields) >= 2 {
+				collect(fields[1])
+			}
+		}
+	}
+
+	// Method 2: scutil --dns (macOS — gets actual DNS even when /etc/resolv.conf is stubbed)
+	if runtime.GOOS == "darwin" {
+		if out, err := exec.Command("scutil", "--dns").Output(); err == nil {
+			for _, line := range strings.Split(string(out), "\n") {
+				line = strings.TrimSpace(line)
+				if strings.HasPrefix(line, "nameserver[") {
+					// Format: "nameserver[0] : 192.168.1.1"
+					if parts := strings.SplitN(line, ":", 2); len(parts) == 2 {
+						collect(strings.TrimSpace(parts[1]))
+					}
+				}
+			}
+		}
+	}
+
+	// Method 3: PowerShell (Windows)
+	if runtime.GOOS == "windows" {
+		if out, err := exec.Command("powershell", "-Command",
+			"Get-DnsClientServerAddress -AddressFamily IPv4 | Select-Object -ExpandProperty ServerAddresses",
+		).Output(); err == nil {
+			for _, line := range strings.Split(string(out), "\n") {
+				collect(line)
+			}
+		}
+	}
+
+	// Filter: keep only valid, non-loopback, non-known IPv4 addresses
+	var servers []DNSServer
+	for _, ip := range rawIPs {
+		parsed := net.ParseIP(ip)
+		if parsed == nil || parsed.To4() == nil {
+			continue
+		}
+		if parsed.IsLoopback() || parsed.IsLinkLocalUnicast() || parsed.IsUnspecified() {
+			continue
+		}
+		addr := ip + ":53"
+		if known[addr] {
+			continue
+		}
+		servers = append(servers, DNSServer{Addr: addr, QPS: 2000})
+		known[addr] = true
+	}
+	return servers
+}
+
 // --- Auto-tune ---
 
 // autoTuneDNS probes DNS servers, benchmarks different pool configurations,
@@ -347,9 +430,19 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 	sep := strings.Repeat("─", 50)
 	fmt.Fprintf(os.Stderr, "\n[Auto-tune]\n%s\n", sep)
 
-	// Step 1: Probe all servers
+	// Step 0: Detect local DNS from /etc/resolv.conf and add to pool
+	localDNS := detectLocalDNS()
+	if len(localDNS) > 0 {
+		names := make([]string, len(localDNS))
+		for i, s := range localDNS {
+			names[i] = s.Addr
+		}
+		fmt.Fprintf(os.Stderr, "  Local DNS: %s\n", strings.Join(names, ", "))
+	}
+
+	// Step 1: Probe all servers (including local)
 	fmt.Fprint(os.Stderr, "  Probing DNS servers...\n")
-	allPool := NewFlatDNSPool(dnsOverseas, dnsDomestic)
+	allPool := NewFlatDNSPool(dnsGlobal, dnsCN, localDNS)
 	removed := allPool.primary.probeAndFilter(domain, threshold)
 	aliveCount := len(allPool.primary.nodes)
 	fmt.Fprintf(os.Stderr, "  %d alive, %d removed (>%s)\n", aliveCount, removed, threshold)
@@ -360,19 +453,19 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 	}
 
 	// Step 2: Classify alive servers into overseas/domestic for benchmark
-	overseasAddrs := make(map[string]bool, len(dnsOverseas))
-	for _, s := range dnsOverseas {
-		overseasAddrs[s.Addr] = true
+	globalAddrs := make(map[string]bool, len(dnsGlobal))
+	for _, s := range dnsGlobal {
+		globalAddrs[s.Addr] = true
 	}
-	var aliveOverseas, aliveDomestic []dnsNode
+	var aliveGlobal, aliveCN []dnsNode
 	for _, node := range allPool.primary.nodes {
-		if overseasAddrs[node.addr] {
-			aliveOverseas = append(aliveOverseas, node)
+		if globalAddrs[node.addr] {
+			aliveGlobal = append(aliveGlobal, node)
 		} else {
-			aliveDomestic = append(aliveDomestic, node)
+			aliveCN = append(aliveCN, node)
 		}
 	}
-	fmt.Fprintf(os.Stderr, "  Alive: %d global, %d cn\n", len(aliveOverseas), len(aliveDomestic))
+	fmt.Fprintf(os.Stderr, "  Alive: %d global, %d cn\n", len(aliveGlobal), len(aliveCN))
 
 	// Step 3: Validate DNS with a known-resolvable domain
 	fmt.Fprint(os.Stderr, "  Validating DNS resolution...\n")
@@ -387,13 +480,8 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 		fmt.Fprintf(os.Stderr, "  ✓ %s → %s\n", validateDomain, ip)
 	}
 
-	// Step 4: Benchmark with realistic sustained load.
-	// Use 500 concurrent queries to differentiate configs at scale.
-	testDomains := make([]string, 500)
-	for i := range testDomains {
-		testDomains[i] = fmt.Sprintf("cn-test%d-zz-%s.%s", i, twoDigit[i%maxTwoDigit], domain)
-	}
-
+	// Step 4: Benchmark each config. Concurrent queries scale with server count
+	// (~30 per server) to avoid overwhelming small pools.
 	type benchResult struct {
 		name    string
 		rate    float64
@@ -403,8 +491,19 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 	var candidates []benchResult
 
 	benchAndAdd := func(name string, pool *DNSResolverPool) {
-		rate := benchmarkDNSPool(ctx, pool, testDomains)
 		servers := pool.TotalServers()
+		n := servers * 30
+		if n < 50 {
+			n = 50
+		}
+		if n > 500 {
+			n = 500
+		}
+		domains := make([]string, n)
+		for i := range domains {
+			domains[i] = fmt.Sprintf("cn-test%d-zz-%s.%s", i, twoDigit[i%maxTwoDigit], domain)
+		}
+		rate := benchmarkDNSPool(ctx, pool, domains)
 		fmt.Fprintf(os.Stderr, "  Benchmark %-16s %6.0f domains/s  (%d servers)\n", name+":", rate, servers)
 		if rate <= 0 {
 			pool.Close()
@@ -416,23 +515,23 @@ func autoTuneDNS(ctx context.Context, domain string, threshold time.Duration) (*
 	// Benchmark: flat pool (all servers, no cascade)
 	benchAndAdd("all", allPool)
 
-	if len(aliveDomestic) > 0 {
-		domesticPool := NewFlatDNSPool(dnsDomestic)
-		domesticPool.primary.probeAndFilter(domain, threshold)
-		if len(domesticPool.primary.nodes) > 0 {
-			benchAndAdd("cn", domesticPool)
+	if len(aliveCN) > 0 {
+		cnPool := NewFlatDNSPool(dnsCN)
+		cnPool.primary.probeAndFilter(domain, threshold)
+		if len(cnPool.primary.nodes) > 0 {
+			benchAndAdd("cn", cnPool)
 		} else {
-			domesticPool.Close()
+			cnPool.Close()
 		}
 	}
 
-	if len(aliveOverseas) > 0 {
-		overseasPool := NewFlatDNSPool(dnsOverseas)
-		overseasPool.primary.probeAndFilter(domain, threshold)
-		if len(overseasPool.primary.nodes) > 0 {
-			benchAndAdd("global", overseasPool)
+	if len(aliveGlobal) > 0 {
+		globalPool := NewFlatDNSPool(dnsGlobal)
+		globalPool.primary.probeAndFilter(domain, threshold)
+		if len(globalPool.primary.nodes) > 0 {
+			benchAndAdd("global", globalPool)
 		} else {
-			overseasPool.Close()
+			globalPool.Close()
 		}
 	}
 
@@ -781,7 +880,13 @@ func httpCheck(ctx context.Context, client *http.Client, ip, host string) (int, 
 			if ctx.Err() != nil {
 				return 0, err
 			}
-			continue // retry immediately, no sleep
+			// Small delay before retry — yield to let other workers proceed
+			select {
+			case <-time.After(50 * time.Millisecond):
+			case <-ctx.Done():
+				return 0, ctx.Err()
+			}
+			continue
 		}
 		resp.Body.Close()
 		return resp.StatusCode, nil

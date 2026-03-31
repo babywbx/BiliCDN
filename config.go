@@ -22,8 +22,9 @@ var (
 const (
 	requestTimeout = 3 * time.Second
 	dnsTimeout     = 400 * time.Millisecond
-	maxDNSRetries  = 2
-	maxHTTPRetries = 2
+	maxDNSRetries  = 3
+	maxHTTPRetries = 3
+	dnsRetryDelay  = 50 * time.Millisecond
 	maxTwoDigit    = 99
 
 	// HTTP connection pool (sized for high concurrency)
@@ -47,28 +48,43 @@ type DNSServer struct {
 }
 
 // DNS server tiers
-var dnsOverseas = []DNSServer{
+var dnsGlobal = []DNSServer{
+	// Google Public DNS
 	{"8.8.8.8:53", 800},
 	{"8.8.4.4:53", 800},
+	// Cloudflare
 	{"1.1.1.1:53", 500},
 	{"1.0.0.1:53", 500},
+	// Level3 / CenturyLink
 	{"4.2.2.1:53", 400},
 	{"4.2.2.2:53", 400},
+	// Quad9
+	{"9.9.9.9:53", 400},
+	{"149.112.112.112:53", 400},
+	// Neustar UltraDNS
 	{"64.6.64.6:53", 200},
 	{"64.6.65.6:53", 200},
-	{"9.9.9.9:53", 200},
-	{"149.112.112.112:53", 200},
+	// OpenDNS / Cisco
+	{"208.67.222.222:53", 400},
+	{"208.67.220.220:53", 400},
+	// Comodo Secure DNS
+	{"8.26.56.26:53", 200},
+	{"8.20.247.20:53", 200},
 }
 
-var dnsDomestic = []DNSServer{
-	{"223.5.5.5:53", 200},    // AliDNS
-	{"223.6.6.6:53", 200},    // AliDNS
-	{"119.29.29.29:53", 150}, // DNSPod
-	{"1.12.12.12:53", 150},   // DNSPod
-	{"180.184.1.1:53", 100},  // ByteDance
-	{"180.184.2.2:53", 100},  // ByteDance
-	{"114.114.114.114:53", 100},
-	{"114.114.115.115:53", 100},
+var dnsCN = []DNSServer{
+	// AliDNS
+	{"223.5.5.5:53", 80},
+	{"223.6.6.6:53", 80},
+	// DNSPod
+	{"119.29.29.29:53", 80},
+	{"1.12.12.12:53", 80},
+	// ByteDance
+	{"180.184.1.1:53", 60},
+	{"180.184.2.2:53", 60},
+	// 114 DNS
+	{"114.114.114.114:53", 60},
+	{"114.114.115.115:53", 60},
 }
 
 // ---------------------------------------------------------------------------

@@ -90,18 +90,18 @@ func TestExternalNodesAreFullDomains(t *testing.T) {
 }
 
 func TestDNSServerListsNonEmpty(t *testing.T) {
-	if len(dnsOverseas) == 0 {
-		t.Error("dnsOverseas empty")
+	if len(dnsGlobal) == 0 {
+		t.Error("dnsGlobal empty")
 	}
-	if len(dnsDomestic) == 0 {
-		t.Error("dnsDomestic empty")
+	if len(dnsCN) == 0 {
+		t.Error("dnsCN empty")
 	}
-	for _, s := range dnsOverseas {
+	for _, s := range dnsGlobal {
 		if s.QPS <= 0 {
 			t.Errorf("overseas server %q has non-positive QPS %d", s.Addr, s.QPS)
 		}
 	}
-	for _, s := range dnsDomestic {
+	for _, s := range dnsCN {
 		if s.QPS <= 0 {
 			t.Errorf("domestic server %q has non-positive QPS %d", s.Addr, s.QPS)
 		}

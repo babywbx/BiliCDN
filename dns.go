@@ -332,6 +332,12 @@ func (p *DNSResolverPool) lookupGroup(ctx context.Context, group *dnsGroup, doma
 				return "", errNXDOMAIN
 			}
 			logger.Printf("FAIL dns    %s (@%s)  %v", domain, node.label, err)
+			// Small delay before retry — yield to let new queries go first
+			select {
+			case <-time.After(dnsRetryDelay):
+			case <-ctx.Done():
+				return "", ctx.Err()
+			}
 			continue
 		}
 

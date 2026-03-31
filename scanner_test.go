@@ -381,8 +381,8 @@ func TestRunReturnsCanceledWithoutReplacingOutput(t *testing.T) {
 
 	baseLocations = []string{"bj"}
 	numberedLocations = nil
-	dnsOverseas = nil
-	dnsDomestic = nil
+	dnsGlobal = nil
+	dnsCN = nil
 	newSignalContextFunc = func() (context.Context, context.CancelCauseFunc, func()) {
 		ctx, cancel := context.WithCancelCause(context.Background())
 		cancel(context.Canceled)
@@ -679,8 +679,8 @@ func snapshotState() func() {
 
 	savedBaseLocations := append([]string(nil), baseLocations...)
 	savedNumberedLocations := append([]string(nil), numberedLocations...)
-	savedDNSOverseas := append([]DNSServer(nil), dnsOverseas...)
-	savedDNSDomestic := append([]DNSServer(nil), dnsDomestic...)
+	savedDNSOverseas := append([]DNSServer(nil), dnsGlobal...)
+	savedDNSDomestic := append([]DNSServer(nil), dnsCN...)
 
 	savedSignalContextFunc := newSignalContextFunc
 	savedSetupLoggerFunc := setupLoggerFunc
@@ -700,8 +700,8 @@ func snapshotState() func() {
 
 		baseLocations = savedBaseLocations
 		numberedLocations = savedNumberedLocations
-		dnsOverseas = savedDNSOverseas
-		dnsDomestic = savedDNSDomestic
+		dnsGlobal = savedDNSOverseas
+		dnsCN = savedDNSDomestic
 
 		newSignalContextFunc = savedSignalContextFunc
 		setupLoggerFunc = savedSetupLoggerFunc
