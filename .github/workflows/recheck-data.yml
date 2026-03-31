@@ -41,6 +41,7 @@ jobs:
           cd data_branch
           git log --all -p -- domains.txt 2>/dev/null \
             | grep "^+" | grep -v "^+++" | sed 's/^+//' \
+            | grep -v -E "^(core|qoe|vanadium|api|bvc|bvc-drm|data|activity|cloudapp|openupos|skynet|transfer|proxy-tf-all-ws|bfs-tf-all-js|txy-fmp4hls|jscs-luffy-upcdntx|live-push|bdy\.live-push|txy2\.live-push|txy3\.live-push)\." \
             | sort -u > ../historical_domains.txt
           COUNT=$(wc -l < ../historical_domains.txt | tr -d ' ')
           echo "Historical domains: $COUNT"
@@ -95,8 +96,48 @@ jobs:
           git push origin data
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Purge CDN cache
+      - name: Count domains
         if: steps.push.outputs.changed == 'true'
+        id: count
+        run: |
+          TOTAL=$(wc -l < data/domains.txt | tr -d ' ')
+          REGIONS=$(jq 'keys | length' data/nodes.json)
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
+
+      - name: Update Release
+        if: steps.push.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TOTAL: ${{ steps.count.outputs.total }}
+          REGIONS: ${{ steps.count.outputs.regions }}
+        run: |
+          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+          TAG="data"
+          cd data_branch
+
+          gh release delete "$TAG" --yes 2>/dev/null || true
+          git push origin ":refs/tags/$TAG" 2>/dev/null || true
+
+          git tag -s "$TAG" -m "CDN data $TIMESTAMP" HEAD
+          git push origin "$TAG"
+
+          gh release create "$TAG" \
+            --title "CDN Data" \
+            --latest=false \
+            --notes "Automated CDN node recheck results. Updated $TIMESTAMP.
+
+          - **$TOTAL** domains
+          - **$REGIONS** regions
+          - Formats: domains.txt, nodes.json, nodes.yml, nodes.txt, nodes.md" \
+            ../data/domains.txt \
+            ../data/nodes.json \
+            ../data/nodes.yml \
+            ../data/nodes.txt \
+            ../data/nodes.md
+
+      - name: Purge CDN cache
+        if: always()
         run: |
           for f in nodes.json nodes.yml nodes.txt nodes.md domains.txt api/updated; do
             curl -s "https://bilicdn.pages.dev/${f}?purge" -o /dev/null -w "${f}: HTTP %{http_code}\n"

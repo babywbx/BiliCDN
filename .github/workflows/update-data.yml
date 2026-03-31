@@ -49,6 +49,7 @@ jobs:
           # Extract all unique domains ever committed to domains.txt
           git log --all -p -- domains.txt 2>/dev/null \
             | grep "^+" | grep -v "^+++" | sed 's/^+//' \
+            | grep -v -E "^(core|qoe|vanadium|api|bvc|bvc-drm|data|activity|cloudapp|openupos|skynet|transfer|proxy-tf-all-ws|bfs-tf-all-js|txy-fmp4hls|jscs-luffy-upcdntx|live-push|bdy\.live-push|txy2\.live-push|txy3\.live-push)\." \
             | sort -u > ../historical_domains.txt
           COUNT=$(wc -l < ../historical_domains.txt | tr -d ' ')
           echo "Historical domains: $COUNT"
@@ -193,7 +194,7 @@ jobs:
             ../data/nodes.md
 
       - name: Purge CDN cache
-        if: steps.push.outputs.changed == 'true'
+        if: always()
         run: |
           for f in nodes.json nodes.yml nodes.txt nodes.md domains.txt api/updated; do
             curl -s "https://bilicdn.pages.dev/${f}?purge" -o /dev/null -w "${f}: HTTP %{http_code}\n"
