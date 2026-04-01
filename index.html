@@ -55,6 +55,10 @@ a:hover{text-decoration:underline}
 .dropdown-sep{height:1px;background:var(--border);margin:4px 8px}
 .dropdown-item .ref-url{font-family:var(--mono);font-size:.72rem;color:var(--text3);display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis}
 .dropdown-item.copied{color:var(--success)}
+.ref-toggle{display:flex;gap:2px;padding:4px;margin:4px;background:var(--surface);border-radius:6px}
+.ref-toggle button{flex:1;padding:5px 10px;border:none;border-radius:4px;font-size:.78rem;font-family:inherit;cursor:pointer;background:transparent;color:var(--text3);transition:all .15s}
+.ref-toggle button:hover{color:var(--text2)}
+.ref-toggle button.active{background:var(--accent-bg);color:var(--accent)}
 
 /* Error overlay */
 .error-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:999}
@@ -473,7 +477,12 @@ function initRefLinks() {
   const menu = document.getElementById('ref-menu');
   const trigger = document.getElementById('ref-trigger');
   const dropdown = document.getElementById('ref-dropdown');
-  const origin = location.origin;
+  const REF_SOURCES = [
+    { label: 'Cloudflare', base: 'https://bilicdn.pages.dev' },
+    { label: 'jsDelivr', base: 'https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data' },
+    { label: 'GitHub', base: 'https://raw.githubusercontent.com/babywbx/BiliCDN/data' },
+  ];
+  let refBase = REF_SOURCES[0].base;
 
   const files = [
     { name: 'nodes.json', label: 'JSON' },
@@ -482,6 +491,23 @@ function initRefLinks() {
     { name: 'nodes.md', label: 'Markdown' },
   ];
 
+  // Source toggle
+  const toggle = document.createElement('div');
+  toggle.className = 'ref-toggle';
+  const btns = REF_SOURCES.map((s, i) => {
+    const b = document.createElement('button');
+    b.textContent = s.label;
+    if (i === 0) b.className = 'active';
+    return b;
+  });
+  toggle.append(...btns);
+  menu.appendChild(toggle);
+
+  const sep = document.createElement('div');
+  sep.className = 'dropdown-sep';
+  menu.appendChild(sep);
+
+  const items = [];
   files.forEach(f => {
     const item = document.createElement('button');
     item.className = 'dropdown-item';
@@ -493,19 +519,27 @@ function initRefLinks() {
 
     const url = document.createElement('span');
     url.className = 'ref-url';
-    url.textContent = origin + '/' + f.name;
+    url.textContent = refBase + '/' + f.name;
     item.appendChild(url);
 
     item.addEventListener('click', (e) => {
       e.stopPropagation();
-      navigator.clipboard.writeText(origin + '/' + f.name).then(() => {
+      navigator.clipboard.writeText(refBase + '/' + f.name).then(() => {
         label.textContent = f.label + ' — 已复制';
         item.classList.add('copied');
         setTimeout(() => { label.textContent = f.label; item.classList.remove('copied'); }, 1200);
       });
     });
     menu.appendChild(item);
+    items.push({ url, file: f });
   });
+
+  function setSource(idx) {
+    refBase = REF_SOURCES[idx].base;
+    btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+    items.forEach(({ url, file }) => { url.textContent = refBase + '/' + file.name; });
+  }
+  btns.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); setSource(i); }));
 
   trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); trigger.setAttribute('aria-expanded', dropdown.classList.contains('open')); });
 }
