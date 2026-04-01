@@ -102,26 +102,53 @@ jobs:
         run: |
           TOTAL=$(wc -l < data/domains.txt | tr -d ' ')
           REGIONS=$(jq 'keys | length' data/nodes.json)
+          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
           echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
           echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
+          echo "timestamp=$TIMESTAMP" >> "$GITHUB_OUTPUT"
 
       - name: Update Release
         if: steps.push.outputs.changed == 'true'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
-          release_name: CDN Data (${{ steps.count.outputs.total }} domains, ${{ steps.count.outputs.regions }} regions)
+          release_name: CDN Data (Auto Update)
           tag: latest-data
           file: data/*
           file_glob: true
           overwrite: true
           make_latest: false
           body: |
-            Automated CDN node recheck results.
+            ## Bilibili CDN Nodes
 
-            - **${{ steps.count.outputs.total }}** domains
-            - **${{ steps.count.outputs.regions }}** regions
-            - Formats: domains.txt, nodes.json, nodes.yml, nodes.txt, nodes.md
+            > Updated: ${{ steps.count.outputs.timestamp }}
+
+            **${{ steps.count.outputs.total }}** domains across **${{ steps.count.outputs.regions }}** regions.
+
+            ### Downloads
+
+            | File | Description |
+            |------|-------------|
+            | `domains.txt` | Raw domain list, one per line (for scripts/programs) |
+            | `nodes.json` | Grouped by region (JSON) |
+            | `nodes.yml` | Grouped by region (YAML) |
+            | `nodes.txt` | Grouped by region (plain text) |
+            | `nodes.md` | Grouped by region (Markdown) |
+
+            ### CDN API
+
+            ```
+            https://bilicdn.pages.dev/nodes.json
+            https://bilicdn.pages.dev/nodes.yml
+            https://bilicdn.pages.dev/nodes.txt
+            https://bilicdn.pages.dev/nodes.md
+            https://bilicdn.pages.dev/domains.txt
+            ```
+
+            ### Links
+
+            - 🌐 [Web UI](https://bilicdn.pages.dev)
+            - 📦 [Data Branch](https://github.com/babywbx/BiliCDN/tree/data)
 
       - name: Purge CDN cache
         if: always()
