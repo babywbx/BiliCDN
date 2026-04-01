@@ -38,7 +38,8 @@ a:hover{text-decoration:underline}
 .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
 .header-left{display:flex;align-items:center;gap:16px}
 .logo{font-size:1.2rem;font-weight:700;color:var(--text)}
-.header-updated{font-size:.78rem;color:var(--text3)}
+.header-updated{font-size:.78rem;color:var(--text3);text-decoration:none}
+.header-updated:hover{color:var(--text2);text-decoration:none}
 .header-right{display:flex;align-items:center;gap:6px}
 .hdr-link{padding:6px 14px;border-radius:var(--radius);font-size:.85rem;color:var(--text2);transition:all .15s}
 .hdr-link:hover{background:var(--surface2);color:var(--text);text-decoration:none}
@@ -148,7 +149,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div class="header-inner">
     <div class="header-left">
       <div class="logo">BiliCDN</div>
-      <span class="header-updated" id="updated"></span>
+      <a class="header-updated" id="updated" target="_blank"></a>
     </div>
     <div class="header-right">
       <div class="dropdown" id="dl-dropdown">
@@ -452,8 +453,11 @@ async function updateTimestamp() {
     const data = await resp.json();
     const dateStr = data.date || data.commit?.commit?.committer?.date;
     if (!dateStr) return;
+    const sha = data.sha || data.commit?.sha;
     const date = new Date(dateStr);
-    document.getElementById('updated').textContent = '更新于 ' + date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC+8';
+    const el = document.getElementById('updated');
+    el.textContent = '更新于 ' + date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }) + ' UTC+8';
+    if (sha) el.href = 'https://github.com/babywbx/BiliCDN/tree/' + sha;
   } catch { /* ignore */ }
 }
 
