@@ -186,9 +186,27 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </footer>
 
 <script>
-// Use same-origin proxy if available (CF Pages), fallback to GitHub raw
-const BASE = location.hostname.includes('pages.dev') || location.hostname.includes('localhost')
-  ? '' : 'https://raw.githubusercontent.com/babywbx/BiliCDN/data';
+// Data sources with fallback (3s timeout each): same-origin → jsDelivr → GitHub raw
+const _CF = location.hostname.includes('pages.dev') || location.hostname.includes('localhost');
+const SOURCES = _CF
+  ? ['', 'https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data', 'https://raw.githubusercontent.com/babywbx/BiliCDN/data']
+  : ['https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data', 'https://raw.githubusercontent.com/babywbx/BiliCDN/data'];
+let BASE = SOURCES[0];
+
+async function fetchWithFallback(path) {
+  for (const src of SOURCES) {
+    try {
+      const c = new AbortController();
+      const t = setTimeout(() => c.abort(), 3000);
+      const r = await fetch(src + path, { signal: c.signal });
+      clearTimeout(t);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      BASE = src;
+      return r;
+    } catch { /* try next source */ }
+  }
+  throw new Error('All sources unavailable');
+}
 const FORMATTED_FILES = [
   { name: 'nodes.json', label: 'JSON' },
   { name: 'nodes.yml', label: 'YAML' },
@@ -437,15 +455,14 @@ async function updateTimestamp() {
 
 async function loadData() {
   try {
-    const resp = await fetch(BASE + '/nodes.json');
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const resp = await fetchWithFallback('/nodes.json');
     const data = await resp.json();
     allRows = [];
     for (const [region, domains] of Object.entries(data)) {
       const type = domainType(region), area = areaOf(region);
       for (const domain of domains) allRows.push({ domain, region, type, area });
     }
-    renderStats(); renderFilters(); applyFilters(); updateTimestamp();
+    initDownloads(); renderStats(); renderFilters(); applyFilters(); updateTimestamp();
   } catch (e) { showError(e.message); }
 }
 
@@ -501,7 +518,6 @@ function closeAllDropdowns(except) {
 document.addEventListener('click', () => closeAllDropdowns());
 
 initRefLinks();
-initDownloads();
 loadData();
 </script>
 </body>
