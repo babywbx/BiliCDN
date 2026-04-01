@@ -107,6 +107,13 @@ jobs:
           echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
           echo "timestamp=$TIMESTAMP" >> "$GITHUB_OUTPUT"
 
+      - name: Point release tag at data branch
+        if: steps.push.outputs.changed == 'true'
+        run: |
+          git fetch origin data
+          git tag -f latest-data origin/data
+          git push origin -f refs/tags/latest-data
+
       - name: Update Release
         if: steps.push.outputs.changed == 'true'
         uses: svenstaro/upload-release-action@v2
