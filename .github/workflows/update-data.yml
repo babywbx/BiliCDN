@@ -204,9 +204,11 @@ jobs:
             - 🌐 [Web UI](https://bilicdn.pages.dev)
             - 📦 [Data Branch](https://github.com/babywbx/BiliCDN/tree/data)
 
-      - name: Purge CDN cache
+      - name: Refresh CDN data endpoint
         if: always()
+        env:
+          CF_REFRESH_TOKEN: ${{ secrets.CF_REFRESH_TOKEN }}
         run: |
-          for f in nodes.json nodes.yml nodes.txt nodes.md domains.txt api/updated; do
-            curl -s "https://bilicdn.pages.dev/${f}?purge" -o /dev/null -w "${f}: HTTP %{http_code}\n"
-          done
+          curl --fail-with-body -sS -X POST \
+            -H "Authorization: Bearer ${CF_REFRESH_TOKEN}" \
+            https://bilicdn.pages.dev/api/refresh
