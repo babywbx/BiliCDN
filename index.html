@@ -190,11 +190,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </footer>
 
 <script>
-// Data sources with fallback (3s timeout each): same-origin → jsDelivr → GitHub raw
+// Data sources with fallback (3s timeout each): same-origin → GitHub raw
 const _CF = location.hostname.includes('pages.dev') || location.hostname.includes('localhost');
 const SOURCES = _CF
-  ? ['', 'https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data', 'https://raw.githubusercontent.com/babywbx/BiliCDN/data']
-  : ['https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data', 'https://raw.githubusercontent.com/babywbx/BiliCDN/data'];
+  ? ['', 'https://raw.githubusercontent.com/babywbx/BiliCDN/data']
+  : ['https://raw.githubusercontent.com/babywbx/BiliCDN/data'];
 let BASE = SOURCES[0];
 
 async function fetchWithFallback(path) {

@@ -71,7 +71,7 @@ https://bilicdn.pages.dev/domains.txt
 - **零构建** — 单个 `index.html` + CF Functions，无框架、无依赖
 - **零维护** — 数据更新时无需修改模板
 - **全球加速** — Cloudflare 边缘节点缓存，中国用户友好
-- **多源容灾** — 自动尝试 CF Pages → jsDelivr → GitHub Raw（3 秒超时切换），确保可用性
+- **数据容灾** — CF Pages 不可用时自动 fallback 到 GitHub Raw（3 秒超时切换）
 - **可部署到** — Cloudflare Pages（推荐）、GitHub Pages、Vercel
 
 <div align="right">

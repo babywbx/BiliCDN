@@ -71,7 +71,7 @@ User → bilicdn.pages.dev (Cloudflare CDN)
 - **Zero build** — Single `index.html` + CF Functions, no framework, no dependencies
 - **Zero maintenance** — Template never needs updating when data changes
 - **Global acceleration** — Cloudflare edge caching, China-friendly
-- **Multi-source fallback** — Auto-tries CF Pages → jsDelivr → GitHub Raw (3s timeout each) for reliability
+- **Data fallback** — Auto-falls back to GitHub Raw when CF Pages is unavailable (3s timeout)
 - **Deploy to** — Cloudflare Pages (recommended), GitHub Pages, Vercel
 
 <div align="right">
