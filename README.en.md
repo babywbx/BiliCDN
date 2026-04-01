@@ -98,6 +98,16 @@ https://bilicdn.pages.dev/nodes.md
 https://bilicdn.pages.dev/domains.txt
 ```
 
+Also available via jsDelivr CDN:
+
+```
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.json
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.yml
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.txt
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.md
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.txt
+```
+
 ### Direct Download
 
 Or download raw data files from the [`data` branch][data-branch-link]:

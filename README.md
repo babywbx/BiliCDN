@@ -98,6 +98,16 @@ https://bilicdn.pages.dev/nodes.md
 https://bilicdn.pages.dev/domains.txt
 ```
 
+也可以通过 jsDelivr CDN 访问：
+
+```
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.json
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.yml
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.txt
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.md
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.txt
+```
+
 ### 直接下载
 
 也可以从 [`data` 分支][data-branch-link]下载原始数据文件：
