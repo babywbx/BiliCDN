@@ -9,6 +9,7 @@
     "cn-bj-fx-01-06.bilivideo.com",
     "cn-bj-fx-01-07.bilivideo.com",
     "cn-bj-fx-01-08.bilivideo.com",
+    "cn-bj-fx-01-09.bilivideo.com",
     "cn-bj-fx-01-10.bilivideo.com",
     "cn-bj-fx-01-11.bilivideo.com",
     "cn-bj-fx-01-12.bilivideo.com",
@@ -26,7 +27,6 @@
   ],
   "天津": [
     "cn-tj-cm-02-01.bilivideo.com",
-    "cn-tj-cm-02-02.bilivideo.com",
     "cn-tj-cm-02-03.bilivideo.com",
     "cn-tj-cm-02-04.bilivideo.com",
     "cn-tj-cm-02-05.bilivideo.com",
@@ -170,6 +170,7 @@
     "cn-lnsy-cm-01-10.bilivideo.com",
     "cn-lnsy-cmcc-v-02.bilivideo.com",
     "cn-lnsy-cmcc-v-06.bilivideo.com",
+    "cn-lnsy-cmcc-v-07.bilivideo.com",
     "cn-lnsy-cu-01-03.bilivideo.com",
     "cn-lnsy-cu-01-04.bilivideo.com",
     "cn-lnsy-cu-01-06.bilivideo.com",
@@ -223,6 +224,7 @@
     "cn-jsnt-ct-01-47.bilivideo.com",
     "cn-jsnt-ct-01-50.bilivideo.com",
     "cn-jsnt-dx-live-02.bilivideo.com",
+    "cn-jsnt-dx-live-03.bilivideo.com",
     "cn-jsnt-dx-live-06.bilivideo.com",
     "cn-jsnt-dx-live-07.bilivideo.com",
     "cn-jsnt-dx-live-08.bilivideo.com",
@@ -282,8 +284,8 @@
     "cn-jssz-cm-02-01.bilivideo.com",
     "cn-jssz-cm-02-02.bilivideo.com",
     "cn-jssz-cm-02-05.bilivideo.com",
-    "cn-jssz-cm-02-07.bilivideo.com",
     "cn-jssz-cm-02-08.bilivideo.com",
+    "cn-jssz-cm-02-09.bilivideo.com",
     "cn-jssz-cm-02-10.bilivideo.com",
     "cn-jssz-cm-02-12.bilivideo.com",
     "cn-jssz-cm-02-14.bilivideo.com",
@@ -312,10 +314,10 @@
     "cn-zjhz-cm-01-05.bilivideo.com",
     "cn-zjhz-cm-01-07.bilivideo.com",
     "cn-zjhz-cm-01-08.bilivideo.com",
+    "cn-zjhz-cm-01-11.bilivideo.com",
     "cn-zjhz-cm-01-12.bilivideo.com",
     "cn-zjhz-cm-01-17.bilivideo.com",
     "cn-zjhz-cm-01-19.bilivideo.com",
-    "cn-zjhz-cm-01-28.bilivideo.com",
     "cn-zjhz-cm-01-29.bilivideo.com",
     "cn-zjhz-cmcc-live-02.bilivideo.com",
     "cn-zjhz-cmcc-v-01.bilivideo.com",
@@ -355,13 +357,14 @@
     "cn-zjjh4-dx-live-01.bilivideo.com",
     "cn-zjjh4-dx-live-02.bilivideo.com",
     "cn-zjjh4-dx-live-05.bilivideo.com",
-    "cn-zjjh4-dx-live-06.bilivideo.com",
     "cn-zjjh4-dx-live-08.bilivideo.com",
     "cn-zjjh4-dx-live-09.bilivideo.com",
     "cn-zjjh4-dx-live-10.bilivideo.com",
+    "cn-zjjh4-dx-v-03.bilivideo.com",
     "cn-zjjh4-dx-v-04.bilivideo.com"
   ],
   "福建-泉州": [
+    "cn-fjqz-cm-01-01.bilivideo.com",
     "cn-fjqz-cm-01-02.bilivideo.com",
     "cn-fjqz-cm-01-03.bilivideo.com",
     "cn-fjqz-cm-01-04.bilivideo.com",
@@ -379,7 +382,6 @@
   ],
   "福建-福州": [
     "cn-fjfz-fx-01-01.bilivideo.com",
-    "cn-fjfz-fx-01-02.bilivideo.com",
     "cn-fjfz-fx-01-03.bilivideo.com",
     "cn-fjfz-fx-01-04.bilivideo.com",
     "cn-fjfz-fx-01-05.bilivideo.com",
@@ -388,6 +390,7 @@
   "江西-九江": [
     "cn-jxjj-ct-01-02.bilivideo.com",
     "cn-jxjj-ct-01-03.bilivideo.com",
+    "cn-jxjj-ct-01-05.bilivideo.com",
     "cn-jxjj-ct-01-06.bilivideo.com",
     "cn-jxjj-ct-01-07.bilivideo.com",
     "cn-jxjj-ct-01-08.bilivideo.com",
@@ -416,13 +419,15 @@
     "cn-jxnc-cm-01-31.bilivideo.com",
     "cn-jxnc-cm-01-32.bilivideo.com",
     "cn-jxnc-cm-01-35.bilivideo.com",
+    "cn-jxnc-cm-01-38.bilivideo.com",
     "cn-jxnc-cm-01-39.bilivideo.com",
     "cn-jxnc-cm-01-40.bilivideo.com",
+    "cn-jxnc-cm-01-41.bilivideo.com",
     "cn-jxnc-cmcc-bcache-04.bilivideo.com",
     "cn-jxnc-cmcc-bcache-10.bilivideo.com",
-    "cn-jxnc-cmcc-bcache-11.bilivideo.com",
     "cn-jxnc-cmcc-bcache-12.bilivideo.com",
     "cn-jxnc-cmcc-bcache-13.bilivideo.com",
+    "cn-jxnc-cmcc-bcache-14.bilivideo.com",
     "cn-jxnc-cmcc-bcache-15.bilivideo.com",
     "cn-jxnc-cmcc-bcache-16.bilivideo.com",
     "cn-jxnc-cmcc-bcache-17.bilivideo.com",
@@ -439,24 +444,25 @@
     "cn-sdjn-cm-02-11.bilivideo.com",
     "cn-sdjn-cm-02-13.bilivideo.com",
     "cn-sdjn-cm-02-14.bilivideo.com",
+    "cn-sdjn-fx-01-01.bilivideo.com",
     "cn-sdjn-fx-01-02.bilivideo.com",
     "cn-sdjn-fx-01-03.bilivideo.com",
     "cn-sdjn-fx-01-05.bilivideo.com",
-    "cn-sdjn-fx-01-08.bilivideo.com",
     "cn-sdjn-fx-01-10.bilivideo.com",
     "cn-sdjn-fx-bcache-01.bilivideo.com",
     "cn-sdjn-fx-bcache-02.bilivideo.com",
     "cn-sdjn-fx-live-01.bilivideo.com",
-    "cn-sdjn-fx-live-02.bilivideo.com",
     "cn-sdjn2-cmcc-live-01.bilivideo.com",
     "cn-sdjn2-cmcc-live-03.bilivideo.com",
     "cn-sdjn2-cmcc-v-01.bilivideo.com",
     "cn-sdjn2-cmcc-v-02.bilivideo.com",
     "cn-sdjn2-cmcc-v-03.bilivideo.com",
     "cn-sdjn2-cmcc-v-04.bilivideo.com",
+    "cn-sdjn2-cmcc-v-05.bilivideo.com",
     "cn-sdjn2-cmcc-v-06.bilivideo.com",
+    "cn-sdjn2-cmcc-v-07.bilivideo.com",
+    "cn-sdjn2-cmcc-v-08.bilivideo.com",
     "cn-sdjn2-cmcc-v-09.bilivideo.com",
-    "cn-sdjn2-cmcc-v-10.bilivideo.com",
     "cn-sdjn2-cmcc-v-11.bilivideo.com"
   ],
   "山东-青岛": [
@@ -659,7 +665,6 @@
   ],
   "广东-东莞": [
     "cn-gddg-cm-01-02.bilivideo.com",
-    "cn-gddg-cm-01-03.bilivideo.com",
     "cn-gddg-cm-01-05.bilivideo.com",
     "cn-gddg-cm-01-21.bilivideo.com",
     "cn-gddg-cm-01-23.bilivideo.com",
@@ -683,11 +688,12 @@
     "cn-gddg-ct-01-36.bilivideo.com",
     "cn-gddg-cu-01-02.bilivideo.com",
     "cn-gddg-cu-01-03.bilivideo.com",
-    "cn-gddg-cu-01-05.bilivideo.com",
+    "cn-gddg-cu-01-04.bilivideo.com",
     "cn-gddg-cu-01-06.bilivideo.com",
     "cn-gddg-cu-01-08.bilivideo.com",
     "cn-gddg-cu-01-09.bilivideo.com",
     "cn-gddg-cu-01-14.bilivideo.com",
+    "cn-gddg-cu-01-15.bilivideo.com",
     "cn-gddg-cu-01-20.bilivideo.com",
     "cn-gddg-cu-01-21.bilivideo.com",
     "cn-gddg-cu-01-23.bilivideo.com",
@@ -747,7 +753,6 @@
   ],
   "广东-江门": [
     "cn-gdjm-cm-01-01.bilivideo.com",
-    "cn-gdjm-cm-01-02.bilivideo.com",
     "cn-gdjm-cm-01-03.bilivideo.com",
     "cn-gdjm-cm-01-04.bilivideo.com",
     "cn-gdjm-cm-01-05.bilivideo.com",
@@ -787,8 +792,8 @@
     "cn-sccd-ct-02-19.bilivideo.com",
     "cn-sccd-ct-02-21.bilivideo.com",
     "cn-sccd-ct-02-22.bilivideo.com",
-    "cn-sccd3-cmcc-v-04.bilivideo.com",
     "cn-sccd3-cmcc-v-05.bilivideo.com",
+    "cn-sccd3-cmcc-v-06.bilivideo.com",
     "cn-sccd3-cmcc-v-07.bilivideo.com",
     "cn-sccd3-cmcc-v-10.bilivideo.com",
     "cn-sccd3-cmcc-v-14.bilivideo.com",
@@ -797,12 +802,12 @@
   ],
   "陕西-西安": [
     "cn-sxxa-cm-01-01.bilivideo.com",
-    "cn-sxxa-cm-01-02.bilivideo.com",
     "cn-sxxa-cm-01-03.bilivideo.com",
     "cn-sxxa-cm-01-04.bilivideo.com",
     "cn-sxxa-cm-01-05.bilivideo.com",
     "cn-sxxa-cm-01-06.bilivideo.com",
     "cn-sxxa-cm-01-08.bilivideo.com",
+    "cn-sxxa-cm-01-09.bilivideo.com",
     "cn-sxxa-cm-01-11.bilivideo.com",
     "cn-sxxa-cm-01-12.bilivideo.com",
     "cn-sxxa-cm-01-14.bilivideo.com",
@@ -822,7 +827,8 @@
     "cn-xj-ct-01-01.bilivideo.com",
     "cn-xj-ct-01-02.bilivideo.com",
     "cn-xj-ct-01-03.bilivideo.com",
-    "cn-xj-ct-01-04.bilivideo.com"
+    "cn-xj-ct-01-04.bilivideo.com",
+    "cn-xj-ct-01-05.bilivideo.com"
   ],
   "香港": [
     "cn-hk-eq-01-01.bilivideo.com",
@@ -839,6 +845,9 @@
   "UPOS-Cloudflare": [
     "upos-sz-mirrorcf1ov.bilivideo.com"
   ],
+  "UPOS-七牛云": [
+    "upos-sz-302kodo.bilivideo.com"
+  ],
   "UPOS-其他": [
     "upos-cs-upcdnbldsa.bilivideo.com",
     "upos-sz-estgoss.bilivideo.com",
@@ -847,7 +856,6 @@
     "upos-sz-originbstar.bilivideo.com"
   ],
   "UPOS-华为云": [
-    "upos-sz-estghw.bilivideo.com",
     "upos-sz-mirrorhwdisp.bilivideo.com"
   ],
   "UPOS-百度云": [
@@ -859,8 +867,7 @@
     "upos-sz-mirrorcosdisp.bilivideo.com",
     "upos-sz-mirrorcosov.bilivideo.com",
     "upos-sz-origincosgzhw.bilivideo.com",
-    "upos-sz-origincosv.bilivideo.com",
-    "upos-sz-staticcos.bilivideo.com"
+    "upos-sz-origincosv.bilivideo.com"
   ],
   "UPOS-阿里云": [
     "upos-sz-mirroralibstar1.bilivideo.com",
@@ -872,11 +879,12 @@
   ],
   "Gotcha-国内": [
     "c0--cn-gotcha01.bilivideo.com",
+    "d0--cn-gotcha09.bilivideo.com",
     "d1--cn-gotcha04b.bilivideo.com",
     "d1--cn-gotcha07b.bilivideo.com",
     "d1--cn-gotcha105.bilivideo.com",
-    "d1--cn-gotcha108.bilivideo.com",
     "d1--cn-gotcha204-1.bilivideo.com",
+    "d1--cn-gotcha204-3.bilivideo.com",
     "d1--cn-gotcha204-4.bilivideo.com",
     "d1--cn-gotcha204b.bilivideo.com",
     "d1--cn-gotcha207.bilivideo.com",
@@ -887,7 +895,6 @@
   "Gotcha-海外": [
     "d1--ov-gotcha105.bilivideo.com",
     "d1--ov-gotcha105b.bilivideo.com",
-    "d1--ov-gotcha207.bilivideo.com",
     "d1--ov-gotcha207b.bilivideo.com",
     "d1--ov-gotcha209.bilivideo.com",
     "d1--ov-gotcha210.bilivideo.com"
