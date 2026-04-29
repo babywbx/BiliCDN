@@ -2,19 +2,37 @@ name: Update CDN Data
 
 on:
   schedule:
+    # Runs at 12:00 Asia/Shanghai every Monday.
     - cron: '0 4 * * 1'
   workflow_dispatch:
     inputs:
       attempt:
         description: 'Retry attempt number'
+        required: false
         default: '1'
+        type: string
 
 concurrency:
   group: update-data
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
+  actions: write
+
+env:
+  DATA_DIR: data
+  DATA_BRANCH_DIR: data_branch
+  DOMAINS_FILE: data/domains.txt
+  HISTORICAL_DOMAINS_FILE: historical_domains.txt
+  MIN_DOMAINS: 100
+  MAX_SCAN_ATTEMPTS: 2
+  CDN_REFRESH_URL: https://bilicdn.pages.dev/api/refresh
+  EXCLUDED_DOMAIN_PREFIX_PATTERN: '^(core|qoe|vanadium|api|bvc|bvc-drm|data|activity|cloudapp|openupos|skynet|transfer|proxy-tf-all-ws|bfs-tf-all-js|txy-fmp4hls|jscs-luffy-upcdntx|live-push|bdy[.]live-push|txy2[.]live-push|txy3[.]live-push)[.]'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   update-data:
@@ -34,102 +52,193 @@ jobs:
         run: go build -o bilicdn .
 
       - name: Show runner IP
-        run: curl -s https://api.ipify.org && echo
+        run: curl --fail --silent --show-error https://api.ipify.org && echo
 
       - name: Checkout data branch
         uses: actions/checkout@v6
         with:
           ref: data
-          path: data_branch
+          path: ${{ env.DATA_BRANCH_DIR }}
           fetch-depth: 0
 
       - name: Build historical domain list
+        id: history
         run: |
-          cd data_branch
-          # Extract all unique domains ever committed to domains.txt
-          git log --all -p -- domains.txt 2>/dev/null \
-            | grep "^+" | grep -v "^+++" | sed 's/^+//' \
-            | grep -v -E "^(core|qoe|vanadium|api|bvc|bvc-drm|data|activity|cloudapp|openupos|skynet|transfer|proxy-tf-all-ws|bfs-tf-all-js|txy-fmp4hls|jscs-luffy-upcdntx|live-push|bdy\.live-push|txy2\.live-push|txy3\.live-push)\." \
-            | sort -u > ../historical_domains.txt
-          COUNT=$(wc -l < ../historical_domains.txt | tr -d ' ')
-          echo "Historical domains: $COUNT"
-          cd ..
+          set -Eeuo pipefail
+
+          (
+            cd "$DATA_BRANCH_DIR"
+            git log --all -p -- domains.txt 2>/dev/null || true
+          ) | awk -v pattern="$EXCLUDED_DOMAIN_PREFIX_PATTERN" '
+            /^\+/ && !/^\+\+\+/ {
+              sub(/^\+/, "")
+              if ($0 != "" && $0 !~ pattern) {
+                print
+              }
+            }
+          ' | sort -u > "$HISTORICAL_DOMAINS_FILE"
+
+          count=$(wc -l < "$HISTORICAL_DOMAINS_FILE" | tr -d ' ')
+          echo "Historical domains: $count"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Historical domain list"
+            echo
+            echo "- Domains discovered from history: \`$count\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Scan CDN nodes
         run: |
-          if [ -s historical_domains.txt ]; then
+          set -Eeuo pipefail
+
+          if [ -s "$HISTORICAL_DOMAINS_FILE" ]; then
             echo "Rechecking historical domains + full scan"
-            ./bilicdn -quiet -diff historical_domains.txt -o data/domains.txt
+            ./bilicdn -quiet -diff "$HISTORICAL_DOMAINS_FILE" -o "$DOMAINS_FILE"
           else
             echo "No history, running full scan"
-            ./bilicdn -quiet -o data/domains.txt
+            ./bilicdn -quiet -o "$DOMAINS_FILE"
           fi
 
       - name: Show scan results
         if: always()
         run: |
-          # Check final output first, then temp files
-          OUT="data/domains.txt"
-          if [ ! -f "$OUT" ]; then
-            # Scan was interrupted — find the temp file
-            TEMP=$(ls data/.domains.txt.*.tmp 2>/dev/null | head -1)
-            if [ -n "$TEMP" ]; then
-              echo "::notice::Scan interrupted, recovering from temp file"
-              sort -u "$TEMP" > "$OUT"
+          set -Eeuo pipefail
+
+          if [ ! -f "$DOMAINS_FILE" ]; then
+            temp_file=$(find "$DATA_DIR" -maxdepth 1 -type f -name '.domains.txt.*.tmp' -print -quit 2>/dev/null || true)
+            if [ -n "$temp_file" ]; then
+              echo "::notice::Scan interrupted, recovering from temp file."
+              sort -u "$temp_file" > "$DOMAINS_FILE"
             fi
           fi
-          if [ -f "$OUT" ]; then
-            COUNT=$(wc -l < "$OUT" | tr -d ' ')
-            echo "::notice::Found $COUNT domains (may be partial if scan was interrupted)"
-            echo "--- domains.txt ($COUNT lines) ---"
-            cat "$OUT"
-          else
-            echo "::warning::No output file found"
+
+          if [ ! -f "$DOMAINS_FILE" ]; then
+            echo "::warning::No scan output file found."
+            exit 0
           fi
 
+          count=$(wc -l < "$DOMAINS_FILE" | tr -d ' ')
+          echo "::notice::Found $count domains."
+
+          echo "::group::domains.txt preview"
+          sed -n '1,200p' "$DOMAINS_FILE"
+          if [ "$count" -gt 200 ]; then
+            echo "... truncated; full file has $count lines."
+          fi
+          echo "::endgroup::"
+
+          {
+            echo "### Scan output"
+            echo
+            echo "- Domains found: \`$count\`"
+            echo "- Output file: \`$DOMAINS_FILE\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Validate scan results
+        id: validate
         env:
           GH_TOKEN: ${{ github.token }}
           ATTEMPT: ${{ inputs.attempt || '1' }}
         run: |
-          OUT="data/domains.txt"
-          if [ ! -f "$OUT" ]; then
-            echo "::error::No domains.txt found"
-            exit 1
+          set -Eeuo pipefail
+
+          attempt="$ATTEMPT"
+          if ! [[ "$attempt" =~ ^[0-9]+$ ]]; then
+            echo "::warning::Invalid attempt value '$attempt'. Falling back to 1."
+            attempt=1
           fi
-          COUNT=$(wc -l < "$OUT" | tr -d ' ')
-          MIN=100
-          if [ "$COUNT" -ge "$MIN" ]; then
-            echo "Validated: $COUNT domains (>= $MIN)"
+
+          if [ -f "$DOMAINS_FILE" ]; then
+            count=$(wc -l < "$DOMAINS_FILE" | tr -d ' ')
+          else
+            count=0
+          fi
+
+          if [ "$count" -ge "$MIN_DOMAINS" ]; then
+            echo "Validated: $count domains (>= $MIN_DOMAINS)"
+            {
+              echo "valid=true"
+              echo "count=$count"
+              echo "retried=false"
+            } >> "$GITHUB_OUTPUT"
+
+            {
+              echo "### Scan validation"
+              echo
+              echo "- Domains found: \`$count\`"
+              echo "- Minimum required: \`$MIN_DOMAINS\`"
+              echo "- Attempt: \`$attempt/$MAX_SCAN_ATTEMPTS\`"
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          echo "::warning::Only $COUNT domains found (minimum $MIN)"
-          if [ "$ATTEMPT" -lt 2 ]; then
-            NEXT=$((ATTEMPT + 1))
-            echo "::notice::Auto-retrying (attempt $NEXT) on a fresh runner..."
-            gh workflow run update-data.yml -f attempt="$NEXT"
-            exit 1
+          echo "::warning::Only $count domains found. Minimum required is $MIN_DOMAINS."
+          if [ "$attempt" -lt "$MAX_SCAN_ATTEMPTS" ]; then
+            next=$((attempt + 1))
+            echo "::notice::Auto-retrying update-data.yml on a fresh runner (attempt $next/$MAX_SCAN_ATTEMPTS)."
+            gh workflow run update-data.yml -f attempt="$next"
+
+            {
+              echo "valid=false"
+              echo "count=$count"
+              echo "retried=true"
+            } >> "$GITHUB_OUTPUT"
+
+            {
+              echo "### Scan validation"
+              echo
+              echo "- Result: retry scheduled"
+              echo "- Domains found: \`$count\`"
+              echo "- Minimum required: \`$MIN_DOMAINS\`"
+              echo "- Next attempt: \`$next/$MAX_SCAN_ATTEMPTS\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
-          echo "::error::Still below threshold after retry. Giving up."
+
+          echo "::error::Still below threshold after $attempt attempts. Giving up."
           exit 1
 
       - name: Convert formats
+        if: steps.validate.outputs.valid == 'true'
         run: |
-          ./bilicdn convert -i data/domains.txt -o data/nodes.json
-          ./bilicdn convert -i data/domains.txt -o data/nodes.yml
-          ./bilicdn convert -i data/domains.txt -o data/nodes.txt
-          ./bilicdn convert -i data/domains.txt -o data/nodes.md
+          set -Eeuo pipefail
+
+          for format in json yml txt md; do
+            ./bilicdn convert -i "$DOMAINS_FILE" -o "$DATA_DIR/nodes.$format"
+          done
 
       - name: Sync, Commit and Push to data branch
+        if: steps.validate.outputs.valid == 'true'
         id: push
+        env:
+          BOT_SSH_SIGNING_KEY: ${{ secrets.BOT_SSH_SIGNING_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.BOT_SSH_SIGNING_KEY }}" > ~/.ssh/signing_key
-          chmod 600 ~/.ssh/signing_key
+          set -Eeuo pipefail
 
-          rsync -av --delete --exclude='.git/' data/ data_branch/
-          cd data_branch
+          rsync -av --delete --exclude='.git/' "$DATA_DIR"/ "$DATA_BRANCH_DIR"/
+          cd "$DATA_BRANCH_DIR"
+
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes in data. Nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Data branch update"
+              echo
+              echo "- Changed: \`false\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if [ -z "$BOT_SSH_SIGNING_KEY" ]; then
+            echo "::error::BOT_SSH_SIGNING_KEY is not set. Cannot create a signed data commit."
+            exit 1
+          fi
+
+          mkdir -p ~/.ssh
+          printf '%s\n' "$BOT_SSH_SIGNING_KEY" > ~/.ssh/signing_key
+          chmod 600 ~/.ssh/signing_key
 
           git config user.name 'wbxBot'
           git config user.email '224158880+wbxbot@users.noreply.github.com'
@@ -137,36 +246,84 @@ jobs:
           git config user.signingkey ~/.ssh/signing_key
           git config commit.gpgsign true
 
-          git add .
-          if git diff --staged --quiet; then
-            echo "No changes in data. Nothing to commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+          git commit -m "🤖 chore(data): auto-update CDN nodes ($timestamp)"
 
-          echo "Changes detected. Proceeding with commit."
-          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
-          git commit -m "🤖 chore(data): auto-update CDN nodes ($TIMESTAMP)"
-          git push origin data
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          for attempt in 1 2 3; do
+            if git push origin data; then
+              break
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::Failed to push data branch after $attempt attempts."
+              exit 1
+            fi
+
+            sleep_seconds=$((attempt * 5))
+            echo "::warning::Push attempt $attempt failed. Retrying in ${sleep_seconds}s."
+            sleep "$sleep_seconds"
+          done
+
+          commit_sha=$(git rev-parse HEAD)
+          commit_short=$(git rev-parse --short HEAD)
+          {
+            echo "changed=true"
+            echo "commit=$commit_sha"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Data branch update"
+            echo
+            echo "- Changed: \`true\`"
+            echo "- Commit: \`$commit_short\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Count domains
         if: steps.push.outputs.changed == 'true'
         id: count
         run: |
-          TOTAL=$(wc -l < data/domains.txt | tr -d ' ')
-          REGIONS=$(jq 'keys | length' data/nodes.json)
-          TIMESTAMP=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
-          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
-          echo "regions=$REGIONS" >> "$GITHUB_OUTPUT"
-          echo "timestamp=$TIMESTAMP" >> "$GITHUB_OUTPUT"
+          set -Eeuo pipefail
+
+          total=$(wc -l < "$DOMAINS_FILE" | tr -d ' ')
+          regions=$(jq 'keys | length' "$DATA_DIR/nodes.json")
+          timestamp=$(TZ=Asia/Shanghai date +"%Y-%m-%d %H:%M UTC+8")
+
+          {
+            echo "total=$total"
+            echo "regions=$regions"
+            echo "timestamp=$timestamp"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### CDN data snapshot"
+            echo
+            echo "- Domains: \`$total\`"
+            echo "- Regions: \`$regions\`"
+            echo "- Updated: \`$timestamp\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Point release tag at data branch
         if: steps.push.outputs.changed == 'true'
         run: |
+          set -Eeuo pipefail
+
           git fetch origin data
           git tag -f latest-data origin/data
-          git push origin -f refs/tags/latest-data
+
+          for attempt in 1 2 3; do
+            if git push origin -f refs/tags/latest-data; then
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::Failed to update latest-data tag after $attempt attempts."
+              exit 1
+            fi
+
+            sleep_seconds=$((attempt * 5))
+            echo "::warning::Tag push attempt $attempt failed. Retrying in ${sleep_seconds}s."
+            sleep "$sleep_seconds"
+          done
 
       - name: Update Release
         if: steps.push.outputs.changed == 'true'
@@ -175,7 +332,7 @@ jobs:
           repo_token: ${{ github.token }}
           release_name: CDN Data (Auto Update)
           tag: latest-data
-          file: data/*
+          file: ${{ env.DATA_DIR }}/*
           file_glob: true
           overwrite: true
           make_latest: false
@@ -212,10 +369,63 @@ jobs:
             - 📦 [Data Branch](https://github.com/babywbx/BiliCDN/tree/data)
 
       - name: Refresh CDN data endpoint
-        if: always()
+        if: always() && steps.push.outputs.changed == 'true'
         env:
           CF_REFRESH_TOKEN: ${{ secrets.CF_REFRESH_TOKEN }}
         run: |
-          curl --fail-with-body -sS -X POST \
-            -H "Authorization: Bearer ${CF_REFRESH_TOKEN}" \
-            https://bilicdn.pages.dev/api/refresh
+          set -Eeuo pipefail
+
+          if [ -z "${CF_REFRESH_TOKEN}" ]; then
+            echo "::warning::CF_REFRESH_TOKEN is not set. Skipping CDN refresh."
+            exit 0
+          fi
+
+          max_attempts=5
+          delay_seconds=5
+
+          for attempt in $(seq 1 "$max_attempts"); do
+            echo "Refreshing CDN data endpoint (attempt $attempt/$max_attempts)..."
+            response_file=$(mktemp)
+            status=$(curl -sS \
+              --connect-timeout 10 \
+              --max-time 30 \
+              -o "$response_file" \
+              -w "%{http_code}" \
+              -X POST \
+              -H "Authorization: Bearer ${CF_REFRESH_TOKEN}" \
+              "$CDN_REFRESH_URL") || status="curl-error"
+
+            body=$(awk 'BEGIN { out = "" } { gsub(/\r/, ""); if (out != "") out = out " "; out = out $0 } END { print substr(out, 1, 1000) }' "$response_file")
+            rm -f "$response_file"
+
+            case "$status" in
+              2*)
+                echo "CDN data endpoint refreshed."
+                {
+                  echo "### CDN refresh"
+                  echo
+                  echo "- Status: \`$status\`"
+                  echo "- Attempts: \`$attempt\`"
+                } >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+                ;;
+            esac
+
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              echo "::warning::CDN refresh attempt $attempt failed with status $status: $body. Retrying in ${delay_seconds}s."
+              sleep "$delay_seconds"
+              delay_seconds=$((delay_seconds * 2))
+            else
+              echo "::warning::CDN refresh failed after $max_attempts attempts with status $status: $body"
+              {
+                echo "### CDN refresh warning"
+                echo
+                echo "Data branch and release updates may have completed, but the CDN refresh endpoint did not respond successfully."
+                echo
+                echo "- Status: \`$status\`"
+                echo "- Response: \`$body\`"
+              } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          exit 0
