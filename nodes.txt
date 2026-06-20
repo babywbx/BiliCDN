@@ -10,6 +10,7 @@ cn-bj-fx-01-08.bilivideo.com
 cn-bj-fx-01-09.bilivideo.com
 cn-bj-fx-01-10.bilivideo.com
 cn-bj-fx-01-11.bilivideo.com
+cn-bj-fx-01-12.bilivideo.com
 cn-bj-fx-bcache-01.bilivideo.com
 cn-bj-fx-bcache-02.bilivideo.com
 cn-bj-fx-bcache-03.bilivideo.com
@@ -45,7 +46,7 @@ cn-tj-cu-01-08.bilivideo.com
 cn-tj-cu-01-09.bilivideo.com
 cn-tj-cu-01-10.bilivideo.com
 cn-tj-cu-01-11.bilivideo.com
-cn-tj-cu-01-12.bilivideo.com
+cn-tj-cu-01-13.bilivideo.com
 cn-tj-cu-01-14.bilivideo.com
 cn-tj-cu-01-15.bilivideo.com
 cn-tj-cu-01-16.bilivideo.com
@@ -66,10 +67,10 @@ cn-cq-cm-01-08.bilivideo.com
 cn-cq-cm-01-12.bilivideo.com
 cn-cq-cm-01-13.bilivideo.com
 cn-cq-cm-01-14.bilivideo.com
-cn-cq-cm-01-17.bilivideo.com
 cn-cq-cm-01-18.bilivideo.com
 cn-cq-cm-01-19.bilivideo.com
 cn-cq-cm-01-20.bilivideo.com
+cn-cq-cm-01-21.bilivideo.com
 cn-cq-cm-01-22.bilivideo.com
 cn-cq-cm-01-23.bilivideo.com
 cn-cq-cm-01-27.bilivideo.com
@@ -175,6 +176,7 @@ cn-nmghhht-cu-v-03.bilivideo.com
 cn-nmghhht-cu-v-04.bilivideo.com
 cn-nmghhht-cu-v-05.bilivideo.com
 cn-nmghhht-cu-v-06.bilivideo.com
+cn-nmghhht-cu-v-07.bilivideo.com
 cn-nmghhht-cu-v-08.bilivideo.com
 cn-nmghhht-cu-v-09.bilivideo.com
 cn-nmghhht-cu-v-10.bilivideo.com
@@ -194,6 +196,7 @@ cn-lndl-ct-01-10.bilivideo.com
 辽宁-沈阳
 cn-lnsy-cm-01-02.bilivideo.com
 cn-lnsy-cm-01-03.bilivideo.com
+cn-lnsy-cm-01-04.bilivideo.com
 cn-lnsy-cm-01-06.bilivideo.com
 cn-lnsy-cm-01-09.bilivideo.com
 cn-lnsy-cm-01-10.bilivideo.com
@@ -241,7 +244,6 @@ cn-hljheb-dx-v-06.bilivideo.com
 cn-jsnj-gd-01-01.bilivideo.com
 cn-jsnj-gd-01-02.bilivideo.com
 cn-jsnj-gd-01-03.bilivideo.com
-cn-jsnj-gd-01-04.bilivideo.com
 cn-jsnj-gd-01-06.bilivideo.com
 cn-jsnj-gd-01-07.bilivideo.com
 cn-jsnj-gd-01-08.bilivideo.com
@@ -251,7 +253,6 @@ cn-jsnt-ct-01-01.bilivideo.com
 cn-jsnt-ct-01-02.bilivideo.com
 cn-jsnt-ct-01-04.bilivideo.com
 cn-jsnt-ct-01-05.bilivideo.com
-cn-jsnt-ct-01-07.bilivideo.com
 cn-jsnt-ct-01-11.bilivideo.com
 cn-jsnt-ct-01-17.bilivideo.com
 cn-jsnt-ct-01-18.bilivideo.com
@@ -269,6 +270,7 @@ cn-jsnt-ct-01-31.bilivideo.com
 cn-jsnt-ct-01-32.bilivideo.com
 cn-jsnt-ct-01-33.bilivideo.com
 cn-jsnt-ct-01-34.bilivideo.com
+cn-jsnt-ct-01-35.bilivideo.com
 cn-jsnt-ct-01-36.bilivideo.com
 cn-jsnt-ct-01-37.bilivideo.com
 cn-jsnt-ct-01-38.bilivideo.com
@@ -311,7 +313,7 @@ cn-jsyz-ct-03-14.bilivideo.com
 cn-jsyz-ct-03-15.bilivideo.com
 cn-jsyz-ct-03-16.bilivideo.com
 cn-jsyz-ct-03-17.bilivideo.com
-cn-jsyz-ct-03-18.bilivideo.com
+cn-jsyz-ct-03-19.bilivideo.com
 cn-jsyz-ct-03-20.bilivideo.com
 cn-jsyz-ct-03-21.bilivideo.com
 cn-jsyz-ct-03-22.bilivideo.com
@@ -329,8 +331,8 @@ cn-jsyz-ct-03-33.bilivideo.com
 cn-jsyz-ct-03-34.bilivideo.com
 cn-jsyz-ct-03-35.bilivideo.com
 cn-jsyz-ct-03-36.bilivideo.com
-cn-jsyz-ct-03-37.bilivideo.com
 cn-jsyz-ct-03-38.bilivideo.com
+cn-jsyz-ct-03-39.bilivideo.com
 cn-jsyz-ct-03-40.bilivideo.com
 cn-jsyz-ct-03-41.bilivideo.com
 cn-jsyz-ct-03-42.bilivideo.com
@@ -351,6 +353,7 @@ cn-jstz-cu-01-05.bilivideo.com
 cn-jstz-cu-01-06.bilivideo.com
 cn-jstz-cu-01-07.bilivideo.com
 cn-jstz-cu-01-08.bilivideo.com
+cn-jstz-cu-01-09.bilivideo.com
 cn-jstz-cu-01-11.bilivideo.com
 cn-jstz-cu-01-13.bilivideo.com
 cn-jstz-cu-01-14.bilivideo.com
@@ -381,7 +384,7 @@ cn-jssz-cm-02-02.bilivideo.com
 cn-jssz-cm-02-03.bilivideo.com
 cn-jssz-cm-02-04.bilivideo.com
 cn-jssz-cm-02-05.bilivideo.com
-cn-jssz-cm-02-08.bilivideo.com
+cn-jssz-cm-02-07.bilivideo.com
 cn-jssz-cm-02-09.bilivideo.com
 cn-jssz-cm-02-10.bilivideo.com
 cn-jssz-cm-02-11.bilivideo.com
@@ -410,13 +413,13 @@ cn-jssz-cm-02-37.bilivideo.com
 cn-jssz-cm-02-38.bilivideo.com
 cn-jssz-cm-02-39.bilivideo.com
 cn-jssz-cm-02-40.bilivideo.com
+cn-jssz-cm-02-41.bilivideo.com
 cn-jssz-cm-02-42.bilivideo.com
 cn-jssz-cm-02-43.bilivideo.com
 cn-jssz-cm-02-44.bilivideo.com
 cn-jssz-cm-02-45.bilivideo.com
 cn-jssz-cm-02-46.bilivideo.com
 cn-jssz-cm-02-47.bilivideo.com
-cn-jssz-cm-02-48.bilivideo.com
 cn-jssz-cm-02-49.bilivideo.com
 cn-jssz-cm-02-50.bilivideo.com
 cn-jssz-cmcc-v-01.bilivideo.com
@@ -527,6 +530,7 @@ cn-fjqz-cmcc-v-08.bilivideo.com
 
 福建-福州
 cn-fjfz-fx-01-01.bilivideo.com
+cn-fjfz-fx-01-02.bilivideo.com
 cn-fjfz-fx-01-03.bilivideo.com
 cn-fjfz-fx-01-04.bilivideo.com
 cn-fjfz-fx-01-05.bilivideo.com
@@ -547,7 +551,6 @@ cn-jxjj-dx-v-02.bilivideo.com
 cn-jxjj-dx-v-03.bilivideo.com
 cn-jxjj-dx-v-05.bilivideo.com
 cn-jxjj-dx-v-06.bilivideo.com
-cn-jxjj-dx-v-07.bilivideo.com
 cn-jxjj-dx-v-12.bilivideo.com
 
 江西-南昌
@@ -652,6 +655,7 @@ cn-sdqd-cu-01-02.bilivideo.com
 cn-sdqd-cu-01-05.bilivideo.com
 cn-sdqd-cu-01-06.bilivideo.com
 cn-sdqd-cu-01-08.bilivideo.com
+cn-sdqd-cu-01-11.bilivideo.com
 cn-sdqd-cu-01-13.bilivideo.com
 cn-sdqd-cu-01-14.bilivideo.com
 cn-sdqd-cu-01-15.bilivideo.com
@@ -663,7 +667,6 @@ cn-sdqd-cu-01-20.bilivideo.com
 cn-sdqd-cu-01-21.bilivideo.com
 cn-sdqd-cu-01-22.bilivideo.com
 cn-sdqd-cu-01-23.bilivideo.com
-cn-sdqd-cu-01-24.bilivideo.com
 cn-sdqd-cu-01-25.bilivideo.com
 cn-sdqd-cu-01-33.bilivideo.com
 cn-sdqd-cu-01-34.bilivideo.com
@@ -680,7 +683,6 @@ cn-hnly-cu-01-02.bilivideo.com
 cn-hnly-cu-01-03.bilivideo.com
 cn-hnly-cu-01-04.bilivideo.com
 cn-hnly-cu-01-05.bilivideo.com
-cn-hnly-cu-01-06.bilivideo.com
 cn-hnly-cu-01-07.bilivideo.com
 cn-hnly-cu-01-08.bilivideo.com
 cn-hnly-cu-01-09.bilivideo.com
@@ -698,6 +700,7 @@ cn-hnly-cu-01-20.bilivideo.com
 cn-hnly-cu-01-21.bilivideo.com
 cn-hnly-cu-01-22.bilivideo.com
 cn-hnly-cu-01-23.bilivideo.com
+cn-hnly-cu-01-24.bilivideo.com
 cn-hnly-cu-01-25.bilivideo.com
 cn-hnly-cu-01-26.bilivideo.com
 cn-hnly-cu-01-27.bilivideo.com
@@ -745,6 +748,7 @@ cn-hnzz-cmcc-v-14.bilivideo.com
 
 湖北-宜昌
 cn-hbyc-ct-01-01.bilivideo.com
+cn-hbyc-ct-01-02.bilivideo.com
 cn-hbyc-ct-01-05.bilivideo.com
 cn-hbyc-ct-01-06.bilivideo.com
 cn-hbyc-ct-01-07.bilivideo.com
@@ -756,7 +760,6 @@ cn-hbyc-ct-01-12.bilivideo.com
 cn-hbyc-ct-01-13.bilivideo.com
 cn-hbyc-ct-01-14.bilivideo.com
 cn-hbyc-ct-01-15.bilivideo.com
-cn-hbyc-ct-01-16.bilivideo.com
 cn-hbyc-ct-01-17.bilivideo.com
 cn-hbyc-ct-01-18.bilivideo.com
 cn-hbyc-ct-01-19.bilivideo.com
@@ -914,6 +917,7 @@ cn-hncs-fx-01-02.bilivideo.com
 cn-hncs-fx-01-03.bilivideo.com
 cn-hncs-fx-01-04.bilivideo.com
 cn-hncs-fx-01-05.bilivideo.com
+cn-hncs-fx-01-06.bilivideo.com
 cn-hncs3-cmcc-live-01.bilivideo.com
 cn-hncs3-cmcc-v-08.bilivideo.com
 cn-hncs3-cmcc-v-09.bilivideo.com
@@ -935,7 +939,6 @@ cn-gddg-cm-01-21.bilivideo.com
 cn-gddg-cm-01-22.bilivideo.com
 cn-gddg-cm-01-23.bilivideo.com
 cn-gddg-cm-01-24.bilivideo.com
-cn-gddg-cm-01-25.bilivideo.com
 cn-gddg-cm-01-26.bilivideo.com
 cn-gddg-cm-01-27.bilivideo.com
 cn-gddg-cmcc-v-02.bilivideo.com
@@ -954,7 +957,6 @@ cn-gddg-ct-01-09.bilivideo.com
 cn-gddg-ct-01-10.bilivideo.com
 cn-gddg-ct-01-11.bilivideo.com
 cn-gddg-ct-01-12.bilivideo.com
-cn-gddg-ct-01-13.bilivideo.com
 cn-gddg-ct-01-14.bilivideo.com
 cn-gddg-ct-01-15.bilivideo.com
 cn-gddg-ct-01-16.bilivideo.com
@@ -976,8 +978,7 @@ cn-gddg-ct-01-35.bilivideo.com
 cn-gddg-ct-01-36.bilivideo.com
 cn-gddg-cu-01-02.bilivideo.com
 cn-gddg-cu-01-03.bilivideo.com
-cn-gddg-cu-01-04.bilivideo.com
-cn-gddg-cu-01-06.bilivideo.com
+cn-gddg-cu-01-05.bilivideo.com
 cn-gddg-cu-01-07.bilivideo.com
 cn-gddg-cu-01-08.bilivideo.com
 cn-gddg-cu-01-09.bilivideo.com
@@ -1069,7 +1070,7 @@ cn-gdjm-cm-01-02.bilivideo.com
 cn-gdjm-cm-01-03.bilivideo.com
 cn-gdjm-cm-01-04.bilivideo.com
 cn-gdjm-cm-01-05.bilivideo.com
-cn-gdjm-cm-01-07.bilivideo.com
+cn-gdjm-cm-01-06.bilivideo.com
 cn-gdjm-cm-01-08.bilivideo.com
 cn-gdjm-cm-01-09.bilivideo.com
 cn-gdjm-cm-01-10.bilivideo.com
@@ -1172,6 +1173,7 @@ cn-xj-ct-01-01.bilivideo.com
 cn-xj-ct-01-02.bilivideo.com
 cn-xj-ct-01-03.bilivideo.com
 cn-xj-ct-01-04.bilivideo.com
+cn-xj-ct-01-05.bilivideo.com
 
 香港
 cn-hk-eq-01-01.bilivideo.com
@@ -1187,6 +1189,9 @@ upos-hz-mirrorakam.akamaized.net
 
 UPOS-Cloudflare
 upos-sz-mirrorcf1ov.bilivideo.com
+
+UPOS-七牛云
+upos-sz-302kodo.bilivideo.com
 
 UPOS-其他
 upos-cs-upcdnbldsa.bilivideo.com
@@ -1235,7 +1240,6 @@ d1--cn-gotcha04b.bilivideo.com
 d1--cn-gotcha07b.bilivideo.com
 d1--cn-gotcha104b.bilivideo.com
 d1--cn-gotcha105.bilivideo.com
-d1--cn-gotcha108.bilivideo.com
 d1--cn-gotcha204-1.bilivideo.com
 d1--cn-gotcha204-3.bilivideo.com
 d1--cn-gotcha204-4.bilivideo.com
@@ -1250,12 +1254,11 @@ d1--cn-gotcha309.bilivideo.com
 d1--p1--cn-gotcha04.bilivideo.com
 
 Gotcha-海外
-d1--ov-gotcha104.bilivideo.com
 d1--ov-gotcha105.bilivideo.com
 d1--ov-gotcha105b.bilivideo.com
 d1--ov-gotcha107.bilivideo.com
 d1--ov-gotcha207.bilivideo.com
-d1--ov-gotcha208.bilivideo.com
+d1--ov-gotcha207b.bilivideo.com
 d1--ov-gotcha209.bilivideo.com
 d1--ov-gotcha209b.bilivideo.com
 d1--ov-gotcha210.bilivideo.com
