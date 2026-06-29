@@ -207,6 +207,9 @@ jobs:
           for format in json yml txt md; do
             ./bilicdn convert -i "$DOMAINS_FILE" -o "$DATA_DIR/nodes.$format"
           done
+          ./bilicdn convert -i "$DOMAINS_FILE" -o "$DATA_DIR/nodes.meta.json" -f meta
+          ./bilicdn convert -i "$DOMAINS_FILE" -o "$DATA_DIR/domains.live.txt" -f live
+          ./bilicdn convert -i "$DOMAINS_FILE" -o "$DATA_DIR/domains.video.txt" -f video
 
       - name: Sync, Commit and Push to data branch
         if: steps.validate.outputs.valid == 'true'
@@ -352,6 +355,9 @@ jobs:
             | `nodes.yml` | Grouped by region (YAML) |
             | `nodes.txt` | Grouped by region (plain text) |
             | `nodes.md` | Grouped by region (Markdown) |
+            | `nodes.meta.json` | Flat metadata rows with region, family, usage, and usages |
+            | `domains.live.txt` | Script-friendly live-capable domain list |
+            | `domains.video.txt` | Script-friendly video-capable domain list |
 
             ### CDN API
 
@@ -361,6 +367,14 @@ jobs:
             https://bilicdn.pages.dev/nodes.txt
             https://bilicdn.pages.dev/nodes.md
             https://bilicdn.pages.dev/domains.txt
+            ```
+
+            ### jsDelivr Data Files
+
+            ```
+            https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.meta.json
+            https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.live.txt
+            https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.video.txt
             ```
 
             ### Links

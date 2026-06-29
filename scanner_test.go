@@ -138,7 +138,7 @@ func TestGenerateAllJobsCount(t *testing.T) {
 	count := generateAllJobs(ctx, jobs, allLocations(), 0)
 	close(jobs)
 
-	// Standard: 1 loc × len(standardISPs) × 1 block × 1 server
+	// Standard: len(standardPrefixes) × 1 loc × len(standardISPs) × 1 block × 1 server
 	// Extended: 1 loc × len(extendedISPs) × (bcache 25 + v 25 + live 10)
 	// UPOS + Misc + External
 	received := 0
@@ -150,6 +150,34 @@ func TestGenerateAllJobsCount(t *testing.T) {
 	}
 	if count == 0 {
 		t.Error("generated 0 domains")
+	}
+}
+
+func TestGenerateAllJobsIncludesECStandardPrefix(t *testing.T) {
+	restore := snapshotState()
+	defer restore()
+
+	flagDomain = "bilivideo.com"
+	flagBlockStart = 1
+	flagBlockEnd = 1
+	flagServerStart = 9
+	flagServerEnd = 9
+	flagGotcha = false
+	baseLocations = []string{"hncs"}
+	numberedLocations = nil
+
+	jobs := make(chan string, 10000)
+	count := generateAllJobs(context.Background(), jobs, allLocations(), 0)
+	close(jobs)
+
+	got := make(map[string]bool, count)
+	for domain := range jobs {
+		got[domain] = true
+	}
+
+	want := "ec-hncs-ct-01-09.bilivideo.com"
+	if !got[want] {
+		t.Fatalf("generated domains missing %q", want)
 	}
 }
 

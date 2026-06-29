@@ -883,7 +883,7 @@ func printConfig(pool *DNSResolverPool, locations []string, total int) {
 
 	blocks := flagBlockEnd - flagBlockStart + 1
 	servers := flagServerEnd - flagServerStart + 1
-	std := len(locations) * len(standardISPs) * blocks * servers
+	std := len(standardPrefixes) * len(locations) * len(standardISPs) * blocks * servers
 	var ext int
 	for _, nt := range nodeTypes {
 		if nt.MaxNum > 0 {
@@ -946,7 +946,7 @@ func newHTTPClient() *http.Client {
 func estimateTotalDomains(locations []string) int {
 	blocks := flagBlockEnd - flagBlockStart + 1
 	servers := flagServerEnd - flagServerStart + 1
-	total := len(locations) * len(standardISPs) * blocks * servers
+	total := len(standardPrefixes) * len(locations) * len(standardISPs) * blocks * servers
 
 	for _, nt := range nodeTypes {
 		if nt.MaxNum > 0 {
@@ -991,15 +991,17 @@ func generateAllJobs(ctx context.Context, jobs chan<- string, locations []string
 		}
 	}
 
-	// 1. Standard: cn-{loc}-{isp}-{block}-{server}
-	for _, loc := range locations {
-		for _, isp := range standardISPs {
-			prefix := "cn-" + loc + "-" + isp + "-"
-			for b := flagBlockStart; b <= flagBlockEnd; b++ {
-				bStr := twoDigit[b] + "-"
-				for s := flagServerStart; s <= flagServerEnd; s++ {
-					if !send(prefix + bStr + twoDigit[s] + suffix) {
-						return count
+	// 1. Standard: {prefix}-{loc}-{isp}-{block}-{server}
+	for _, standardPrefix := range standardPrefixes {
+		for _, loc := range locations {
+			for _, isp := range standardISPs {
+				prefix := standardPrefix + "-" + loc + "-" + isp + "-"
+				for b := flagBlockStart; b <= flagBlockEnd; b++ {
+					bStr := twoDigit[b] + "-"
+					for s := flagServerStart; s <= flagServerEnd; s++ {
+						if !send(prefix + bStr + twoDigit[s] + suffix) {
+							return count
+						}
 					}
 				}
 			}

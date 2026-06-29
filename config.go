@@ -175,7 +175,10 @@ var numberedLocations = []string{
 	"zjjh4",
 }
 
-// ISPs for standard nodes: cn-{loc}-{isp}-{block}-{server}
+// Prefixes for standard nodes: {prefix}-{loc}-{isp}-{block}-{server}
+var standardPrefixes = []string{"cn", "ec"}
+
+// ISPs for standard nodes: {prefix}-{loc}-{isp}-{block}-{server}
 var standardISPs = []string{
 	"cm", "cmcc", "ct", "cu", "dx", // Major carriers
 	"txy", "ali", "hw", "ks3", "bdy", // Cloud providers

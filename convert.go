@@ -131,57 +131,138 @@ var uposProviderMap = map[string]string{
 	"ks":   "金山云",
 }
 
+type DomainMeta struct {
+	Domain string   `json:"domain"`
+	Region string   `json:"region"`
+	Family string   `json:"family"`
+	Usage  string   `json:"usage"`
+	Usages []string `json:"usages"`
+}
+
 // classifyDomain assigns a domain to a region category.
 func classifyDomain(domain string) string {
-	// Strip the TLD suffix for classification (handle both bilivideo.com and akamaized.net)
-	name := domain
+	return analyzeDomain(domain).Region
+}
+
+func hostnameLabel(domain string) string {
+	name := strings.TrimSpace(domain)
 	if idx := strings.Index(name, "."); idx > 0 {
 		name = name[:idx]
 	}
+	return name
+}
+
+func classifyUPOSName(name string) string {
+	// Classify by cloud provider: match longest provider key in domain
+	bestProvider := ""
+	bestKey := ""
+	for key, provider := range uposProviderMap {
+		if strings.Contains(name, key) && len(key) > len(bestKey) {
+			bestProvider = provider
+			bestKey = key
+		}
+	}
+	if bestProvider != "" {
+		return "UPOS-" + bestProvider
+	}
+	return "UPOS-其他"
+}
+
+func classifyGotchaName(name string) string {
+	if strings.Contains(name, "-ov-") || strings.Contains(name, "ov-gotcha") {
+		return "Gotcha-海外"
+	}
+	if strings.Contains(name, "-tf-") {
+		return "Gotcha-TF"
+	}
+	return "Gotcha-国内"
+}
+
+func classifyRegionalName(name, prefix string) string {
+	rest := strings.TrimPrefix(name, prefix+"-")
+	bestKey := ""
+	for key := range regionMap {
+		if strings.HasPrefix(rest, key) && len(key) > len(bestKey) {
+			bestKey = key
+		}
+	}
+	if bestKey != "" {
+		return regionMap[bestKey]
+	}
+	if idx := strings.Index(rest, "-"); idx > 0 {
+		return prefix + "-" + rest[:idx]
+	}
+	return "其他"
+}
+
+func isTwoDigit(s string) bool {
+	if len(s) != 2 {
+		return false
+	}
+	return s[0] >= '0' && s[0] <= '9' && s[1] >= '0' && s[1] <= '9'
+}
+
+func isStandardRegionalNode(parts []string) bool {
+	return len(parts) == 5 && isTwoDigit(parts[3]) && isTwoDigit(parts[4])
+}
+
+func isTypedRegionalNode(parts []string, nodeType string) bool {
+	return len(parts) == 5 && parts[3] == nodeType && isTwoDigit(parts[4])
+}
+
+func analyzeDomain(domain string) DomainMeta {
+	name := hostnameLabel(domain)
+	meta := DomainMeta{
+		Domain: domain,
+		Region: "其他",
+		Family: "other",
+		Usage:  "other",
+		Usages: []string{"other"},
+	}
 
 	if strings.HasPrefix(name, "upos-") {
-		// Classify by cloud provider: match longest provider key in domain
-		bestProvider := ""
-		bestKey := ""
-		for key, provider := range uposProviderMap {
-			if strings.Contains(name, key) && len(key) > len(bestKey) {
-				bestProvider = provider
-				bestKey = key
-			}
-		}
-		if bestProvider != "" {
-			return "UPOS-" + bestProvider
-		}
-		return "UPOS-其他"
+		meta.Region = classifyUPOSName(name)
+		meta.Family = "upos"
+		meta.Usage = "storage"
+		meta.Usages = []string{"video", "storage"}
+		return meta
 	}
 
 	if strings.Contains(name, "-gotcha") {
-		if strings.Contains(name, "-ov-") || strings.Contains(name, "ov-gotcha") {
-			return "Gotcha-海外"
-		}
-		if strings.Contains(name, "-tf-") {
-			return "Gotcha-TF"
-		}
-		return "Gotcha-国内"
+		meta.Region = classifyGotchaName(name)
+		meta.Family = "gotcha"
+		meta.Usage = "live"
+		meta.Usages = []string{"live"}
+		return meta
 	}
 
-	if strings.HasPrefix(name, "cn-") {
-		rest := name[3:]
-		bestKey := ""
-		for key := range regionMap {
-			if strings.HasPrefix(rest, key) && len(key) > len(bestKey) {
-				bestKey = key
+	for _, prefix := range standardPrefixes {
+		if strings.HasPrefix(name, prefix+"-") {
+			meta.Region = classifyRegionalName(name, prefix)
+			parts := strings.Split(name, "-")
+			switch {
+			case prefix == "cn" && isTypedRegionalNode(parts, "live"):
+				meta.Family = "live-explicit"
+				meta.Usage = "live"
+				meta.Usages = []string{"live"}
+			case prefix == "cn" && (isTypedRegionalNode(parts, "v") || isTypedRegionalNode(parts, "bcache")):
+				meta.Family = "video-edge"
+				meta.Usage = "video"
+				meta.Usages = []string{"video"}
+			case prefix == "ec" && isStandardRegionalNode(parts):
+				meta.Family = "standard-ec"
+				meta.Usage = "live"
+				meta.Usages = []string{"live"}
+			case prefix == "cn" && isStandardRegionalNode(parts):
+				meta.Family = "standard-" + prefix
+				meta.Usage = "shared"
+				meta.Usages = []string{"live", "video"}
 			}
-		}
-		if bestKey != "" {
-			return regionMap[bestKey]
-		}
-		if idx := strings.Index(rest, "-"); idx > 0 {
-			return "cn-" + rest[:idx]
+			return meta
 		}
 	}
 
-	return "其他"
+	return meta
 }
 
 // Region sort order by geographic area
@@ -240,12 +321,29 @@ func sortedRegions(grouped map[string][]string) []string {
 	return regions
 }
 
+func buildDomainMetadata(grouped map[string][]string) []DomainMeta {
+	metas := []DomainMeta{}
+	for _, domains := range grouped {
+		for _, domain := range domains {
+			metas = append(metas, analyzeDomain(domain))
+		}
+	}
+	sortDomainMetadata(metas)
+	return metas
+}
+
+func sortDomainMetadata(metas []DomainMeta) {
+	slices.SortFunc(metas, func(a, b DomainMeta) int {
+		return strings.Compare(a.Domain, b.Domain)
+	})
+}
+
 func runConvert(args []string) error {
 	fs := flag.NewFlagSet("bilicdn convert", flag.ContinueOnError)
 	fs.SetOutput(os.Stderr)
 	input := fs.String("i", "data/domains.txt", "Input domains file")
-	output := fs.String("o", "data/nodes.json", "Output file (.json/.yml/.txt/.md)")
-	format := fs.String("f", "", "Output format (json/yaml/txt/md), auto-detected from extension")
+	output := fs.String("o", "data/nodes.json", "Output file (.json/.yml/.txt/.md or metadata/list filename)")
+	format := fs.String("f", "", "Output format (json/yaml/txt/md/meta/live/video), auto-detected from extension")
 	fs.Usage = func() {
 		fmt.Fprintln(os.Stderr, "Usage: bilicdn convert [flags]")
 		fmt.Fprintln(os.Stderr, "  Convert flat domain list to region-grouped output.")
@@ -255,6 +353,9 @@ func runConvert(args []string) error {
 		fmt.Fprintln(os.Stderr, "  yaml   YAML grouped by region")
 		fmt.Fprintln(os.Stderr, "  txt    Plain text with region headers")
 		fmt.Fprintln(os.Stderr, "  md     Markdown with region sections")
+		fmt.Fprintln(os.Stderr, "  meta   Flat metadata JSON array (domain/region/family/usage/usages)")
+		fmt.Fprintln(os.Stderr, "  live   Plain list of live-capable domains, one per line")
+		fmt.Fprintln(os.Stderr, "  video  Plain list of video-capable domains, one per line")
 		fmt.Fprintln(os.Stderr, "")
 		fs.PrintDefaults()
 	}
@@ -265,17 +366,26 @@ func runConvert(args []string) error {
 	// Detect format from extension if not specified
 	fmt_ := *format
 	if fmt_ == "" {
-		switch strings.ToLower(filepath.Ext(*output)) {
-		case ".json":
-			fmt_ = "json"
-		case ".yml", ".yaml":
-			fmt_ = "yaml"
-		case ".txt":
-			fmt_ = "txt"
-		case ".md", ".markdown":
-			fmt_ = "md"
+		switch strings.ToLower(filepath.Base(*output)) {
+		case "nodes.meta.json":
+			fmt_ = "meta"
+		case "domains.live.txt":
+			fmt_ = "live"
+		case "domains.video.txt":
+			fmt_ = "video"
 		default:
-			fmt_ = "json"
+			switch strings.ToLower(filepath.Ext(*output)) {
+			case ".json":
+				fmt_ = "json"
+			case ".yml", ".yaml":
+				fmt_ = "yaml"
+			case ".txt":
+				fmt_ = "txt"
+			case ".md", ".markdown":
+				fmt_ = "md"
+			default:
+				fmt_ = "json"
+			}
 		}
 	}
 
@@ -317,8 +427,14 @@ func runConvert(args []string) error {
 		data = renderTXT(grouped)
 	case "md":
 		data = renderMD(grouped)
+	case "meta":
+		data, err = renderMetaJSON(buildDomainMetadata(grouped))
+	case "live":
+		data = renderDomainListByUsage(buildDomainMetadata(grouped), "live")
+	case "video":
+		data = renderDomainListByUsage(buildDomainMetadata(grouped), "video")
 	default:
-		return fmt.Errorf("unknown format %q (use json/yaml/txt/md)", fmt_)
+		return fmt.Errorf("unknown format %q (use json/yaml/txt/md/meta/live/video)", fmt_)
 	}
 	if err != nil {
 		return err
@@ -370,6 +486,27 @@ func renderJSON(grouped map[string][]string) ([]byte, error) {
 	}
 	b.WriteString("}\n")
 	return []byte(b.String()), nil
+}
+
+func renderMetaJSON(metas []DomainMeta) ([]byte, error) {
+	sortDomainMetadata(metas)
+	data, err := json.MarshalIndent(metas, "", "  ")
+	if err != nil {
+		return nil, fmt.Errorf("marshal metadata: %w", err)
+	}
+	return append(data, '\n'), nil
+}
+
+func renderDomainListByUsage(metas []DomainMeta, usage string) []byte {
+	sortDomainMetadata(metas)
+	var b strings.Builder
+	for _, meta := range metas {
+		if slices.Contains(meta.Usages, usage) {
+			b.WriteString(meta.Domain)
+			b.WriteByte('\n')
+		}
+	}
+	return []byte(b.String())
 }
 
 func renderYAML(grouped map[string][]string) []byte {

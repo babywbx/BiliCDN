@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -23,6 +24,7 @@ func TestClassifyDomainStandard(t *testing.T) {
 		{"cn-xj-ct-01-01.bilivideo.com", "新疆"},
 		{"cn-xjwlmq-ct-01-01.bilivideo.com", "新疆-乌鲁木齐"},
 		{"cn-hljheb-ct-01-02.bilivideo.com", "黑龙江-哈尔滨"},
+		{"ec-hncs-ct-01-09.bilivideo.com", "湖南-长沙"},
 	}
 	for _, tt := range tests {
 		got := classifyDomain(tt.domain)
@@ -100,6 +102,102 @@ func TestClassifyDomainUnknownLocation(t *testing.T) {
 	}
 }
 
+func TestAnalyzeDomainUsage(t *testing.T) {
+	tests := []struct {
+		domain string
+		region string
+		family string
+		usage  string
+		usages []string
+	}{
+		{
+			domain: "ec-hncs-ct-01-09.bilivideo.com",
+			region: "湖南-长沙",
+			family: "standard-ec",
+			usage:  "live",
+			usages: []string{"live"},
+		},
+		{
+			domain: "cn-hbyc-ct-01-01.bilivideo.com",
+			region: "湖北-宜昌",
+			family: "standard-cn",
+			usage:  "shared",
+			usages: []string{"live", "video"},
+		},
+		{
+			domain: "cn-hncs-cu-live-01.bilivideo.com",
+			region: "湖南-长沙",
+			family: "live-explicit",
+			usage:  "live",
+			usages: []string{"live"},
+		},
+		{
+			domain: "cn-hncs-cu-v-01.bilivideo.com",
+			region: "湖南-长沙",
+			family: "video-edge",
+			usage:  "video",
+			usages: []string{"video"},
+		},
+		{
+			domain: "d1--cn-gotcha04.bilivideo.com",
+			region: "Gotcha-国内",
+			family: "gotcha",
+			usage:  "live",
+			usages: []string{"live"},
+		},
+		{
+			domain: "upos-sz-mirroraliov.bilivideo.com",
+			region: "UPOS-阿里云",
+			family: "upos",
+			usage:  "storage",
+			usages: []string{"video", "storage"},
+		},
+	}
+
+	for _, tt := range tests {
+		got := analyzeDomain(tt.domain)
+		if got.Domain != tt.domain {
+			t.Fatalf("Domain = %q, want %q", got.Domain, tt.domain)
+		}
+		if got.Region != tt.region {
+			t.Errorf("Region for %q = %q, want %q", tt.domain, got.Region, tt.region)
+		}
+		if got.Family != tt.family {
+			t.Errorf("Family for %q = %q, want %q", tt.domain, got.Family, tt.family)
+		}
+		if got.Usage != tt.usage {
+			t.Errorf("Usage for %q = %q, want %q", tt.domain, got.Usage, tt.usage)
+		}
+		if strings.Join(got.Usages, ",") != strings.Join(tt.usages, ",") {
+			t.Errorf("Usages for %q = %#v, want %#v", tt.domain, got.Usages, tt.usages)
+		}
+	}
+}
+
+func TestAnalyzeDomainRejectsUnsupportedShapes(t *testing.T) {
+	tests := []string{
+		"ec-hncs-cu-v-01.bilivideo.com",
+		"ec-hncs-cu-live-01.bilivideo.com",
+		"cn-hncs-cu-foo-01.bilivideo.com",
+	}
+
+	for _, domain := range tests {
+		got := analyzeDomain(domain)
+		if got.Region != "湖南-长沙" {
+			t.Errorf("Region for %q = %q, want 湖南-长沙", domain, got.Region)
+		}
+		if got.Family != "other" {
+			t.Errorf("Family for %q = %q, want other", domain, got.Family)
+		}
+		if got.Usage != "other" {
+			t.Errorf("Usage for %q = %q, want other", domain, got.Usage)
+		}
+		if strings.Join(got.Usages, ",") != "other" {
+			t.Errorf("Usages for %q = %#v, want [other]", domain, got.Usages)
+		}
+	}
+}
+
 func TestRegionSortOrder(t *testing.T) {
 	grouped := map[string][]string{
 		"其他":        {"api.bilivideo.com"},
@@ -162,6 +260,70 @@ func TestRenderJSON(t *testing.T) {
 	}
 	if len(parsed["北京"]) != 1 {
 		t.Errorf("expected 1 domain in 北京, got %d", len(parsed["北京"]))
+	}
+}
+
+func TestRenderMetaJSON(t *testing.T) {
+	metas := []DomainMeta{
+		analyzeDomain("ec-hncs-ct-01-09.bilivideo.com"),
+		analyzeDomain("cn-hbyc-ct-01-01.bilivideo.com"),
+	}
+
+	data, err := renderMetaJSON(metas)
+	if err != nil {
+		t.Fatalf("renderMetaJSON: %v", err)
+	}
+
+	var parsed []DomainMeta
+	if err := json.Unmarshal(data, &parsed); err != nil {
+		t.Fatalf("invalid metadata JSON: %v\n%s", err, data)
+	}
+	if len(parsed) != 2 {
+		t.Fatalf("len(parsed) = %d, want 2", len(parsed))
+	}
+	if parsed[0].Domain != "cn-hbyc-ct-01-01.bilivideo.com" {
+		t.Fatalf("metadata not sorted by domain: first = %q", parsed[0].Domain)
+	}
+}
+
+func TestRenderMetaJSONEmptyIsArray(t *testing.T) {
+	data, err := renderMetaJSON(buildDomainMetadata(map[string][]string{}))
+	if err != nil {
+		t.Fatalf("renderMetaJSON empty: %v", err)
+	}
+	if strings.TrimSpace(string(data)) != "[]" {
+		t.Fatalf("empty metadata = %q, want []", data)
+	}
+}
+
+func TestRenderDomainListByUsage(t *testing.T) {
+	metas := []DomainMeta{
+		analyzeDomain("cn-hbyc-ct-01-01.bilivideo.com"),
+		analyzeDomain("ec-hncs-ct-01-09.bilivideo.com"),
+		analyzeDomain("cn-hncs-cu-v-01.bilivideo.com"),
+		analyzeDomain("upos-sz-mirroraliov.bilivideo.com"),
+	}
+
+	live := string(renderDomainListByUsage(metas, "live"))
+	if !strings.Contains(live, "ec-hncs-ct-01-09.bilivideo.com\n") {
+		t.Fatalf("live list missing ec host:\n%s", live)
+	}
+	if !strings.Contains(live, "cn-hbyc-ct-01-01.bilivideo.com\n") {
+		t.Fatalf("live list missing shared cn host:\n%s", live)
+	}
+	if strings.Contains(live, "cn-hncs-cu-v-01.bilivideo.com") {
+		t.Fatalf("live list contains video-only host:\n%s", live)
+	}
+
+	video := string(renderDomainListByUsage(metas, "video"))
+	if !strings.Contains(video, "cn-hncs-cu-v-01.bilivideo.com\n") {
+		t.Fatalf("video list missing video edge:\n%s", video)
+	}
+	if !strings.Contains(video, "upos-sz-mirroraliov.bilivideo.com\n") {
+		t.Fatalf("video list missing UPOS storage:\n%s", video)
+	}
+	if strings.Contains(video, "ec-hncs-ct-01-09.bilivideo.com") {
+		t.Fatalf("video list contains ec live-only host:\n%s", video)
 	}
 }
 
@@ -242,6 +404,76 @@ func TestRunConvertJSON(t *testing.T) {
 	}
 	if len(parsed) != 2 {
 		t.Errorf("expected 2 regions, got %d", len(parsed))
+	}
+}
+
+func TestRunConvertMetadataAndUsageFormats(t *testing.T) {
+	dir := t.TempDir()
+	inputPath := filepath.Join(dir, "domains.txt")
+	input := strings.Join([]string{
+		"cn-hbyc-ct-01-01.bilivideo.com",
+		"cn-hncs-cu-live-01.bilivideo.com",
+		"ec-hncs-ct-01-09.bilivideo.com",
+		"cn-hncs-cu-v-01.bilivideo.com",
+		"d1--cn-gotcha04.bilivideo.com",
+		"upos-sz-mirroraliov.bilivideo.com",
+		"",
+	}, "\n")
+	if err := os.WriteFile(inputPath, []byte(input), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	metaPath := filepath.Join(dir, "nodes.meta.json")
+	if err := runConvert([]string{"-i", inputPath, "-o", metaPath}); err != nil {
+		t.Fatalf("runConvert meta: %v", err)
+	}
+	metaData, err := os.ReadFile(metaPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var parsed []DomainMeta
+	if err := json.Unmarshal(metaData, &parsed); err != nil {
+		t.Fatalf("invalid meta output: %v", err)
+	}
+	if len(parsed) != 6 {
+		t.Fatalf("metadata rows = %d, want 6", len(parsed))
+	}
+
+	livePath := filepath.Join(dir, "domains.live.txt")
+	if err := runConvert([]string{"-i", inputPath, "-o", livePath}); err != nil {
+		t.Fatalf("runConvert live: %v", err)
+	}
+	liveData, _ := os.ReadFile(livePath)
+	wantLive := []string{
+		"cn-hbyc-ct-01-01.bilivideo.com",
+		"cn-hncs-cu-live-01.bilivideo.com",
+		"d1--cn-gotcha04.bilivideo.com",
+		"ec-hncs-ct-01-09.bilivideo.com",
+	}
+	gotLive := strings.Split(strings.TrimSpace(string(liveData)), "\n")
+	if !slices.Equal(gotLive, wantLive) {
+		t.Fatalf("live output = %#v, want %#v", gotLive, wantLive)
+	}
+	if strings.Contains(string(liveData), "湖南-长沙") {
+		t.Fatalf("live output should be a flat domain list, got region header:\n%s", liveData)
+	}
+
+	videoPath := filepath.Join(dir, "domains.video.txt")
+	if err := runConvert([]string{"-i", inputPath, "-o", videoPath}); err != nil {
+		t.Fatalf("runConvert video: %v", err)
+	}
+	videoData, _ := os.ReadFile(videoPath)
+	wantVideo := []string{
+		"cn-hbyc-ct-01-01.bilivideo.com",
+		"cn-hncs-cu-v-01.bilivideo.com",
+		"upos-sz-mirroraliov.bilivideo.com",
+	}
+	gotVideo := strings.Split(strings.TrimSpace(string(videoData)), "\n")
+	if !slices.Equal(gotVideo, wantVideo) {
+		t.Fatalf("video output = %#v, want %#v", gotVideo, wantVideo)
+	}
+	if strings.Contains(string(videoData), "湖北-宜昌") {
+		t.Fatalf("video output should be a flat domain list, got region header:\n%s", videoData)
 	}
 }
 

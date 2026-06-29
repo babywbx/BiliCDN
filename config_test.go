@@ -113,3 +113,26 @@ func TestStandardISPsNonEmpty(t *testing.T) {
 		t.Error("standardISPs empty")
 	}
 }
+
+func TestStandardPrefixesIncludeCNAndEC(t *testing.T) {
+	if len(standardPrefixes) == 0 {
+		t.Fatal("standardPrefixes empty")
+	}
+
+	seen := make(map[string]bool, len(standardPrefixes))
+	for _, prefix := range standardPrefixes {
+		if prefix == "" {
+			t.Fatal("standardPrefixes contains empty prefix")
+		}
+		if seen[prefix] {
+			t.Fatalf("duplicate standard prefix %q", prefix)
+		}
+		seen[prefix] = true
+	}
+
+	for _, prefix := range []string{"cn", "ec"} {
+		if !seen[prefix] {
+			t.Fatalf("standardPrefixes missing %q", prefix)
+		}
+	}
+}

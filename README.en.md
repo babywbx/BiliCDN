@@ -88,7 +88,7 @@ Browse all CDN nodes at [**bilicdn.pages.dev**](https://bilicdn.pages.dev):
 
 ### API Endpoints
 
-All data files are served via Cloudflare CDN for fast global access:
+The commonly used data files below are currently served via Cloudflare CDN:
 
 ```
 https://bilicdn.pages.dev/nodes.json
@@ -98,14 +98,33 @@ https://bilicdn.pages.dev/nodes.md
 https://bilicdn.pages.dev/domains.txt
 ```
 
-Also available via jsDelivr CDN:
+The complete data set is also available via jsDelivr CDN:
 
 ```
 https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.json
 https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.yml
 https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.txt
 https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.md
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.meta.json
 https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.txt
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.live.txt
+https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.video.txt
+```
+
+`nodes.meta.json`, `domains.live.txt`, and `domains.video.txt` provide usage tags for scripts that need to filter live and video domains quickly.
+
+Scripts can consume the usage-specific lists directly:
+
+```bash
+# Fetch live-related domains
+curl -fsSL https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.live.txt
+
+# Fetch video-related domains
+curl -fsSL https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/domains.video.txt
+
+# Filter live domains from metadata
+curl -fsSL https://cdn.jsdelivr.net/gh/babywbx/BiliCDN@latest-data/nodes.meta.json |
+  jq -r '.[] | select(.usages | index("live")) | .domain'
 ```
 
 ### Direct Download
@@ -119,6 +138,9 @@ Or download raw data files from the [`data` branch][data-branch-link]:
 | `nodes.yml` | YAML grouped by region |
 | `nodes.txt` | Plain text grouped by region |
 | `nodes.md` | Markdown with geographic area sections |
+| `nodes.meta.json` | Flat metadata JSON array with domain, region, family, usage, and usages |
+| `domains.live.txt` | Script-friendly live-capable domain list |
+| `domains.video.txt` | Script-friendly video-capable domain list |
 
 <div align="right">
 
@@ -157,6 +179,8 @@ go build -o bilicdn .
 # Resume from last checkpoint
 ./bilicdn -resume
 
+# After upgrading to the version with ec standard nodes, prefer a fresh full scan over an old checkpoint
+
 # Incremental update: recheck old domains first, then full scan for new ones
 ./bilicdn -diff data/domains.txt
 ```
@@ -172,6 +196,9 @@ go build -o bilicdn .
 ./bilicdn convert -i data/domains.txt -o data/nodes.yml
 ./bilicdn convert -i data/domains.txt -o data/nodes.txt
 ./bilicdn convert -i data/domains.txt -o data/nodes.md
+./bilicdn convert -i data/domains.txt -o data/nodes.meta.json
+./bilicdn convert -i data/domains.txt -o data/domains.live.txt
+./bilicdn convert -i data/domains.txt -o data/domains.video.txt
 
 # Force format (ignore extension)
 ./bilicdn convert -o output -f yaml
@@ -200,8 +227,8 @@ go build -o bilicdn .
 | Flag | Default | Description |
 | --- | --- | --- |
 | `-i` | `data/domains.txt` | Input domains file |
-| `-o` | `data/nodes.json` | Output file (.json/.yml/.txt/.md) |
-| `-f` | (auto) | Force format (json/yaml/txt/md) |
+| `-o` | `data/nodes.json` | Output file (.json/.yml/.txt/.md or metadata/list filename) |
+| `-f` | (auto) | Force format (json/yaml/txt/md/meta/live/video) |
 
 <div align="right">
 
