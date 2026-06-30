@@ -72,15 +72,17 @@ a:hover{text-decoration:underline}
 
 /* Main */
 .main{max-width:1400px;margin:0 auto;padding:24px}
-.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;min-height:40px}
+.stats-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.stats-bar{display:flex;gap:12px;flex-wrap:wrap;min-height:40px}
 .stat-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;color:var(--text2);position:relative}
 .stat-chip strong{color:var(--text);font-variant-numeric:tabular-nums}
 .stat-chip .tip{position:absolute;top:calc(100% + 8px);left:0;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);font-size:.78rem;padding:6px 12px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .stat-chip .tip::after{content:'';position:absolute;bottom:100%;left:16px;border:5px solid transparent;border-bottom-color:var(--border2)}
 .stat-chip:hover .tip{opacity:1}
 
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-.search-box{flex:1;min-width:240px;position:relative}
+.controls{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.filter-unit{display:flex;align-items:center;gap:10px;min-width:0}
+.search-box{flex:1 1 280px;min-width:240px;position:relative}
 .search-box input{width:100%;padding:10px 14px 10px 38px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:.9rem;outline:none;transition:border-color .15s}
 .search-box input:focus{border-color:var(--accent)}
 .search-box input::placeholder{color:var(--text3)}
@@ -89,6 +91,7 @@ a:hover{text-decoration:underline}
 .filter-btn{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-size:.82rem;cursor:pointer;transition:all .15s;white-space:nowrap}
 .filter-btn:hover{border-color:var(--border2);color:var(--text)}
 .filter-btn.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.filter-label{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;flex:none;white-space:nowrap}
 
 /* Table */
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
@@ -107,11 +110,16 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .td-domain span:hover{color:#5eead4}
 #copy-toast{position:fixed;pointer-events:none;background:var(--surface3);border:1px solid var(--border2);color:var(--text);font-size:.78rem;padding:4px 10px;border-radius:6px;opacity:0;transition:opacity .15s;z-index:999;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .td-idx{font-size:.75rem;color:var(--text3);font-variant-numeric:tabular-nums;width:50px}
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:500}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:500;white-space:nowrap}
 .tag-cdn{background:rgba(129,140,248,.12);color:var(--accent)}
 .tag-upos{background:rgba(52,211,153,.12);color:var(--accent2)}
 .tag-gotcha{background:rgba(251,191,36,.12);color:#fbbf24}
 .tag-other{background:rgba(161,161,170,.12);color:var(--text2)}
+/* Usage tags */
+.tag-live{background:rgba(248,113,113,.12);color:var(--danger)}
+.tag-video{background:rgba(129,140,248,.12);color:var(--accent)}
+.tag-shared{background:rgba(52,211,153,.12);color:var(--accent2)}
+.tag-storage{background:rgba(251,191,36,.12);color:#fbbf24}
 
 .pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);font-size:.85rem;color:var(--text2)}
 .pag-left{display:flex;align-items:center;gap:12px}
@@ -136,10 +144,23 @@ tr:hover td{background:rgba(255,255,255,.02)}
   .main{padding:16px}
   .header-inner{height:48px}
   .header-updated{display:none}
-  .controls{flex-direction:column}
-  .search-box{min-width:unset}
+  .stat-chip .tip{display:none}
+  .stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex-basis:100%}
+  .stat-chip{padding:8px 10px}
+  .search-box{flex-basis:100%}
+  .controls{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:10px}
+  .filter-unit{gap:8px}
+  .filter-group{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .filter-group::-webkit-scrollbar{display:none}
+  .filter-btn{flex:none}
+  #content table{table-layout:fixed}
+  #content th:nth-child(1),#content td:nth-child(1){width:32px}
+  #content th:nth-child(3),#content td:nth-child(3){width:84px}
+  #content td:nth-child(3){word-break:keep-all}
+  #content th:nth-child(4),#content td:nth-child(4){width:58px}
+  .td-domain{overflow-wrap:anywhere}
   .footer{flex-direction:column;gap:8px;text-align:center}
-  td,th{padding:8px 12px}
+  td,th{padding:8px 8px}
 }
 </style>
 </head>
@@ -172,13 +193,22 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </header>
 
 <main class="main">
-  <div class="stats-bar" id="stats"></div>
-  <div class="controls">
+  <div class="stats-row">
+    <div class="stats-bar" id="stats"></div>
     <div class="search-box">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="search" placeholder="搜索域名、区域..." aria-label="搜索域名或区域">
+      <input type="text" id="search" placeholder="搜索域名、地区..." aria-label="搜索域名或地区">
     </div>
-    <div class="filter-group" id="filters"></div>
+  </div>
+  <div class="controls">
+    <div class="filter-unit">
+      <span class="filter-label">地区</span>
+      <div class="filter-group" id="filters"></div>
+    </div>
+    <div class="filter-unit">
+      <span class="filter-label">用途</span>
+      <div class="filter-group" id="usage-filters"></div>
+    </div>
   </div>
   <div id="content">
     <div class="loading"><div class="spinner"></div><span>加载数据中...</span></div>
@@ -214,11 +244,16 @@ async function fetchWithFallback(path) {
 }
 const FORMATTED_FILES = [
   { name: 'nodes.json', label: 'JSON' },
+  { name: 'nodes.meta.json', label: 'Metadata' },
   { name: 'nodes.yml', label: 'YAML' },
   { name: 'nodes.txt', label: 'Text' },
   { name: 'nodes.md', label: 'Markdown' },
 ];
-const RAW_FILE = { name: 'domains.txt', label: 'Raw' };
+const RAW_FILES = [
+  { name: 'domains.txt', label: 'Raw' },
+  { name: 'domains.live.txt', label: 'Live' },
+  { name: 'domains.video.txt', label: 'Video' },
+];
 
 let perPage = 25;
 let allRows = [];
@@ -227,9 +262,9 @@ let currentPage = 1;
 let sortCol = 'region';
 let sortAsc = true;
 let activeFilter = 'all';
+let activeUsage = 'all';
 
 const TYPE_LABELS = { cdn: 'CDN', upos: '商业 CDN', gotcha: 'Gotcha', other: '其他' };
-const TAG_CLASSES = { cdn: 'tag-cdn', upos: 'tag-upos', gotcha: 'tag-gotcha', other: 'tag-other' };
 const AREA_RULES = [
   [/^(北京|天津|上海|重庆)/, '直辖市'], [/^(河北|山西|内蒙古)/, '华北'],
   [/^(辽宁|吉林|黑龙江)/, '东北'], [/^(江苏|浙江|安徽|福建|江西|山东)/, '华东'],
@@ -237,9 +272,34 @@ const AREA_RULES = [
   [/^(四川|贵州|云南|西藏)/, '西南'], [/^(陕西|甘肃|青海|宁夏|新疆)/, '西北'],
   [/^香港/, '港澳'], [/^UPOS/, '商业 CDN'], [/^Gotcha/, 'Gotcha'],
 ];
+const AREA_ORDER = [...AREA_RULES.map(r => r[1]), '其他'];
 
 function domainType(r) { return r.startsWith('UPOS') ? 'upos' : r.startsWith('Gotcha') ? 'gotcha' : r === '\u5176\u4ed6' ? 'other' : 'cdn'; }
 function areaOf(r) { for (const [re, a] of AREA_RULES) { if (re.test(r)) return a; } return '其他'; }
+
+// Usage metadata (mirrors nodes.meta.json contract from the Go converter)
+const USAGE_LABELS = { live: '直播', video: '视频', shared: '通用', storage: '存储', other: '其他' };
+const USAGE_TAG = { live: 'tag-live', video: 'tag-video', shared: 'tag-shared', storage: 'tag-storage', other: 'tag-other' };
+const USAGE_BUCKET_ORDER = ['live', 'video', 'storage', 'other'];
+const STANDARD_PREFIXES = ['cn', 'ec'];
+
+// Fallback usage analysis when only the legacy grouped nodes.json is available.
+function analyzeDomainFallback(domain) {
+  const name = (domain.split('.')[0] || '').trim();
+  if (name.startsWith('upos-')) return { family: 'upos', usage: 'storage', usages: ['video', 'storage'] };
+  if (name.includes('-gotcha')) return { family: 'gotcha', usage: 'live', usages: ['live'] };
+  const parts = name.split('-');
+  const two = s => /^\d\d$/.test(s);
+  for (const prefix of STANDARD_PREFIXES) {
+    if (!name.startsWith(prefix + '-')) continue;
+    if (prefix === 'cn' && parts.length === 5 && parts[3] === 'live' && two(parts[4])) return { family: 'live-explicit', usage: 'live', usages: ['live'] };
+    if (prefix === 'cn' && parts.length === 5 && (parts[3] === 'v' || parts[3] === 'bcache') && two(parts[4])) return { family: 'video-edge', usage: 'video', usages: ['video'] };
+    if (prefix === 'ec' && parts.length === 5 && two(parts[3]) && two(parts[4])) return { family: 'standard-ec', usage: 'live', usages: ['live'] };
+    if (prefix === 'cn' && parts.length === 5 && two(parts[3]) && two(parts[4])) return { family: 'standard-cn', usage: 'shared', usages: ['live', 'video'] };
+    break;
+  }
+  return { family: 'other', usage: 'other', usages: ['other'] };
+}
 
 let copyToast = null;
 let copyTimer = null;
@@ -311,12 +371,14 @@ function initDownloads() {
   sep.className = 'dropdown-sep';
   menu.appendChild(sep);
 
-  const a = document.createElement('a');
-  a.className = 'dropdown-item';
-  a.href = BASE + '/' + RAW_FILE.name;
-  a.download = RAW_FILE.name;
-  a.textContent = RAW_FILE.label;
-  menu.appendChild(a);
+  for (const file of RAW_FILES) {
+    const a = document.createElement('a');
+    a.className = 'dropdown-item';
+    a.href = BASE + '/' + file.name;
+    a.download = file.name;
+    a.textContent = file.label;
+    menu.appendChild(a);
+  }
 
   trigger.addEventListener('click', (e) => { e.stopPropagation(); closeAllDropdowns(dropdown); dropdown.classList.toggle('open'); trigger.setAttribute('aria-expanded', dropdown.classList.contains('open')); });
 }
@@ -327,13 +389,13 @@ function renderStats() {
   const types = {}; allRows.forEach(r => { types[r.type] = (types[r.type] || 0) + 1; });
   const STAT_TIPS = {
     '个域名': '扫描发现的所有存活 CDN 节点域名总数',
-    '个区域': '按省份、城市、云厂商等分类的区域数量',
+    '个地区': '按省份、城市、云厂商等分类的地区数量',
     'CDN': '哔哩哔哩自建的标准 CDN 节点（cn-地区-运营商-机房-服务器）',
     '商业 CDN': '第三方云厂商托管的 CDN 镜像节点（阿里云、腾讯云、华为云、Akamai 等）',
     'Gotcha': '第三方/外部合作 CDN 节点，覆盖国内、海外和测试线路',
     '其他': '其他基础设施域名（API、BVC 等服务）',
   };
-  [[allRows.length, '个域名'], [regions.size, '个区域'], ...Object.entries(types).map(([t, n]) => [n, TYPE_LABELS[t]])].forEach(([v, l]) => {
+  [[allRows.length, '个域名'], [regions.size, '个地区'], ...Object.entries(types).map(([t, n]) => [n, TYPE_LABELS[t]])].forEach(([v, l]) => {
     const el = document.createElement('div'); el.className = 'stat-chip';
     const s = document.createElement('strong'); s.textContent = v; el.appendChild(s); el.append(' ' + l);
     if (STAT_TIPS[l]) { const tip = document.createElement('span'); tip.className = 'tip'; tip.textContent = STAT_TIPS[l]; el.appendChild(tip); }
@@ -343,7 +405,8 @@ function renderStats() {
 
 function renderFilters() {
   const c = document.getElementById('filters'); c.replaceChildren();
-  ['all', ...new Set(allRows.map(r => r.area))].forEach(a => {
+  const present = new Set(allRows.map(r => r.area));
+  ['all', ...AREA_ORDER.filter(a => present.has(a))].forEach(a => {
     const btn = document.createElement('button');
     btn.className = 'filter-btn' + (a === activeFilter ? ' active' : '');
     btn.dataset.area = a; btn.textContent = a === 'all' ? '全部' : a;
@@ -356,17 +419,44 @@ function renderFilters() {
   });
 }
 
+function renderUsageFilters() {
+  const c = document.getElementById('usage-filters'); c.replaceChildren();
+  const present = new Set();
+  allRows.forEach(r => r.usages.forEach(u => present.add(u)));
+  ['all', ...USAGE_BUCKET_ORDER.filter(u => present.has(u))].forEach(u => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (u === activeUsage ? ' active' : '');
+    btn.dataset.usage = u; btn.textContent = u === 'all' ? '全部' : USAGE_LABELS[u];
+    btn.addEventListener('click', () => {
+      activeUsage = u; currentPage = 1;
+      c.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.usage === activeUsage));
+      applyFilters();
+    });
+    c.appendChild(btn);
+  });
+}
+
 function applyFilters() {
   const q = document.getElementById('search').value.toLowerCase();
   filteredRows = allRows.filter(r => {
     if (activeFilter !== 'all' && r.area !== activeFilter) return false;
+    if (activeUsage !== 'all' && !r.usages.includes(activeUsage)) return false;
     return !q || r.domain.toLowerCase().includes(q) || r.region.toLowerCase().includes(q);
   });
   sortRows(); renderTable();
 }
 
 function sortRows() {
-  filteredRows.sort((a, b) => { const c = a[sortCol] < b[sortCol] ? -1 : a[sortCol] > b[sortCol] ? 1 : 0; return sortAsc ? c : -c; });
+  const byCol = (a, b) => { const c = a[sortCol] < b[sortCol] ? -1 : a[sortCol] > b[sortCol] ? 1 : 0; return sortAsc ? c : -c; };
+  if (activeUsage !== 'all') {
+    // Usage filter active: exact-usage matches first, shared/other after, then by column.
+    filteredRows.sort((a, b) => {
+      const ra = a.usage === activeUsage ? 0 : 1, rb = b.usage === activeUsage ? 0 : 1;
+      return ra !== rb ? ra - rb : byCol(a, b);
+    });
+  } else {
+    filteredRows.sort(byCol);
+  }
 }
 
 function renderTable() {
@@ -386,7 +476,7 @@ function renderTable() {
   const thead = document.createElement('thead'); const hr = document.createElement('tr');
 
   const thIdx = document.createElement('th'); thIdx.textContent = '#'; thIdx.scope = 'col'; thIdx.style.cursor = 'default'; hr.appendChild(thIdx);
-  [{ key: 'domain', label: '域名' }, { key: 'region', label: '区域' }, { key: 'type', label: '类型' }].forEach(col => {
+  [{ key: 'domain', label: '域名' }, { key: 'region', label: '地区' }, { key: 'usage', label: '用途' }].forEach(col => {
     const th = document.createElement('th'); th.scope = 'col'; th.dataset.col = col.key;
     if (sortCol === col.key) th.classList.add('sorted');
     th.textContent = col.label + ' ';
@@ -406,8 +496,9 @@ function renderTable() {
     domSpan.addEventListener('click', () => copyDomain(domSpan));
     td.appendChild(domSpan);
     const tReg = document.createElement('td'); tReg.textContent = r.region;
-    const tType = document.createElement('td'); const tag = document.createElement('span'); tag.className = 'tag ' + TAG_CLASSES[r.type]; tag.textContent = TYPE_LABELS[r.type]; tType.appendChild(tag);
-    tr.append(ti, td, tReg, tType); tbody.appendChild(tr);
+    const tUsage = document.createElement('td');
+    const usageTag = document.createElement('span'); usageTag.className = 'tag ' + (USAGE_TAG[r.usage] || 'tag-other'); usageTag.textContent = USAGE_LABELS[r.usage] || r.usage; tUsage.appendChild(usageTag);
+    tr.append(ti, td, tReg, tUsage); tbody.appendChild(tr);
   });
   table.appendChild(tbody); scroll.appendChild(table); wrap.appendChild(scroll);
 
@@ -461,16 +552,39 @@ async function updateTimestamp() {
   } catch { /* ignore */ }
 }
 
+async function loadMetaRows() {
+  const resp = await fetchWithFallback('/nodes.meta.json');
+  const data = await resp.json();
+  if (!Array.isArray(data)) throw new Error('metadata is not an array');
+  return data.map(r => {
+    const region = r.region || '其他';
+    const usages = Array.isArray(r.usages) && r.usages.length ? r.usages : [r.usage || 'other'];
+    return { domain: r.domain, region, type: domainType(region), area: areaOf(region), usage: r.usage || 'other', family: r.family || 'other', usages };
+  });
+}
+
+async function loadLegacyRows() {
+  const resp = await fetchWithFallback('/nodes.json');
+  const data = await resp.json();
+  const rows = [];
+  for (const [region, domains] of Object.entries(data)) {
+    const type = domainType(region), area = areaOf(region);
+    for (const domain of domains) {
+      const m = analyzeDomainFallback(domain);
+      rows.push({ domain, region, type, area, usage: m.usage, family: m.family, usages: m.usages });
+    }
+  }
+  return rows;
+}
+
 async function loadData() {
   try {
-    const resp = await fetchWithFallback('/nodes.json');
-    const data = await resp.json();
-    allRows = [];
-    for (const [region, domains] of Object.entries(data)) {
-      const type = domainType(region), area = areaOf(region);
-      for (const domain of domains) allRows.push({ domain, region, type, area });
+    try {
+      allRows = await loadMetaRows();
+    } catch {
+      allRows = await loadLegacyRows();
     }
-    initDownloads(); renderStats(); renderFilters(); applyFilters(); updateTimestamp();
+    initDownloads(); renderStats(); renderFilters(); renderUsageFilters(); applyFilters(); updateTimestamp();
   } catch (e) { showError(e.message); }
 }
 
@@ -490,9 +604,13 @@ function initRefLinks() {
 
   const files = [
     { name: 'nodes.json', label: 'JSON' },
+    { name: 'nodes.meta.json', label: 'Metadata' },
     { name: 'nodes.yml', label: 'YAML' },
     { name: 'nodes.txt', label: 'Text' },
     { name: 'nodes.md', label: 'Markdown' },
+    { name: 'domains.txt', label: 'Raw' },
+    { name: 'domains.live.txt', label: 'Live' },
+    { name: 'domains.video.txt', label: 'Video' },
   ];
 
   // Source toggle

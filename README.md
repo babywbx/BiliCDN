@@ -24,8 +24,8 @@ BiliCDN 的交互式节点浏览页面。
 
 - **交互式表格** — 搜索、排序、筛选、分页浏览所有节点
 - **点击复制** — 点击域名即可复制到剪贴板
-- **区域筛选** — 按地理大区快速过滤（直辖市、华东、华南...）
-- **多格式下载** — 页面顶部「下载」按钮，支持 JSON / YAML / Text / Markdown / Raw
+- **区域 / 用途筛选** — 按地理大区，或按直播 / 视频 / 存储用途快速过滤
+- **多格式下载** — 页面顶部「下载」按钮，支持 JSON / Metadata / YAML / Text / Markdown / Raw / Live / Video
 - **API 引用** — 页面顶部「API」按钮，一键复制 CDN 加速的数据接口链接
 - **统计概览** — 域名总数、区域数、类型分布，悬停查看中文释义
 - **实时数据** — 每次访问自动获取最新数据，无需重新部署
@@ -44,11 +44,16 @@ BiliCDN 的交互式节点浏览页面。
 
 ```
 https://bilicdn.pages.dev/nodes.json
+https://bilicdn.pages.dev/nodes.meta.json
 https://bilicdn.pages.dev/nodes.yml
 https://bilicdn.pages.dev/nodes.txt
 https://bilicdn.pages.dev/nodes.md
 https://bilicdn.pages.dev/domains.txt
+https://bilicdn.pages.dev/domains.live.txt
+https://bilicdn.pages.dev/domains.video.txt
 ```
+
+其中 `nodes.meta.json` 提供每个域名的用途标签（直播 / 视频 / 通用 / 存储），`domains.live.txt`、`domains.video.txt` 是按用途筛选好的纯域名列表，适合脚本直接使用。
 
 通过 Cloudflare Pages Functions 反向代理 GitHub 数据，边缘缓存 6 小时，中国用户无需直连 GitHub。
 
@@ -104,15 +109,18 @@ git checkout main -- bilicdn 2>/dev/null || (git stash && git checkout main && g
 mkdir -p data
 ./bilicdn -be 1 -se 5 -gotcha=false -quiet -o data/domains.txt
 ./bilicdn convert -i data/domains.txt -o data/nodes.json
+./bilicdn convert -i data/domains.txt -o data/nodes.meta.json
 ./bilicdn convert -i data/domains.txt -o data/nodes.yml
 ./bilicdn convert -i data/domains.txt -o data/nodes.txt
 ./bilicdn convert -i data/domains.txt -o data/nodes.md
+./bilicdn convert -i data/domains.txt -o data/domains.live.txt
+./bilicdn convert -i data/domains.txt -o data/domains.video.txt
 
 # 3. 临时修改数据源为本地
 sed -i '' "s|https://raw.githubusercontent.com/babywbx/BiliCDN/data|data|" index.html
 
 # 4. 启动本地服务器
-python3 -m http.server 8080
+uv run python -m http.server 8080
 # 打开 http://localhost:8080
 
 # 5. 测试完毕后还原

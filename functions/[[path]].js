@@ -10,7 +10,10 @@ const BRANCH_CACHE = 'public, max-age=60, s-maxage=300, stale-while-revalidate=6
 
 const ALLOWED_FILES = {
   'domains.txt': 'text/plain; charset=utf-8',
+  'domains.live.txt': 'text/plain; charset=utf-8',
+  'domains.video.txt': 'text/plain; charset=utf-8',
   'nodes.json': 'application/json; charset=utf-8',
+  'nodes.meta.json': 'application/json; charset=utf-8',
   'nodes.yml': 'text/yaml; charset=utf-8',
   'nodes.txt': 'text/plain; charset=utf-8',
   'nodes.md': 'text/markdown; charset=utf-8',

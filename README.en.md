@@ -24,8 +24,8 @@ This is the web frontend for [BiliCDN](https://github.com/babywbx/BiliCDN), prov
 
 - **Interactive table** — Search, sort, filter, and paginate all nodes
 - **Click to copy** — Click any domain to copy to clipboard
-- **Region filtering** — Filter by geographic area (Municipalities, East, South...)
-- **Multi-format download** — "Download" button in the header for JSON / YAML / Text / Markdown / Raw
+- **Region / usage filtering** — Filter by geographic area, or by live / video / storage usage
+- **Multi-format download** — "Download" button in the header for JSON / Metadata / YAML / Text / Markdown / Raw / Live / Video
 - **API endpoints** — "API" button to copy CDN-accelerated data endpoint URLs
 - **Stats overview** — Domain count, region count, type breakdown with hover tooltips
 - **Live data** — Automatically fetches latest data on every visit, no redeployment needed
@@ -44,11 +44,16 @@ When deployed on Cloudflare Pages, all data files are served via CDN for fast gl
 
 ```
 https://bilicdn.pages.dev/nodes.json
+https://bilicdn.pages.dev/nodes.meta.json
 https://bilicdn.pages.dev/nodes.yml
 https://bilicdn.pages.dev/nodes.txt
 https://bilicdn.pages.dev/nodes.md
 https://bilicdn.pages.dev/domains.txt
+https://bilicdn.pages.dev/domains.live.txt
+https://bilicdn.pages.dev/domains.video.txt
 ```
+
+`nodes.meta.json` carries per-domain usage tags (live / video / shared / storage), while `domains.live.txt` and `domains.video.txt` are flat, usage-filtered domain lists ready for scripts.
 
 Powered by Cloudflare Pages Functions that reverse-proxy GitHub data with 6-hour edge caching. No direct GitHub access needed from China.
 
@@ -104,15 +109,18 @@ git checkout main -- bilicdn 2>/dev/null || (git stash && git checkout main && g
 mkdir -p data
 ./bilicdn -be 1 -se 5 -gotcha=false -quiet -o data/domains.txt
 ./bilicdn convert -i data/domains.txt -o data/nodes.json
+./bilicdn convert -i data/domains.txt -o data/nodes.meta.json
 ./bilicdn convert -i data/domains.txt -o data/nodes.yml
 ./bilicdn convert -i data/domains.txt -o data/nodes.txt
 ./bilicdn convert -i data/domains.txt -o data/nodes.md
+./bilicdn convert -i data/domains.txt -o data/domains.live.txt
+./bilicdn convert -i data/domains.txt -o data/domains.video.txt
 
 # 3. Temporarily point to local data
 sed -i '' "s|https://raw.githubusercontent.com/babywbx/BiliCDN/data|data|" index.html
 
 # 4. Start local server
-python3 -m http.server 8080
+uv run python -m http.server 8080
 # Open http://localhost:8080
 
 # 5. Restore after testing
