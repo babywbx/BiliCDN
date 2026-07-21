@@ -1,8 +1,8 @@
 # BiliCDN 节点列表
 
-> 共 **1185** 个节点，**49** 个分区
+> 共 **1191** 个节点，**47** 个分区
 
-## 🏙️ 直辖市 (105)
+## 🏙️ 直辖市 (107)
 
 ### 北京
 
@@ -62,11 +62,12 @@
 | 21 | `cn-tj-cu-01-14.bilivideo.com` |
 | 22 | `cn-tj-cu-01-15.bilivideo.com` |
 | 23 | `cn-tj-cu-01-16.bilivideo.com` |
-| 24 | `cn-tj2-cmcc-bcache-01.bilivideo.com` |
-| 25 | `cn-tj2-cmcc-bcache-02.bilivideo.com` |
-| 26 | `cn-tj2-cmcc-bcache-03.bilivideo.com` |
-| 27 | `cn-tj2-cmcc-bcache-04.bilivideo.com` |
-| 28 | `cn-tj2-cmcc-bcache-06.bilivideo.com` |
+| 24 | `cn-tj-cu-01-17.bilivideo.com` |
+| 25 | `cn-tj2-cmcc-bcache-01.bilivideo.com` |
+| 26 | `cn-tj2-cmcc-bcache-02.bilivideo.com` |
+| 27 | `cn-tj2-cmcc-bcache-03.bilivideo.com` |
+| 28 | `cn-tj2-cmcc-bcache-04.bilivideo.com` |
+| 29 | `cn-tj2-cmcc-bcache-06.bilivideo.com` |
 
 ### 重庆
 
@@ -87,44 +88,45 @@
 | 13 | `cn-cq-cm-01-22.bilivideo.com` |
 | 14 | `cn-cq-cm-01-23.bilivideo.com` |
 | 15 | `cn-cq-cm-01-27.bilivideo.com` |
-| 16 | `cn-cq-cm-01-29.bilivideo.com` |
-| 17 | `cn-cq-cm-01-30.bilivideo.com` |
-| 18 | `cn-cq-ct-01-01.bilivideo.com` |
-| 19 | `cn-cq-ct-01-02.bilivideo.com` |
-| 20 | `cn-cq-ct-01-05.bilivideo.com` |
-| 21 | `cn-cq-ct-01-06.bilivideo.com` |
-| 22 | `cn-cq-ct-01-07.bilivideo.com` |
-| 23 | `cn-cq-ct-01-08.bilivideo.com` |
-| 24 | `cn-cq-ct-01-09.bilivideo.com` |
-| 25 | `cn-cq-ct-01-10.bilivideo.com` |
-| 26 | `cn-cq-ct-01-11.bilivideo.com` |
-| 27 | `cn-cq-ct-01-12.bilivideo.com` |
-| 28 | `cn-cq-ct-01-13.bilivideo.com` |
-| 29 | `cn-cq-ct-01-14.bilivideo.com` |
-| 30 | `cn-cq-ct-01-15.bilivideo.com` |
-| 31 | `cn-cq-ct-01-16.bilivideo.com` |
-| 32 | `cn-cq-ct-01-17.bilivideo.com` |
-| 33 | `cn-cq-ct-01-18.bilivideo.com` |
-| 34 | `cn-cq-ct-01-19.bilivideo.com` |
-| 35 | `cn-cq-ct-01-20.bilivideo.com` |
-| 36 | `cn-cq-ct-01-21.bilivideo.com` |
-| 37 | `cn-cq-ct-01-22.bilivideo.com` |
-| 38 | `cn-cq-ct-01-23.bilivideo.com` |
-| 39 | `cn-cq-ct-01-24.bilivideo.com` |
-| 40 | `cn-cq-ct-01-25.bilivideo.com` |
-| 41 | `cn-cq-ct-01-26.bilivideo.com` |
-| 42 | `cn-cq-ct-01-27.bilivideo.com` |
-| 43 | `cn-cq-ct-01-28.bilivideo.com` |
-| 44 | `cn-cq-ct-01-29.bilivideo.com` |
-| 45 | `cn-cq-ct-01-31.bilivideo.com` |
-| 46 | `cn-cq-ct-01-32.bilivideo.com` |
-| 47 | `cn-cq-ct-01-33.bilivideo.com` |
-| 48 | `cn-cq-ct-01-34.bilivideo.com` |
-| 49 | `cn-cq-ct-01-35.bilivideo.com` |
-| 50 | `cn-cq-ct-02-01.bilivideo.com` |
-| 51 | `cn-cq-ct-02-02.bilivideo.com` |
+| 16 | `cn-cq-cm-01-28.bilivideo.com` |
+| 17 | `cn-cq-cm-01-29.bilivideo.com` |
+| 18 | `cn-cq-cm-01-30.bilivideo.com` |
+| 19 | `cn-cq-ct-01-01.bilivideo.com` |
+| 20 | `cn-cq-ct-01-02.bilivideo.com` |
+| 21 | `cn-cq-ct-01-05.bilivideo.com` |
+| 22 | `cn-cq-ct-01-06.bilivideo.com` |
+| 23 | `cn-cq-ct-01-07.bilivideo.com` |
+| 24 | `cn-cq-ct-01-08.bilivideo.com` |
+| 25 | `cn-cq-ct-01-09.bilivideo.com` |
+| 26 | `cn-cq-ct-01-10.bilivideo.com` |
+| 27 | `cn-cq-ct-01-11.bilivideo.com` |
+| 28 | `cn-cq-ct-01-12.bilivideo.com` |
+| 29 | `cn-cq-ct-01-13.bilivideo.com` |
+| 30 | `cn-cq-ct-01-14.bilivideo.com` |
+| 31 | `cn-cq-ct-01-15.bilivideo.com` |
+| 32 | `cn-cq-ct-01-16.bilivideo.com` |
+| 33 | `cn-cq-ct-01-17.bilivideo.com` |
+| 34 | `cn-cq-ct-01-18.bilivideo.com` |
+| 35 | `cn-cq-ct-01-19.bilivideo.com` |
+| 36 | `cn-cq-ct-01-20.bilivideo.com` |
+| 37 | `cn-cq-ct-01-21.bilivideo.com` |
+| 38 | `cn-cq-ct-01-22.bilivideo.com` |
+| 39 | `cn-cq-ct-01-23.bilivideo.com` |
+| 40 | `cn-cq-ct-01-24.bilivideo.com` |
+| 41 | `cn-cq-ct-01-25.bilivideo.com` |
+| 42 | `cn-cq-ct-01-26.bilivideo.com` |
+| 43 | `cn-cq-ct-01-27.bilivideo.com` |
+| 44 | `cn-cq-ct-01-28.bilivideo.com` |
+| 45 | `cn-cq-ct-01-29.bilivideo.com` |
+| 46 | `cn-cq-ct-01-31.bilivideo.com` |
+| 47 | `cn-cq-ct-01-32.bilivideo.com` |
+| 48 | `cn-cq-ct-01-33.bilivideo.com` |
+| 49 | `cn-cq-ct-01-34.bilivideo.com` |
+| 50 | `cn-cq-ct-01-35.bilivideo.com` |
+| 51 | `cn-cq-ct-02-01.bilivideo.com` |
+| 52 | `cn-cq-ct-02-02.bilivideo.com` |
 
-## 🌏 华北 (68)
+## 🌏 华北 (67)
 
 ### 河北-廊坊
 
@@ -171,13 +173,12 @@
 | --- | --- |
 | 1 | `cn-sxty-cu-03-01.bilivideo.com` |
 | 2 | `cn-sxty-cu-03-02.bilivideo.com` |
-| 3 | `cn-sxty-cu-03-04.bilivideo.com` |
-| 4 | `cn-sxty-cu-03-05.bilivideo.com` |
-| 5 | `cn-sxty-cu-03-06.bilivideo.com` |
-| 6 | `cn-sxty-cu-03-07.bilivideo.com` |
-| 7 | `cn-sxty-cu-03-08.bilivideo.com` |
-| 8 | `cn-sxty-cu-03-09.bilivideo.com` |
-| 9 | `cn-sxty-cu-03-10.bilivideo.com` |
+| 3 | `cn-sxty-cu-03-05.bilivideo.com` |
+| 4 | `cn-sxty-cu-03-06.bilivideo.com` |
+| 5 | `cn-sxty-cu-03-07.bilivideo.com` |
+| 6 | `cn-sxty-cu-03-08.bilivideo.com` |
+| 7 | `cn-sxty-cu-03-09.bilivideo.com` |
+| 8 | `cn-sxty-cu-03-10.bilivideo.com` |
 
 ### 内蒙古-呼和浩特
 
@@ -222,10 +223,10 @@
 | --- | --- |
 | 1 | `cn-lndl-ct-01-01.bilivideo.com` |
 | 2 | `cn-lndl-ct-01-02.bilivideo.com` |
-| 3 | `cn-lndl-ct-01-03.bilivideo.com` |
-| 4 | `cn-lndl-ct-01-04.bilivideo.com` |
-| 5 | `cn-lndl-ct-01-05.bilivideo.com` |
-| 6 | `cn-lndl-ct-01-06.bilivideo.com` |
+| 3 | `cn-lndl-ct-01-04.bilivideo.com` |
+| 4 | `cn-lndl-ct-01-05.bilivideo.com` |
+| 5 | `cn-lndl-ct-01-06.bilivideo.com` |
+| 6 | `cn-lndl-ct-01-07.bilivideo.com` |
 | 7 | `cn-lndl-ct-01-08.bilivideo.com` |
 | 8 | `cn-lndl-ct-01-09.bilivideo.com` |
 | 9 | `cn-lndl-ct-01-10.bilivideo.com` |
@@ -249,18 +250,17 @@
 | 13 | `cn-lnsy-cmcc-v-06.bilivideo.com` |
 | 14 | `cn-lnsy-cmcc-v-07.bilivideo.com` |
 | 15 | `cn-lnsy-cu-01-01.bilivideo.com` |
-| 16 | `cn-lnsy-cu-01-03.bilivideo.com` |
-| 17 | `cn-lnsy-cu-01-04.bilivideo.com` |
-| 18 | `cn-lnsy-cu-01-05.bilivideo.com` |
-| 19 | `cn-lnsy-cu-01-06.bilivideo.com` |
-| 20 | `cn-lnsy-cu-01-07.bilivideo.com` |
-| 21 | `cn-lnsy-cu-01-08.bilivideo.com` |
-| 22 | `cn-lnsy-cu-01-09.bilivideo.com` |
-| 23 | `cn-lnsy-cu-live-01.bilivideo.com` |
-| 24 | `cn-lnsy-cu-live-03.bilivideo.com` |
-| 25 | `cn-lnsy-cu-live-04.bilivideo.com` |
-| 26 | `cn-lnsy-cu-v-01.bilivideo.com` |
-| 27 | `cn-lnsy-cu-v-04.bilivideo.com` |
+| 16 | `cn-lnsy-cu-01-04.bilivideo.com` |
+| 17 | `cn-lnsy-cu-01-05.bilivideo.com` |
+| 18 | `cn-lnsy-cu-01-06.bilivideo.com` |
+| 19 | `cn-lnsy-cu-01-07.bilivideo.com` |
+| 20 | `cn-lnsy-cu-01-08.bilivideo.com` |
+| 21 | `cn-lnsy-cu-01-09.bilivideo.com` |
+| 22 | `cn-lnsy-cu-live-01.bilivideo.com` |
+| 23 | `cn-lnsy-cu-live-03.bilivideo.com` |
+| 24 | `cn-lnsy-cu-live-04.bilivideo.com` |
+| 25 | `cn-lnsy-cu-v-01.bilivideo.com` |
+| 26 | `cn-lnsy-cu-v-04.bilivideo.com` |
 
 ### 吉林-长春
 
@@ -285,22 +285,24 @@
 | 11 | `cn-hljheb-dx-live-02.bilivideo.com` |
 | 12 | `cn-hljheb-dx-v-01.bilivideo.com` |
 | 13 | `cn-hljheb-dx-v-02.bilivideo.com` |
-| 14 | `cn-hljheb-dx-v-04.bilivideo.com` |
-| 15 | `cn-hljheb-dx-v-05.bilivideo.com` |
-| 16 | `cn-hljheb-dx-v-06.bilivideo.com` |
+| 14 | `cn-hljheb-dx-v-03.bilivideo.com` |
+| 15 | `cn-hljheb-dx-v-04.bilivideo.com` |
+| 16 | `cn-hljheb-dx-v-05.bilivideo.com` |
+| 17 | `cn-hljheb-dx-v-06.bilivideo.com` |
 
-## 🌊 华东 (421)
+## 🌊 华东 (425)
 
 ### 江苏-南京
 
 | # | 域名 |
 | --- | --- |
 | 1 | `cn-jsnj-gd-01-01.bilivideo.com` |
-| 2 | `cn-jsnj-gd-01-02.bilivideo.com` |
+| 2 | `cn-jsnj-gd-01-03.bilivideo.com` |
 | 3 | `cn-jsnj-gd-01-04.bilivideo.com` |
 | 4 | `cn-jsnj-gd-01-05.bilivideo.com` |
-| 5 | `cn-jsnj-gd-01-07.bilivideo.com` |
-| 6 | `cn-jsnj-gd-01-08.bilivideo.com` |
+| 5 | `cn-jsnj-gd-01-06.bilivideo.com` |
+| 6 | `cn-jsnj-gd-01-07.bilivideo.com` |
+| 7 | `cn-jsnj-gd-01-08.bilivideo.com` |
 
 ### 江苏-南通
 
@@ -310,54 +312,56 @@
 | 2 | `cn-jsnt-ct-01-02.bilivideo.com` |
 | 3 | `cn-jsnt-ct-01-04.bilivideo.com` |
 | 4 | `cn-jsnt-ct-01-05.bilivideo.com` |
-| 5 | `cn-jsnt-ct-01-11.bilivideo.com` |
-| 6 | `cn-jsnt-ct-01-17.bilivideo.com` |
-| 7 | `cn-jsnt-ct-01-18.bilivideo.com` |
-| 8 | `cn-jsnt-ct-01-19.bilivideo.com` |
-| 9 | `cn-jsnt-ct-01-20.bilivideo.com` |
-| 10 | `cn-jsnt-ct-01-21.bilivideo.com` |
-| 11 | `cn-jsnt-ct-01-22.bilivideo.com` |
-| 12 | `cn-jsnt-ct-01-23.bilivideo.com` |
-| 13 | `cn-jsnt-ct-01-24.bilivideo.com` |
-| 14 | `cn-jsnt-ct-01-25.bilivideo.com` |
-| 15 | `cn-jsnt-ct-01-26.bilivideo.com` |
-| 16 | `cn-jsnt-ct-01-27.bilivideo.com` |
-| 17 | `cn-jsnt-ct-01-29.bilivideo.com` |
-| 18 | `cn-jsnt-ct-01-30.bilivideo.com` |
-| 19 | `cn-jsnt-ct-01-31.bilivideo.com` |
-| 20 | `cn-jsnt-ct-01-32.bilivideo.com` |
-| 21 | `cn-jsnt-ct-01-33.bilivideo.com` |
-| 22 | `cn-jsnt-ct-01-34.bilivideo.com` |
-| 23 | `cn-jsnt-ct-01-35.bilivideo.com` |
-| 24 | `cn-jsnt-ct-01-36.bilivideo.com` |
-| 25 | `cn-jsnt-ct-01-37.bilivideo.com` |
-| 26 | `cn-jsnt-ct-01-38.bilivideo.com` |
-| 27 | `cn-jsnt-ct-01-39.bilivideo.com` |
-| 28 | `cn-jsnt-ct-01-40.bilivideo.com` |
-| 29 | `cn-jsnt-ct-01-41.bilivideo.com` |
-| 30 | `cn-jsnt-ct-01-42.bilivideo.com` |
-| 31 | `cn-jsnt-ct-01-43.bilivideo.com` |
-| 32 | `cn-jsnt-ct-01-44.bilivideo.com` |
-| 33 | `cn-jsnt-ct-01-45.bilivideo.com` |
-| 34 | `cn-jsnt-ct-01-46.bilivideo.com` |
-| 35 | `cn-jsnt-ct-01-47.bilivideo.com` |
-| 36 | `cn-jsnt-ct-01-48.bilivideo.com` |
-| 37 | `cn-jsnt-ct-01-49.bilivideo.com` |
-| 38 | `cn-jsnt-ct-01-50.bilivideo.com` |
-| 39 | `cn-jsnt-dx-live-02.bilivideo.com` |
-| 40 | `cn-jsnt-dx-live-03.bilivideo.com` |
-| 41 | `cn-jsnt-dx-live-04.bilivideo.com` |
-| 42 | `cn-jsnt-dx-live-06.bilivideo.com` |
-| 43 | `cn-jsnt-dx-live-07.bilivideo.com` |
-| 44 | `cn-jsnt-dx-live-08.bilivideo.com` |
-| 45 | `cn-jsnt-dx-live-09.bilivideo.com` |
-| 46 | `cn-jsnt-dx-live-10.bilivideo.com` |
-| 47 | `cn-jsnt-dx-v-05.bilivideo.com` |
-| 48 | `cn-jsnt-dx-v-15.bilivideo.com` |
-| 49 | `cn-jsnt-dx-v-16.bilivideo.com` |
-| 50 | `cn-jsnt-dx-v-17.bilivideo.com` |
-| 51 | `cn-jsnt-dx-v-18.bilivideo.com` |
-| 52 | `cn-jsnt-dx-v-19.bilivideo.com` |
+| 5 | `cn-jsnt-ct-01-07.bilivideo.com` |
+| 6 | `cn-jsnt-ct-01-11.bilivideo.com` |
+| 7 | `cn-jsnt-ct-01-17.bilivideo.com` |
+| 8 | `cn-jsnt-ct-01-18.bilivideo.com` |
+| 9 | `cn-jsnt-ct-01-19.bilivideo.com` |
+| 10 | `cn-jsnt-ct-01-20.bilivideo.com` |
+| 11 | `cn-jsnt-ct-01-21.bilivideo.com` |
+| 12 | `cn-jsnt-ct-01-22.bilivideo.com` |
+| 13 | `cn-jsnt-ct-01-23.bilivideo.com` |
+| 14 | `cn-jsnt-ct-01-24.bilivideo.com` |
+| 15 | `cn-jsnt-ct-01-25.bilivideo.com` |
+| 16 | `cn-jsnt-ct-01-26.bilivideo.com` |
+| 17 | `cn-jsnt-ct-01-27.bilivideo.com` |
+| 18 | `cn-jsnt-ct-01-29.bilivideo.com` |
+| 19 | `cn-jsnt-ct-01-30.bilivideo.com` |
+| 20 | `cn-jsnt-ct-01-31.bilivideo.com` |
+| 21 | `cn-jsnt-ct-01-32.bilivideo.com` |
+| 22 | `cn-jsnt-ct-01-33.bilivideo.com` |
+| 23 | `cn-jsnt-ct-01-34.bilivideo.com` |
+| 24 | `cn-jsnt-ct-01-35.bilivideo.com` |
+| 25 | `cn-jsnt-ct-01-36.bilivideo.com` |
+| 26 | `cn-jsnt-ct-01-37.bilivideo.com` |
+| 27 | `cn-jsnt-ct-01-38.bilivideo.com` |
+| 28 | `cn-jsnt-ct-01-39.bilivideo.com` |
+| 29 | `cn-jsnt-ct-01-40.bilivideo.com` |
+| 30 | `cn-jsnt-ct-01-41.bilivideo.com` |
+| 31 | `cn-jsnt-ct-01-42.bilivideo.com` |
+| 32 | `cn-jsnt-ct-01-43.bilivideo.com` |
+| 33 | `cn-jsnt-ct-01-44.bilivideo.com` |
+| 34 | `cn-jsnt-ct-01-45.bilivideo.com` |
+| 35 | `cn-jsnt-ct-01-46.bilivideo.com` |
+| 36 | `cn-jsnt-ct-01-47.bilivideo.com` |
+| 37 | `cn-jsnt-ct-01-48.bilivideo.com` |
+| 38 | `cn-jsnt-ct-01-49.bilivideo.com` |
+| 39 | `cn-jsnt-ct-01-50.bilivideo.com` |
+| 40 | `cn-jsnt-dx-live-02.bilivideo.com` |
+| 41 | `cn-jsnt-dx-live-03.bilivideo.com` |
+| 42 | `cn-jsnt-dx-live-04.bilivideo.com` |
+| 43 | `cn-jsnt-dx-live-06.bilivideo.com` |
+| 44 | `cn-jsnt-dx-live-07.bilivideo.com` |
+| 45 | `cn-jsnt-dx-live-08.bilivideo.com` |
+| 46 | `cn-jsnt-dx-live-09.bilivideo.com` |
+| 47 | `cn-jsnt-dx-live-10.bilivideo.com` |
+| 48 | `cn-jsnt-dx-v-05.bilivideo.com` |
+| 49 | `cn-jsnt-dx-v-07.bilivideo.com` |
+| 50 | `cn-jsnt-dx-v-15.bilivideo.com` |
+| 51 | `cn-jsnt-dx-v-16.bilivideo.com` |
+| 52 | `cn-jsnt-dx-v-17.bilivideo.com` |
+| 53 | `cn-jsnt-dx-v-18.bilivideo.com` |
+| 54 | `cn-jsnt-dx-v-19.bilivideo.com` |
 
 ### 江苏-扬州
 
@@ -413,11 +417,11 @@
 | # | 域名 |
 | --- | --- |
 | 1 | `cn-jstz-cu-01-02.bilivideo.com` |
-| 2 | `cn-jstz-cu-01-04.bilivideo.com` |
+| 2 | `cn-jstz-cu-01-03.bilivideo.com` |
 | 3 | `cn-jstz-cu-01-05.bilivideo.com` |
 | 4 | `cn-jstz-cu-01-06.bilivideo.com` |
-| 5 | `cn-jstz-cu-01-08.bilivideo.com` |
-| 6 | `cn-jstz-cu-01-09.bilivideo.com` |
+| 5 | `cn-jstz-cu-01-07.bilivideo.com` |
+| 6 | `cn-jstz-cu-01-08.bilivideo.com` |
 | 7 | `cn-jstz-cu-01-11.bilivideo.com` |
 | 8 | `cn-jstz-cu-01-13.bilivideo.com` |
 | 9 | `cn-jstz-cu-01-14.bilivideo.com` |
@@ -451,7 +455,7 @@
 | 23 | `cn-jssz-cm-02-03.bilivideo.com` |
 | 24 | `cn-jssz-cm-02-04.bilivideo.com` |
 | 25 | `cn-jssz-cm-02-05.bilivideo.com` |
-| 26 | `cn-jssz-cm-02-07.bilivideo.com` |
+| 26 | `cn-jssz-cm-02-08.bilivideo.com` |
 | 27 | `cn-jssz-cm-02-10.bilivideo.com` |
 | 28 | `cn-jssz-cm-02-11.bilivideo.com` |
 | 29 | `cn-jssz-cm-02-12.bilivideo.com` |
@@ -476,11 +480,11 @@
 | 48 | `cn-jssz-cm-02-35.bilivideo.com` |
 | 49 | `cn-jssz-cm-02-36.bilivideo.com` |
 | 50 | `cn-jssz-cm-02-37.bilivideo.com` |
-| 51 | `cn-jssz-cm-02-39.bilivideo.com` |
-| 52 | `cn-jssz-cm-02-40.bilivideo.com` |
-| 53 | `cn-jssz-cm-02-41.bilivideo.com` |
-| 54 | `cn-jssz-cm-02-42.bilivideo.com` |
-| 55 | `cn-jssz-cm-02-43.bilivideo.com` |
+| 51 | `cn-jssz-cm-02-38.bilivideo.com` |
+| 52 | `cn-jssz-cm-02-39.bilivideo.com` |
+| 53 | `cn-jssz-cm-02-40.bilivideo.com` |
+| 54 | `cn-jssz-cm-02-41.bilivideo.com` |
+| 55 | `cn-jssz-cm-02-42.bilivideo.com` |
 | 56 | `cn-jssz-cm-02-44.bilivideo.com` |
 | 57 | `cn-jssz-cm-02-45.bilivideo.com` |
 | 58 | `cn-jssz-cm-02-46.bilivideo.com` |
@@ -567,9 +571,9 @@
 | 19 | `cn-zjjh-ct-04-25.bilivideo.com` |
 | 20 | `cn-zjjh-ct-04-26.bilivideo.com` |
 | 21 | `cn-zjjh-ct-04-27.bilivideo.com` |
-| 22 | `cn-zjjh-ct-04-29.bilivideo.com` |
-| 23 | `cn-zjjh-ct-04-30.bilivideo.com` |
-| 24 | `cn-zjjh-ct-04-31.bilivideo.com` |
+| 22 | `cn-zjjh-ct-04-28.bilivideo.com` |
+| 23 | `cn-zjjh-ct-04-29.bilivideo.com` |
+| 24 | `cn-zjjh-ct-04-30.bilivideo.com` |
 | 25 | `cn-zjjh-ct-04-32.bilivideo.com` |
 | 26 | `cn-zjjh-ct-04-33.bilivideo.com` |
 | 27 | `cn-zjjh-ct-04-34.bilivideo.com` |
@@ -601,27 +605,26 @@
 | 6 | `cn-fjqz-cm-01-06.bilivideo.com` |
 | 7 | `cn-fjqz-cm-01-07.bilivideo.com` |
 | 8 | `cn-fjqz-cm-01-08.bilivideo.com` |
-| 9 | `cn-fjqz-cm-01-09.bilivideo.com` |
-| 10 | `cn-fjqz-cm-01-10.bilivideo.com` |
-| 11 | `cn-fjqz-cmcc-live-01.bilivideo.com` |
-| 12 | `cn-fjqz-cmcc-live-02.bilivideo.com` |
-| 13 | `cn-fjqz-cmcc-v-01.bilivideo.com` |
-| 14 | `cn-fjqz-cmcc-v-02.bilivideo.com` |
-| 15 | `cn-fjqz-cmcc-v-03.bilivideo.com` |
-| 16 | `cn-fjqz-cmcc-v-04.bilivideo.com` |
-| 17 | `cn-fjqz-cmcc-v-05.bilivideo.com` |
-| 18 | `cn-fjqz-cmcc-v-06.bilivideo.com` |
-| 19 | `cn-fjqz-cmcc-v-07.bilivideo.com` |
-| 20 | `cn-fjqz-cmcc-v-08.bilivideo.com` |
+| 9 | `cn-fjqz-cm-01-10.bilivideo.com` |
+| 10 | `cn-fjqz-cmcc-live-01.bilivideo.com` |
+| 11 | `cn-fjqz-cmcc-live-02.bilivideo.com` |
+| 12 | `cn-fjqz-cmcc-v-01.bilivideo.com` |
+| 13 | `cn-fjqz-cmcc-v-02.bilivideo.com` |
+| 14 | `cn-fjqz-cmcc-v-03.bilivideo.com` |
+| 15 | `cn-fjqz-cmcc-v-04.bilivideo.com` |
+| 16 | `cn-fjqz-cmcc-v-05.bilivideo.com` |
+| 17 | `cn-fjqz-cmcc-v-06.bilivideo.com` |
+| 18 | `cn-fjqz-cmcc-v-08.bilivideo.com` |
 
 ### 福建-福州
 
 | # | 域名 |
 | --- | --- |
 | 1 | `cn-fjfz-fx-01-01.bilivideo.com` |
-| 2 | `cn-fjfz-fx-01-04.bilivideo.com` |
-| 3 | `cn-fjfz-fx-01-05.bilivideo.com` |
-| 4 | `cn-fjfz-fx-01-06.bilivideo.com` |
+| 2 | `cn-fjfz-fx-01-03.bilivideo.com` |
+| 3 | `cn-fjfz-fx-01-04.bilivideo.com` |
+| 4 | `cn-fjfz-fx-01-05.bilivideo.com` |
+| 5 | `cn-fjfz-fx-01-06.bilivideo.com` |
 
 ### 江西-九江
 
@@ -632,16 +635,18 @@
 | 3 | `cn-jxjj-ct-01-03.bilivideo.com` |
 | 4 | `cn-jxjj-ct-01-05.bilivideo.com` |
 | 5 | `cn-jxjj-ct-01-06.bilivideo.com` |
-| 6 | `cn-jxjj-ct-01-08.bilivideo.com` |
-| 7 | `cn-jxjj-ct-01-09.bilivideo.com` |
-| 8 | `cn-jxjj-ct-01-14.bilivideo.com` |
-| 9 | `cn-jxjj-dx-v-01.bilivideo.com` |
-| 10 | `cn-jxjj-dx-v-02.bilivideo.com` |
-| 11 | `cn-jxjj-dx-v-03.bilivideo.com` |
-| 12 | `cn-jxjj-dx-v-05.bilivideo.com` |
-| 13 | `cn-jxjj-dx-v-06.bilivideo.com` |
-| 14 | `cn-jxjj-dx-v-07.bilivideo.com` |
-| 15 | `cn-jxjj-dx-v-12.bilivideo.com` |
+| 6 | `cn-jxjj-ct-01-07.bilivideo.com` |
+| 7 | `cn-jxjj-ct-01-08.bilivideo.com` |
+| 8 | `cn-jxjj-ct-01-09.bilivideo.com` |
+| 9 | `cn-jxjj-ct-01-14.bilivideo.com` |
+| 10 | `cn-jxjj-dx-live-01.bilivideo.com` |
+| 11 | `cn-jxjj-dx-v-01.bilivideo.com` |
+| 12 | `cn-jxjj-dx-v-02.bilivideo.com` |
+| 13 | `cn-jxjj-dx-v-03.bilivideo.com` |
+| 14 | `cn-jxjj-dx-v-05.bilivideo.com` |
+| 15 | `cn-jxjj-dx-v-06.bilivideo.com` |
+| 16 | `cn-jxjj-dx-v-07.bilivideo.com` |
+| 17 | `cn-jxjj-dx-v-12.bilivideo.com` |
 
 ### 江西-南昌
 
@@ -669,37 +674,36 @@
 | 20 | `cn-jxnc-cm-01-20.bilivideo.com` |
 | 21 | `cn-jxnc-cm-01-29.bilivideo.com` |
 | 22 | `cn-jxnc-cm-01-30.bilivideo.com` |
-| 23 | `cn-jxnc-cm-01-31.bilivideo.com` |
-| 24 | `cn-jxnc-cm-01-32.bilivideo.com` |
-| 25 | `cn-jxnc-cm-01-34.bilivideo.com` |
-| 26 | `cn-jxnc-cm-01-35.bilivideo.com` |
-| 27 | `cn-jxnc-cm-01-36.bilivideo.com` |
-| 28 | `cn-jxnc-cm-01-37.bilivideo.com` |
-| 29 | `cn-jxnc-cm-01-38.bilivideo.com` |
-| 30 | `cn-jxnc-cm-01-39.bilivideo.com` |
-| 31 | `cn-jxnc-cm-01-40.bilivideo.com` |
-| 32 | `cn-jxnc-cm-01-41.bilivideo.com` |
-| 33 | `cn-jxnc-cm-01-42.bilivideo.com` |
-| 34 | `cn-jxnc-cmcc-bcache-01.bilivideo.com` |
-| 35 | `cn-jxnc-cmcc-bcache-02.bilivideo.com` |
-| 36 | `cn-jxnc-cmcc-bcache-03.bilivideo.com` |
-| 37 | `cn-jxnc-cmcc-bcache-04.bilivideo.com` |
-| 38 | `cn-jxnc-cmcc-bcache-05.bilivideo.com` |
-| 39 | `cn-jxnc-cmcc-bcache-06.bilivideo.com` |
-| 40 | `cn-jxnc-cmcc-bcache-07.bilivideo.com` |
-| 41 | `cn-jxnc-cmcc-bcache-08.bilivideo.com` |
-| 42 | `cn-jxnc-cmcc-bcache-09.bilivideo.com` |
-| 43 | `cn-jxnc-cmcc-bcache-10.bilivideo.com` |
-| 44 | `cn-jxnc-cmcc-bcache-11.bilivideo.com` |
-| 45 | `cn-jxnc-cmcc-bcache-12.bilivideo.com` |
-| 46 | `cn-jxnc-cmcc-bcache-13.bilivideo.com` |
-| 47 | `cn-jxnc-cmcc-bcache-14.bilivideo.com` |
-| 48 | `cn-jxnc-cmcc-bcache-15.bilivideo.com` |
-| 49 | `cn-jxnc-cmcc-bcache-16.bilivideo.com` |
-| 50 | `cn-jxnc-cmcc-bcache-17.bilivideo.com` |
-| 51 | `cn-jxnc-cmcc-bcache-18.bilivideo.com` |
-| 52 | `cn-jxnc-cmcc-live-01.bilivideo.com` |
-| 53 | `cn-jxnc-cmcc-live-02.bilivideo.com` |
+| 23 | `cn-jxnc-cm-01-32.bilivideo.com` |
+| 24 | `cn-jxnc-cm-01-34.bilivideo.com` |
+| 25 | `cn-jxnc-cm-01-35.bilivideo.com` |
+| 26 | `cn-jxnc-cm-01-36.bilivideo.com` |
+| 27 | `cn-jxnc-cm-01-37.bilivideo.com` |
+| 28 | `cn-jxnc-cm-01-38.bilivideo.com` |
+| 29 | `cn-jxnc-cm-01-39.bilivideo.com` |
+| 30 | `cn-jxnc-cm-01-40.bilivideo.com` |
+| 31 | `cn-jxnc-cm-01-41.bilivideo.com` |
+| 32 | `cn-jxnc-cm-01-42.bilivideo.com` |
+| 33 | `cn-jxnc-cmcc-bcache-01.bilivideo.com` |
+| 34 | `cn-jxnc-cmcc-bcache-02.bilivideo.com` |
+| 35 | `cn-jxnc-cmcc-bcache-03.bilivideo.com` |
+| 36 | `cn-jxnc-cmcc-bcache-04.bilivideo.com` |
+| 37 | `cn-jxnc-cmcc-bcache-05.bilivideo.com` |
+| 38 | `cn-jxnc-cmcc-bcache-06.bilivideo.com` |
+| 39 | `cn-jxnc-cmcc-bcache-07.bilivideo.com` |
+| 40 | `cn-jxnc-cmcc-bcache-08.bilivideo.com` |
+| 41 | `cn-jxnc-cmcc-bcache-09.bilivideo.com` |
+| 42 | `cn-jxnc-cmcc-bcache-10.bilivideo.com` |
+| 43 | `cn-jxnc-cmcc-bcache-11.bilivideo.com` |
+| 44 | `cn-jxnc-cmcc-bcache-12.bilivideo.com` |
+| 45 | `cn-jxnc-cmcc-bcache-13.bilivideo.com` |
+| 46 | `cn-jxnc-cmcc-bcache-14.bilivideo.com` |
+| 47 | `cn-jxnc-cmcc-bcache-15.bilivideo.com` |
+| 48 | `cn-jxnc-cmcc-bcache-16.bilivideo.com` |
+| 49 | `cn-jxnc-cmcc-bcache-17.bilivideo.com` |
+| 50 | `cn-jxnc-cmcc-bcache-18.bilivideo.com` |
+| 51 | `cn-jxnc-cmcc-live-01.bilivideo.com` |
+| 52 | `cn-jxnc-cmcc-live-02.bilivideo.com` |
 
 ### 山东-济南
 
@@ -723,44 +727,45 @@
 | 16 | `cn-sdjn-fx-01-03.bilivideo.com` |
 | 17 | `cn-sdjn-fx-01-05.bilivideo.com` |
 | 18 | `cn-sdjn-fx-01-06.bilivideo.com` |
-| 19 | `cn-sdjn-fx-01-08.bilivideo.com` |
-| 20 | `cn-sdjn-fx-01-09.bilivideo.com` |
-| 21 | `cn-sdjn-fx-01-10.bilivideo.com` |
-| 22 | `cn-sdjn-fx-01-11.bilivideo.com` |
-| 23 | `cn-sdjn-fx-01-12.bilivideo.com` |
-| 24 | `cn-sdjn-fx-bcache-01.bilivideo.com` |
-| 25 | `cn-sdjn-fx-bcache-02.bilivideo.com` |
-| 26 | `cn-sdjn-fx-bcache-03.bilivideo.com` |
-| 27 | `cn-sdjn-fx-live-01.bilivideo.com` |
-| 28 | `cn-sdjn-fx-live-02.bilivideo.com` |
-| 29 | `cn-sdjn2-cmcc-live-01.bilivideo.com` |
-| 30 | `cn-sdjn2-cmcc-live-02.bilivideo.com` |
-| 31 | `cn-sdjn2-cmcc-live-03.bilivideo.com` |
-| 32 | `cn-sdjn2-cmcc-v-01.bilivideo.com` |
-| 33 | `cn-sdjn2-cmcc-v-02.bilivideo.com` |
-| 34 | `cn-sdjn2-cmcc-v-03.bilivideo.com` |
-| 35 | `cn-sdjn2-cmcc-v-05.bilivideo.com` |
-| 36 | `cn-sdjn2-cmcc-v-06.bilivideo.com` |
-| 37 | `cn-sdjn2-cmcc-v-07.bilivideo.com` |
-| 38 | `cn-sdjn2-cmcc-v-08.bilivideo.com` |
-| 39 | `cn-sdjn2-cmcc-v-09.bilivideo.com` |
-| 40 | `cn-sdjn2-cmcc-v-10.bilivideo.com` |
-| 41 | `cn-sdjn2-cmcc-v-11.bilivideo.com` |
+| 19 | `cn-sdjn-fx-01-07.bilivideo.com` |
+| 20 | `cn-sdjn-fx-01-08.bilivideo.com` |
+| 21 | `cn-sdjn-fx-01-09.bilivideo.com` |
+| 22 | `cn-sdjn-fx-01-10.bilivideo.com` |
+| 23 | `cn-sdjn-fx-01-11.bilivideo.com` |
+| 24 | `cn-sdjn-fx-01-12.bilivideo.com` |
+| 25 | `cn-sdjn-fx-bcache-01.bilivideo.com` |
+| 26 | `cn-sdjn-fx-bcache-02.bilivideo.com` |
+| 27 | `cn-sdjn-fx-bcache-03.bilivideo.com` |
+| 28 | `cn-sdjn-fx-live-01.bilivideo.com` |
+| 29 | `cn-sdjn-fx-live-02.bilivideo.com` |
+| 30 | `cn-sdjn2-cmcc-live-01.bilivideo.com` |
+| 31 | `cn-sdjn2-cmcc-live-02.bilivideo.com` |
+| 32 | `cn-sdjn2-cmcc-live-03.bilivideo.com` |
+| 33 | `cn-sdjn2-cmcc-v-01.bilivideo.com` |
+| 34 | `cn-sdjn2-cmcc-v-02.bilivideo.com` |
+| 35 | `cn-sdjn2-cmcc-v-03.bilivideo.com` |
+| 36 | `cn-sdjn2-cmcc-v-05.bilivideo.com` |
+| 37 | `cn-sdjn2-cmcc-v-06.bilivideo.com` |
+| 38 | `cn-sdjn2-cmcc-v-07.bilivideo.com` |
+| 39 | `cn-sdjn2-cmcc-v-08.bilivideo.com` |
+| 40 | `cn-sdjn2-cmcc-v-09.bilivideo.com` |
+| 41 | `cn-sdjn2-cmcc-v-10.bilivideo.com` |
+| 42 | `cn-sdjn2-cmcc-v-11.bilivideo.com` |
 
 ### 山东-青岛
 
 | # | 域名 |
 | --- | --- |
 | 1 | `cn-sdqd-cu-01-01.bilivideo.com` |
-| 2 | `cn-sdqd-cu-01-05.bilivideo.com` |
-| 3 | `cn-sdqd-cu-01-06.bilivideo.com` |
+| 2 | `cn-sdqd-cu-01-02.bilivideo.com` |
+| 3 | `cn-sdqd-cu-01-05.bilivideo.com` |
 | 4 | `cn-sdqd-cu-01-08.bilivideo.com` |
 | 5 | `cn-sdqd-cu-01-11.bilivideo.com` |
 | 6 | `cn-sdqd-cu-01-13.bilivideo.com` |
 | 7 | `cn-sdqd-cu-01-14.bilivideo.com` |
-| 8 | `cn-sdqd-cu-01-16.bilivideo.com` |
-| 9 | `cn-sdqd-cu-01-17.bilivideo.com` |
-| 10 | `cn-sdqd-cu-01-18.bilivideo.com` |
+| 8 | `cn-sdqd-cu-01-15.bilivideo.com` |
+| 9 | `cn-sdqd-cu-01-16.bilivideo.com` |
+| 10 | `cn-sdqd-cu-01-17.bilivideo.com` |
 | 11 | `cn-sdqd-cu-01-19.bilivideo.com` |
 | 12 | `cn-sdqd-cu-01-20.bilivideo.com` |
 | 13 | `cn-sdqd-cu-01-21.bilivideo.com` |
@@ -777,7 +782,7 @@
 | 24 | `cn-sdqd-cu-01-39.bilivideo.com` |
 | 25 | `cn-sdqd-cu-01-40.bilivideo.com` |
 
-## 🏔️ 华中 (226)
+## 🏔️ 华中 (229)
 
 ### 河南-洛阳
 
@@ -789,13 +794,13 @@
 | 4 | `cn-hnly-cu-01-05.bilivideo.com` |
 | 5 | `cn-hnly-cu-01-06.bilivideo.com` |
 | 6 | `cn-hnly-cu-01-07.bilivideo.com` |
-| 7 | `cn-hnly-cu-01-08.bilivideo.com` |
-| 8 | `cn-hnly-cu-01-09.bilivideo.com` |
-| 9 | `cn-hnly-cu-01-10.bilivideo.com` |
-| 10 | `cn-hnly-cu-01-11.bilivideo.com` |
-| 11 | `cn-hnly-cu-01-12.bilivideo.com` |
-| 12 | `cn-hnly-cu-01-13.bilivideo.com` |
-| 13 | `cn-hnly-cu-01-14.bilivideo.com` |
+| 7 | `cn-hnly-cu-01-09.bilivideo.com` |
+| 8 | `cn-hnly-cu-01-10.bilivideo.com` |
+| 9 | `cn-hnly-cu-01-11.bilivideo.com` |
+| 10 | `cn-hnly-cu-01-12.bilivideo.com` |
+| 11 | `cn-hnly-cu-01-13.bilivideo.com` |
+| 12 | `cn-hnly-cu-01-14.bilivideo.com` |
+| 13 | `cn-hnly-cu-01-15.bilivideo.com` |
 | 14 | `cn-hnly-cu-01-16.bilivideo.com` |
 | 15 | `cn-hnly-cu-01-17.bilivideo.com` |
 | 16 | `cn-hnly-cu-01-18.bilivideo.com` |
@@ -823,34 +828,36 @@
 | --- | --- |
 | 1 | `cn-hnzz-cm-01-01.bilivideo.com` |
 | 2 | `cn-hnzz-cm-01-02.bilivideo.com` |
-| 3 | `cn-hnzz-cm-01-04.bilivideo.com` |
-| 4 | `cn-hnzz-cm-01-05.bilivideo.com` |
-| 5 | `cn-hnzz-cm-01-06.bilivideo.com` |
-| 6 | `cn-hnzz-cm-01-09.bilivideo.com` |
-| 7 | `cn-hnzz-cm-01-10.bilivideo.com` |
-| 8 | `cn-hnzz-cm-01-11.bilivideo.com` |
-| 9 | `cn-hnzz-cm-01-13.bilivideo.com` |
-| 10 | `cn-hnzz-cm-01-14.bilivideo.com` |
-| 11 | `cn-hnzz-cm-01-15.bilivideo.com` |
-| 12 | `cn-hnzz-cm-01-16.bilivideo.com` |
-| 13 | `cn-hnzz-cmcc-bcache-01.bilivideo.com` |
-| 14 | `cn-hnzz-cmcc-bcache-02.bilivideo.com` |
-| 15 | `cn-hnzz-cmcc-bcache-03.bilivideo.com` |
-| 16 | `cn-hnzz-cmcc-bcache-04.bilivideo.com` |
-| 17 | `cn-hnzz-cmcc-live-01.bilivideo.com` |
-| 18 | `cn-hnzz-cmcc-live-02.bilivideo.com` |
-| 19 | `cn-hnzz-cmcc-live-03.bilivideo.com` |
-| 20 | `cn-hnzz-cmcc-live-04.bilivideo.com` |
-| 21 | `cn-hnzz-cmcc-v-05.bilivideo.com` |
-| 22 | `cn-hnzz-cmcc-v-06.bilivideo.com` |
-| 23 | `cn-hnzz-cmcc-v-07.bilivideo.com` |
-| 24 | `cn-hnzz-cmcc-v-08.bilivideo.com` |
-| 25 | `cn-hnzz-cmcc-v-09.bilivideo.com` |
-| 26 | `cn-hnzz-cmcc-v-10.bilivideo.com` |
-| 27 | `cn-hnzz-cmcc-v-11.bilivideo.com` |
-| 28 | `cn-hnzz-cmcc-v-12.bilivideo.com` |
-| 29 | `cn-hnzz-cmcc-v-14.bilivideo.com` |
-| 30 | `ec-hnzz-cm-01-02.bilivideo.com` |
+| 3 | `cn-hnzz-cm-01-03.bilivideo.com` |
+| 4 | `cn-hnzz-cm-01-04.bilivideo.com` |
+| 5 | `cn-hnzz-cm-01-05.bilivideo.com` |
+| 6 | `cn-hnzz-cm-01-06.bilivideo.com` |
+| 7 | `cn-hnzz-cm-01-09.bilivideo.com` |
+| 8 | `cn-hnzz-cm-01-10.bilivideo.com` |
+| 9 | `cn-hnzz-cm-01-11.bilivideo.com` |
+| 10 | `cn-hnzz-cm-01-13.bilivideo.com` |
+| 11 | `cn-hnzz-cm-01-14.bilivideo.com` |
+| 12 | `cn-hnzz-cm-01-15.bilivideo.com` |
+| 13 | `cn-hnzz-cm-01-16.bilivideo.com` |
+| 14 | `cn-hnzz-cmcc-bcache-01.bilivideo.com` |
+| 15 | `cn-hnzz-cmcc-bcache-02.bilivideo.com` |
+| 16 | `cn-hnzz-cmcc-bcache-03.bilivideo.com` |
+| 17 | `cn-hnzz-cmcc-bcache-04.bilivideo.com` |
+| 18 | `cn-hnzz-cmcc-live-01.bilivideo.com` |
+| 19 | `cn-hnzz-cmcc-live-02.bilivideo.com` |
+| 20 | `cn-hnzz-cmcc-live-03.bilivideo.com` |
+| 21 | `cn-hnzz-cmcc-live-04.bilivideo.com` |
+| 22 | `cn-hnzz-cmcc-v-05.bilivideo.com` |
+| 23 | `cn-hnzz-cmcc-v-06.bilivideo.com` |
+| 24 | `cn-hnzz-cmcc-v-07.bilivideo.com` |
+| 25 | `cn-hnzz-cmcc-v-08.bilivideo.com` |
+| 26 | `cn-hnzz-cmcc-v-09.bilivideo.com` |
+| 27 | `cn-hnzz-cmcc-v-10.bilivideo.com` |
+| 28 | `cn-hnzz-cmcc-v-11.bilivideo.com` |
+| 29 | `cn-hnzz-cmcc-v-12.bilivideo.com` |
+| 30 | `cn-hnzz-cmcc-v-13.bilivideo.com` |
+| 31 | `cn-hnzz-cmcc-v-14.bilivideo.com` |
+| 32 | `ec-hnzz-cm-01-02.bilivideo.com` |
 
 ### 湖北-宜昌
 
@@ -878,10 +885,11 @@
 | 20 | `cn-hbyc-ct-01-23.bilivideo.com` |
 | 21 | `cn-hbyc-ct-01-24.bilivideo.com` |
 | 22 | `cn-hbyc-ct-01-25.bilivideo.com` |
-| 23 | `cn-hbyc-ct-01-27.bilivideo.com` |
-| 24 | `cn-hbyc-ct-01-28.bilivideo.com` |
-| 25 | `cn-hbyc-ct-01-29.bilivideo.com` |
-| 26 | `cn-hbyc-ct-01-30.bilivideo.com` |
+| 23 | `cn-hbyc-ct-01-26.bilivideo.com` |
+| 24 | `cn-hbyc-ct-01-27.bilivideo.com` |
+| 25 | `cn-hbyc-ct-01-28.bilivideo.com` |
+| 26 | `cn-hbyc-ct-01-29.bilivideo.com` |
+| 27 | `cn-hbyc-ct-01-30.bilivideo.com` |
 
 ### 湖北-武汉
 
@@ -999,6 +1007,7 @@
 | 40 | `cn-hnld-ct-01-47.bilivideo.com` |
 | 41 | `cn-hnld-ct-01-48.bilivideo.com` |
 | 42 | `cn-hnld-ct-01-49.bilivideo.com` |
+| 43 | `cn-hnld-ct-01-50.bilivideo.com` |
 
 ### 湖南-长沙
 
@@ -1018,22 +1027,21 @@
 | 12 | `cn-hncs-cm-03-23.bilivideo.com` |
 | 13 | `cn-hncs-cm-03-24.bilivideo.com` |
 | 14 | `cn-hncs-fx-01-01.bilivideo.com` |
-| 15 | `cn-hncs-fx-01-03.bilivideo.com` |
+| 15 | `cn-hncs-fx-01-02.bilivideo.com` |
 | 16 | `cn-hncs-fx-01-04.bilivideo.com` |
 | 17 | `cn-hncs-fx-01-05.bilivideo.com` |
-| 18 | `cn-hncs-fx-01-06.bilivideo.com` |
-| 19 | `cn-hncs3-cmcc-live-01.bilivideo.com` |
-| 20 | `cn-hncs3-cmcc-v-05.bilivideo.com` |
-| 21 | `cn-hncs3-cmcc-v-08.bilivideo.com` |
-| 22 | `cn-hncs3-cmcc-v-09.bilivideo.com` |
-| 23 | `cn-hncs3-cmcc-v-10.bilivideo.com` |
-| 24 | `ec-hncs-ct-01-02.bilivideo.com` |
-| 25 | `ec-hncs-ct-01-05.bilivideo.com` |
-| 26 | `ec-hncs-ct-01-06.bilivideo.com` |
-| 27 | `ec-hncs-ct-01-07.bilivideo.com` |
-| 28 | `ec-hncs-ct-01-08.bilivideo.com` |
-| 29 | `ec-hncs-ct-01-09.bilivideo.com` |
-| 30 | `ec-hncs-cu-01-01.bilivideo.com` |
+| 18 | `cn-hncs3-cmcc-live-01.bilivideo.com` |
+| 19 | `cn-hncs3-cmcc-v-05.bilivideo.com` |
+| 20 | `cn-hncs3-cmcc-v-08.bilivideo.com` |
+| 21 | `cn-hncs3-cmcc-v-09.bilivideo.com` |
+| 22 | `cn-hncs3-cmcc-v-10.bilivideo.com` |
+| 23 | `ec-hncs-ct-01-02.bilivideo.com` |
+| 24 | `ec-hncs-ct-01-05.bilivideo.com` |
+| 25 | `ec-hncs-ct-01-06.bilivideo.com` |
+| 26 | `ec-hncs-ct-01-07.bilivideo.com` |
+| 27 | `ec-hncs-ct-01-08.bilivideo.com` |
+| 28 | `ec-hncs-ct-01-09.bilivideo.com` |
+| 29 | `ec-hncs-cu-01-01.bilivideo.com` |
 
 ## 🌴 华南 (158)
 
@@ -1098,56 +1106,57 @@
 | 55 | `cn-gddg-ct-01-35.bilivideo.com` |
 | 56 | `cn-gddg-ct-01-36.bilivideo.com` |
 | 57 | `cn-gddg-cu-01-04.bilivideo.com` |
-| 58 | `cn-gddg-cu-01-06.bilivideo.com` |
-| 59 | `cn-gddg-cu-01-07.bilivideo.com` |
-| 60 | `cn-gddg-cu-01-08.bilivideo.com` |
-| 61 | `cn-gddg-cu-01-09.bilivideo.com` |
-| 62 | `cn-gddg-cu-01-12.bilivideo.com` |
-| 63 | `cn-gddg-cu-01-13.bilivideo.com` |
-| 64 | `cn-gddg-cu-01-14.bilivideo.com` |
-| 65 | `cn-gddg-cu-01-15.bilivideo.com` |
-| 66 | `cn-gddg-cu-01-16.bilivideo.com` |
-| 67 | `cn-gddg-cu-01-17.bilivideo.com` |
-| 68 | `cn-gddg-cu-01-18.bilivideo.com` |
-| 69 | `cn-gddg-cu-01-19.bilivideo.com` |
-| 70 | `cn-gddg-cu-01-20.bilivideo.com` |
-| 71 | `cn-gddg-cu-01-21.bilivideo.com` |
-| 72 | `cn-gddg-cu-01-22.bilivideo.com` |
-| 73 | `cn-gddg-cu-01-23.bilivideo.com` |
-| 74 | `cn-gddg-cu-01-24.bilivideo.com` |
-| 75 | `cn-gddg-cu-01-25.bilivideo.com` |
-| 76 | `cn-gddg-cu-01-31.bilivideo.com` |
-| 77 | `cn-gddg-cu-01-33.bilivideo.com` |
-| 78 | `cn-gddg-cu-01-34.bilivideo.com` |
-| 79 | `cn-gddg-cu-01-35.bilivideo.com` |
-| 80 | `cn-gddg-cu-01-36.bilivideo.com` |
-| 81 | `cn-gddg-cu-01-37.bilivideo.com` |
-| 82 | `cn-gddg-cu-01-38.bilivideo.com` |
-| 83 | `cn-gddg-dx-bcache-01.bilivideo.com` |
-| 84 | `cn-gddg-dx-bcache-03.bilivideo.com` |
-| 85 | `cn-gddg-dx-bcache-04.bilivideo.com` |
-| 86 | `cn-gddg-dx-bcache-05.bilivideo.com` |
-| 87 | `cn-gddg-dx-bcache-06.bilivideo.com` |
-| 88 | `cn-gddg-dx-bcache-07.bilivideo.com` |
-| 89 | `cn-gddg-dx-bcache-08.bilivideo.com` |
-| 90 | `cn-gddg-dx-bcache-09.bilivideo.com` |
-| 91 | `cn-gddg-dx-bcache-10.bilivideo.com` |
-| 92 | `cn-gddg-dx-bcache-11.bilivideo.com` |
-| 93 | `cn-gddg-dx-bcache-12.bilivideo.com` |
-| 94 | `cn-gddg-dx-bcache-13.bilivideo.com` |
-| 95 | `cn-gddg-dx-bcache-14.bilivideo.com` |
-| 96 | `cn-gddg-dx-bcache-15.bilivideo.com` |
-| 97 | `cn-gddg-dx-bcache-16.bilivideo.com` |
-| 98 | `cn-gddg-dx-bcache-18.bilivideo.com` |
-| 99 | `cn-gddg-dx-bcache-19.bilivideo.com` |
-| 100 | `cn-gddg-dx-bcache-20.bilivideo.com` |
-| 101 | `cn-gddg-dx-bcache-24.bilivideo.com` |
-| 102 | `cn-gddg-dx-live-02.bilivideo.com` |
-| 103 | `cn-gddg-dx-live-03.bilivideo.com` |
-| 104 | `cn-gddg-dx-live-04.bilivideo.com` |
-| 105 | `cn-gddg-dx-live-05.bilivideo.com` |
-| 106 | `ec-gddg-ct-01-01.bilivideo.com` |
-| 107 | `ec-gddg-ct-01-02.bilivideo.com` |
+| 58 | `cn-gddg-cu-01-05.bilivideo.com` |
+| 59 | `cn-gddg-cu-01-06.bilivideo.com` |
+| 60 | `cn-gddg-cu-01-07.bilivideo.com` |
+| 61 | `cn-gddg-cu-01-08.bilivideo.com` |
+| 62 | `cn-gddg-cu-01-09.bilivideo.com` |
+| 63 | `cn-gddg-cu-01-12.bilivideo.com` |
+| 64 | `cn-gddg-cu-01-13.bilivideo.com` |
+| 65 | `cn-gddg-cu-01-14.bilivideo.com` |
+| 66 | `cn-gddg-cu-01-15.bilivideo.com` |
+| 67 | `cn-gddg-cu-01-16.bilivideo.com` |
+| 68 | `cn-gddg-cu-01-17.bilivideo.com` |
+| 69 | `cn-gddg-cu-01-18.bilivideo.com` |
+| 70 | `cn-gddg-cu-01-19.bilivideo.com` |
+| 71 | `cn-gddg-cu-01-20.bilivideo.com` |
+| 72 | `cn-gddg-cu-01-21.bilivideo.com` |
+| 73 | `cn-gddg-cu-01-22.bilivideo.com` |
+| 74 | `cn-gddg-cu-01-23.bilivideo.com` |
+| 75 | `cn-gddg-cu-01-24.bilivideo.com` |
+| 76 | `cn-gddg-cu-01-25.bilivideo.com` |
+| 77 | `cn-gddg-cu-01-31.bilivideo.com` |
+| 78 | `cn-gddg-cu-01-33.bilivideo.com` |
+| 79 | `cn-gddg-cu-01-34.bilivideo.com` |
+| 80 | `cn-gddg-cu-01-35.bilivideo.com` |
+| 81 | `cn-gddg-cu-01-36.bilivideo.com` |
+| 82 | `cn-gddg-cu-01-37.bilivideo.com` |
+| 83 | `cn-gddg-cu-01-38.bilivideo.com` |
+| 84 | `cn-gddg-dx-bcache-01.bilivideo.com` |
+| 85 | `cn-gddg-dx-bcache-03.bilivideo.com` |
+| 86 | `cn-gddg-dx-bcache-04.bilivideo.com` |
+| 87 | `cn-gddg-dx-bcache-05.bilivideo.com` |
+| 88 | `cn-gddg-dx-bcache-06.bilivideo.com` |
+| 89 | `cn-gddg-dx-bcache-07.bilivideo.com` |
+| 90 | `cn-gddg-dx-bcache-08.bilivideo.com` |
+| 91 | `cn-gddg-dx-bcache-09.bilivideo.com` |
+| 92 | `cn-gddg-dx-bcache-10.bilivideo.com` |
+| 93 | `cn-gddg-dx-bcache-11.bilivideo.com` |
+| 94 | `cn-gddg-dx-bcache-12.bilivideo.com` |
+| 95 | `cn-gddg-dx-bcache-13.bilivideo.com` |
+| 96 | `cn-gddg-dx-bcache-14.bilivideo.com` |
+| 97 | `cn-gddg-dx-bcache-15.bilivideo.com` |
+| 98 | `cn-gddg-dx-bcache-16.bilivideo.com` |
+| 99 | `cn-gddg-dx-bcache-18.bilivideo.com` |
+| 100 | `cn-gddg-dx-bcache-19.bilivideo.com` |
+| 101 | `cn-gddg-dx-bcache-20.bilivideo.com` |
+| 102 | `cn-gddg-dx-bcache-24.bilivideo.com` |
+| 103 | `cn-gddg-dx-live-02.bilivideo.com` |
+| 104 | `cn-gddg-dx-live-03.bilivideo.com` |
+| 105 | `cn-gddg-dx-live-04.bilivideo.com` |
+| 106 | `cn-gddg-dx-live-05.bilivideo.com` |
+| 107 | `ec-gddg-ct-01-01.bilivideo.com` |
+| 108 | `ec-gddg-ct-01-02.bilivideo.com` |
 
 ### 广东-广州
 
@@ -1204,9 +1213,8 @@
 | 4 | `cn-gdjm-cm-01-05.bilivideo.com` |
 | 5 | `cn-gdjm-cm-01-06.bilivideo.com` |
 | 6 | `cn-gdjm-cm-01-07.bilivideo.com` |
-| 7 | `cn-gdjm-cm-01-08.bilivideo.com` |
-| 8 | `cn-gdjm-cm-01-09.bilivideo.com` |
-| 9 | `cn-gdjm-cm-01-10.bilivideo.com` |
+| 7 | `cn-gdjm-cm-01-09.bilivideo.com` |
+| 8 | `cn-gdjm-cm-01-10.bilivideo.com` |
 
 ### 广东-深圳
 
@@ -1229,40 +1237,40 @@
 | 6 | `cn-sccd-cm-03-08.bilivideo.com` |
 | 7 | `cn-sccd-cm-03-09.bilivideo.com` |
 | 8 | `cn-sccd-cm-03-10.bilivideo.com` |
-| 9 | `cn-sccd-cm-03-12.bilivideo.com` |
-| 10 | `cn-sccd-cm-03-13.bilivideo.com` |
-| 11 | `cn-sccd-cm-03-16.bilivideo.com` |
-| 12 | `cn-sccd-cm-03-17.bilivideo.com` |
-| 13 | `cn-sccd-cm-03-18.bilivideo.com` |
-| 14 | `cn-sccd-cm-03-22.bilivideo.com` |
-| 15 | `cn-sccd-cm-03-24.bilivideo.com` |
-| 16 | `cn-sccd-cm-03-25.bilivideo.com` |
-| 17 | `cn-sccd-cm-03-26.bilivideo.com` |
-| 18 | `cn-sccd-ct-01-13.bilivideo.com` |
-| 19 | `cn-sccd-ct-02-01.bilivideo.com` |
-| 20 | `cn-sccd-ct-02-02.bilivideo.com` |
-| 21 | `cn-sccd-ct-02-03.bilivideo.com` |
-| 22 | `cn-sccd-ct-02-04.bilivideo.com` |
-| 23 | `cn-sccd-ct-02-05.bilivideo.com` |
-| 24 | `cn-sccd-ct-02-06.bilivideo.com` |
-| 25 | `cn-sccd-ct-02-07.bilivideo.com` |
-| 26 | `cn-sccd-ct-02-08.bilivideo.com` |
-| 27 | `cn-sccd-ct-02-09.bilivideo.com` |
-| 28 | `cn-sccd-ct-02-10.bilivideo.com` |
-| 29 | `cn-sccd-ct-02-12.bilivideo.com` |
-| 30 | `cn-sccd-ct-02-13.bilivideo.com` |
-| 31 | `cn-sccd-ct-02-14.bilivideo.com` |
-| 32 | `cn-sccd-ct-02-15.bilivideo.com` |
-| 33 | `cn-sccd-ct-02-16.bilivideo.com` |
-| 34 | `cn-sccd-ct-02-17.bilivideo.com` |
-| 35 | `cn-sccd-ct-02-18.bilivideo.com` |
-| 36 | `cn-sccd-ct-02-19.bilivideo.com` |
-| 37 | `cn-sccd-ct-02-20.bilivideo.com` |
-| 38 | `cn-sccd-ct-02-21.bilivideo.com` |
-| 39 | `cn-sccd-ct-02-22.bilivideo.com` |
-| 40 | `cn-sccd-ct-02-23.bilivideo.com` |
-| 41 | `cn-sccd-ct-02-24.bilivideo.com` |
-| 42 | `cn-sccd-fx-01-01.bilivideo.com` |
+| 9 | `cn-sccd-cm-03-13.bilivideo.com` |
+| 10 | `cn-sccd-cm-03-16.bilivideo.com` |
+| 11 | `cn-sccd-cm-03-17.bilivideo.com` |
+| 12 | `cn-sccd-cm-03-18.bilivideo.com` |
+| 13 | `cn-sccd-cm-03-22.bilivideo.com` |
+| 14 | `cn-sccd-cm-03-24.bilivideo.com` |
+| 15 | `cn-sccd-cm-03-25.bilivideo.com` |
+| 16 | `cn-sccd-cm-03-26.bilivideo.com` |
+| 17 | `cn-sccd-ct-01-13.bilivideo.com` |
+| 18 | `cn-sccd-ct-02-01.bilivideo.com` |
+| 19 | `cn-sccd-ct-02-02.bilivideo.com` |
+| 20 | `cn-sccd-ct-02-03.bilivideo.com` |
+| 21 | `cn-sccd-ct-02-04.bilivideo.com` |
+| 22 | `cn-sccd-ct-02-05.bilivideo.com` |
+| 23 | `cn-sccd-ct-02-06.bilivideo.com` |
+| 24 | `cn-sccd-ct-02-07.bilivideo.com` |
+| 25 | `cn-sccd-ct-02-08.bilivideo.com` |
+| 26 | `cn-sccd-ct-02-09.bilivideo.com` |
+| 27 | `cn-sccd-ct-02-10.bilivideo.com` |
+| 28 | `cn-sccd-ct-02-12.bilivideo.com` |
+| 29 | `cn-sccd-ct-02-13.bilivideo.com` |
+| 30 | `cn-sccd-ct-02-14.bilivideo.com` |
+| 31 | `cn-sccd-ct-02-15.bilivideo.com` |
+| 32 | `cn-sccd-ct-02-16.bilivideo.com` |
+| 33 | `cn-sccd-ct-02-17.bilivideo.com` |
+| 34 | `cn-sccd-ct-02-18.bilivideo.com` |
+| 35 | `cn-sccd-ct-02-19.bilivideo.com` |
+| 36 | `cn-sccd-ct-02-20.bilivideo.com` |
+| 37 | `cn-sccd-ct-02-21.bilivideo.com` |
+| 38 | `cn-sccd-ct-02-22.bilivideo.com` |
+| 39 | `cn-sccd-ct-02-23.bilivideo.com` |
+| 40 | `cn-sccd-ct-02-24.bilivideo.com` |
+| 41 | `cn-sccd-fx-01-01.bilivideo.com` |
+| 42 | `cn-sccd-fx-01-03.bilivideo.com` |
 | 43 | `cn-sccd-fx-01-04.bilivideo.com` |
 | 44 | `cn-sccd-fx-01-05.bilivideo.com` |
 | 45 | `cn-sccd-fx-01-06.bilivideo.com` |
@@ -1313,8 +1321,8 @@
 | 22 | `cn-sxxa-ct-03-01.bilivideo.com` |
 | 23 | `cn-sxxa-ct-03-02.bilivideo.com` |
 | 24 | `cn-sxxa-ct-03-04.bilivideo.com` |
-| 25 | `cn-sxxa-ct-03-05.bilivideo.com` |
-| 26 | `cn-sxxa-ct-03-06.bilivideo.com` |
+| 25 | `cn-sxxa-ct-03-06.bilivideo.com` |
+| 26 | `cn-sxxa-ct-03-07.bilivideo.com` |
 | 27 | `cn-sxxa-ct-03-08.bilivideo.com` |
 | 28 | `cn-sxxa-ct-03-13.bilivideo.com` |
 | 29 | `cn-sxxa-ct-03-14.bilivideo.com` |
@@ -1342,7 +1350,7 @@
 | 6 | `cn-hk-eq-01-13.bilivideo.com` |
 | 7 | `cn-hk-eq-01-14.bilivideo.com` |
 
-## ☁️ UPOS 商业 CDN (25)
+## ☁️ UPOS 商业 CDN (24)
 
 ### UPOS-Akamai
 
@@ -1372,18 +1380,7 @@
 | 4 | `upos-sz-mirror08c.bilivideo.com` |
 | 5 | `upos-sz-mirror08h.bilivideo.com` |
 | 6 | `upos-sz-originbstar.bilivideo.com` |
-
-### UPOS-华为云
-
-| # | 域名 |
-| --- | --- |
-| 1 | `upos-sz-mirrorhwdisp.bilivideo.com` |
-
-### UPOS-百度云
-
-| # | 域名 |
-| --- | --- |
-| 1 | `upos-sz-mirrorbd.bilivideo.com` |
+| 7 | `upos-sz-static.bilivideo.com` |
 
 ### UPOS-腾讯云
 
@@ -1409,7 +1406,7 @@
 | 3 | `upos-sz-mirroralibstar1.bilivideo.com` |
 | 4 | `upos-sz-mirroraliov.bilivideo.com` |
 
-## 🔗 Gotcha 外部 CDN (28)
+## 🔗 Gotcha 外部 CDN (27)
 
 ### Gotcha-TF
 
@@ -1427,20 +1424,19 @@
 | 2 | `d0--cn-gotcha09.bilivideo.com` |
 | 3 | `d0--cn-gotcha209.bilivideo.com` |
 | 4 | `d1--cn-gotcha04b.bilivideo.com` |
-| 5 | `d1--cn-gotcha07b.bilivideo.com` |
-| 6 | `d1--cn-gotcha104b.bilivideo.com` |
-| 7 | `d1--cn-gotcha105.bilivideo.com` |
-| 8 | `d1--cn-gotcha204-1.bilivideo.com` |
-| 9 | `d1--cn-gotcha204-3.bilivideo.com` |
-| 10 | `d1--cn-gotcha204-4.bilivideo.com` |
-| 11 | `d1--cn-gotcha204b.bilivideo.com` |
-| 12 | `d1--cn-gotcha207.bilivideo.com` |
-| 13 | `d1--cn-gotcha209-1.bilivideo.com` |
-| 14 | `d1--cn-gotcha209.bilivideo.com` |
-| 15 | `d1--cn-gotcha209b.bilivideo.com` |
-| 16 | `d1--cn-gotcha303.bilivideo.com` |
-| 17 | `d1--cn-gotcha304.bilivideo.com` |
-| 18 | `d1--cn-gotcha309.bilivideo.com` |
+| 5 | `d1--cn-gotcha104b.bilivideo.com` |
+| 6 | `d1--cn-gotcha105.bilivideo.com` |
+| 7 | `d1--cn-gotcha204-1.bilivideo.com` |
+| 8 | `d1--cn-gotcha204-3.bilivideo.com` |
+| 9 | `d1--cn-gotcha204-4.bilivideo.com` |
+| 10 | `d1--cn-gotcha204b.bilivideo.com` |
+| 11 | `d1--cn-gotcha209-1.bilivideo.com` |
+| 12 | `d1--cn-gotcha209.bilivideo.com` |
+| 13 | `d1--cn-gotcha209b.bilivideo.com` |
+| 14 | `d1--cn-gotcha303.bilivideo.com` |
+| 15 | `d1--cn-gotcha304.bilivideo.com` |
+| 16 | `d1--cn-gotcha309.bilivideo.com` |
+| 17 | `d1--p1--cn-gotcha04.bilivideo.com` |
 
 ### Gotcha-海外
 
