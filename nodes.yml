@@ -5,10 +5,10 @@
   - cn-bj-fx-01-04.bilivideo.com
   - cn-bj-fx-01-05.bilivideo.com
   - cn-bj-fx-01-06.bilivideo.com
-  - cn-bj-fx-01-07.bilivideo.com
   - cn-bj-fx-01-08.bilivideo.com
   - cn-bj-fx-01-09.bilivideo.com
   - cn-bj-fx-01-10.bilivideo.com
+  - cn-bj-fx-01-11.bilivideo.com
   - cn-bj-fx-01-12.bilivideo.com
   - cn-bj-fx-bcache-01.bilivideo.com
   - cn-bj-fx-bcache-02.bilivideo.com
@@ -30,7 +30,6 @@
   - cn-tj-cm-02-02.bilivideo.com
   - cn-tj-cm-02-03.bilivideo.com
   - cn-tj-cm-02-04.bilivideo.com
-  - cn-tj-cm-02-05.bilivideo.com
   - cn-tj-cm-02-06.bilivideo.com
   - cn-tj-cm-02-15.bilivideo.com
   - cn-tj-cm-02-16.bilivideo.com
@@ -43,7 +42,6 @@
   - cn-tj-cu-01-07.bilivideo.com
   - cn-tj-cu-01-08.bilivideo.com
   - cn-tj-cu-01-09.bilivideo.com
-  - cn-tj-cu-01-10.bilivideo.com
   - cn-tj-cu-01-11.bilivideo.com
   - cn-tj-cu-01-12.bilivideo.com
   - cn-tj-cu-01-13.bilivideo.com
@@ -57,8 +55,13 @@
   - cn-tj2-cmcc-bcache-04.bilivideo.com
   - cn-tj2-cmcc-bcache-06.bilivideo.com
 
+上海:
+  - cn-sh-cc-01-11.bilivideo.com
+  - cn-sh-cc-bcache-02.bilivideo.com
+  - cn-sh-cc-bcache-09.bilivideo.com
+  - cn-sh-cc-bcache-10.bilivideo.com
+
 重庆:
-  - cn-cq-cm-01-01.bilivideo.com
   - cn-cq-cm-01-04.bilivideo.com
   - cn-cq-cm-01-05.bilivideo.com
   - cn-cq-cm-01-06.bilivideo.com
@@ -148,10 +151,10 @@
 山西-太原:
   - cn-sxty-cu-03-01.bilivideo.com
   - cn-sxty-cu-03-02.bilivideo.com
+  - cn-sxty-cu-03-03.bilivideo.com
   - cn-sxty-cu-03-04.bilivideo.com
   - cn-sxty-cu-03-05.bilivideo.com
   - cn-sxty-cu-03-06.bilivideo.com
-  - cn-sxty-cu-03-07.bilivideo.com
   - cn-sxty-cu-03-08.bilivideo.com
   - cn-sxty-cu-03-09.bilivideo.com
   - cn-sxty-cu-03-10.bilivideo.com
@@ -194,6 +197,7 @@
   - cn-lndl-ct-01-03.bilivideo.com
   - cn-lndl-ct-01-04.bilivideo.com
   - cn-lndl-ct-01-05.bilivideo.com
+  - cn-lndl-ct-01-06.bilivideo.com
   - cn-lndl-ct-01-07.bilivideo.com
   - cn-lndl-ct-01-08.bilivideo.com
   - cn-lndl-ct-01-09.bilivideo.com
@@ -203,6 +207,7 @@
   - cn-lnsy-cm-01-02.bilivideo.com
   - cn-lnsy-cm-01-03.bilivideo.com
   - cn-lnsy-cm-01-04.bilivideo.com
+  - cn-lnsy-cm-01-06.bilivideo.com
   - cn-lnsy-cm-01-09.bilivideo.com
   - cn-lnsy-cm-01-10.bilivideo.com
   - cn-lnsy-cm-01-11.bilivideo.com
@@ -211,9 +216,9 @@
   - cn-lnsy-cmcc-v-02.bilivideo.com
   - cn-lnsy-cmcc-v-03.bilivideo.com
   - cn-lnsy-cmcc-v-04.bilivideo.com
+  - cn-lnsy-cmcc-v-06.bilivideo.com
   - cn-lnsy-cmcc-v-07.bilivideo.com
   - cn-lnsy-cu-01-01.bilivideo.com
-  - cn-lnsy-cu-01-03.bilivideo.com
   - cn-lnsy-cu-01-04.bilivideo.com
   - cn-lnsy-cu-01-05.bilivideo.com
   - cn-lnsy-cu-01-06.bilivideo.com
@@ -232,6 +237,7 @@
 黑龙江-哈尔滨:
   - cn-hljheb-ct-01-01.bilivideo.com
   - cn-hljheb-ct-01-02.bilivideo.com
+  - cn-hljheb-ct-01-03.bilivideo.com
   - cn-hljheb-ct-01-04.bilivideo.com
   - cn-hljheb-ct-01-05.bilivideo.com
   - cn-hljheb-ct-01-06.bilivideo.com
@@ -242,6 +248,7 @@
   - cn-hljheb-dx-live-02.bilivideo.com
   - cn-hljheb-dx-v-01.bilivideo.com
   - cn-hljheb-dx-v-02.bilivideo.com
+  - cn-hljheb-dx-v-03.bilivideo.com
   - cn-hljheb-dx-v-04.bilivideo.com
   - cn-hljheb-dx-v-05.bilivideo.com
   - cn-hljheb-dx-v-06.bilivideo.com
@@ -251,7 +258,7 @@
   - cn-jsnj-gd-01-02.bilivideo.com
   - cn-jsnj-gd-01-03.bilivideo.com
   - cn-jsnj-gd-01-04.bilivideo.com
-  - cn-jsnj-gd-01-05.bilivideo.com
+  - cn-jsnj-gd-01-06.bilivideo.com
   - cn-jsnj-gd-01-07.bilivideo.com
   - cn-jsnj-gd-01-08.bilivideo.com
 
@@ -260,6 +267,8 @@
   - cn-jsnt-ct-01-02.bilivideo.com
   - cn-jsnt-ct-01-04.bilivideo.com
   - cn-jsnt-ct-01-05.bilivideo.com
+  - cn-jsnt-ct-01-06.bilivideo.com
+  - cn-jsnt-ct-01-07.bilivideo.com
   - cn-jsnt-ct-01-11.bilivideo.com
   - cn-jsnt-ct-01-17.bilivideo.com
   - cn-jsnt-ct-01-18.bilivideo.com
@@ -304,6 +313,7 @@
   - cn-jsnt-dx-live-10.bilivideo.com
   - cn-jsnt-dx-v-05.bilivideo.com
   - cn-jsnt-dx-v-06.bilivideo.com
+  - cn-jsnt-dx-v-07.bilivideo.com
   - cn-jsnt-dx-v-15.bilivideo.com
   - cn-jsnt-dx-v-16.bilivideo.com
   - cn-jsnt-dx-v-17.bilivideo.com
@@ -325,6 +335,7 @@
   - cn-jsyz-ct-03-16.bilivideo.com
   - cn-jsyz-ct-03-17.bilivideo.com
   - cn-jsyz-ct-03-18.bilivideo.com
+  - cn-jsyz-ct-03-19.bilivideo.com
   - cn-jsyz-ct-03-21.bilivideo.com
   - cn-jsyz-ct-03-22.bilivideo.com
   - cn-jsyz-ct-03-23.bilivideo.com
@@ -359,6 +370,7 @@
 江苏-泰州:
   - cn-jstz-cu-01-02.bilivideo.com
   - cn-jstz-cu-01-03.bilivideo.com
+  - cn-jstz-cu-01-04.bilivideo.com
   - cn-jstz-cu-01-05.bilivideo.com
   - cn-jstz-cu-01-06.bilivideo.com
   - cn-jstz-cu-01-07.bilivideo.com
@@ -394,8 +406,8 @@
   - cn-jssz-cm-02-03.bilivideo.com
   - cn-jssz-cm-02-04.bilivideo.com
   - cn-jssz-cm-02-05.bilivideo.com
-  - cn-jssz-cm-02-07.bilivideo.com
   - cn-jssz-cm-02-08.bilivideo.com
+  - cn-jssz-cm-02-09.bilivideo.com
   - cn-jssz-cm-02-10.bilivideo.com
   - cn-jssz-cm-02-11.bilivideo.com
   - cn-jssz-cm-02-12.bilivideo.com
@@ -445,6 +457,8 @@
   - ec-jssz-ct-01-06.bilivideo.com
   - ec-jssz-ct-01-11.bilivideo.com
   - ec-jssz-ct-01-12.bilivideo.com
+  - ec-jssz-ct-01-14.bilivideo.com
+  - ec-jssz-ct-01-15.bilivideo.com
   - ec-jssz-ct-01-17.bilivideo.com
   - ec-jssz-ct-01-19.bilivideo.com
 
@@ -551,7 +565,7 @@
 
 福建-福州:
   - cn-fjfz-fx-01-01.bilivideo.com
-  - cn-fjfz-fx-01-02.bilivideo.com
+  - cn-fjfz-fx-01-03.bilivideo.com
   - cn-fjfz-fx-01-04.bilivideo.com
   - cn-fjfz-fx-01-05.bilivideo.com
   - cn-fjfz-fx-01-06.bilivideo.com
@@ -608,6 +622,7 @@
   - cn-jxnc-cm-01-39.bilivideo.com
   - cn-jxnc-cm-01-40.bilivideo.com
   - cn-jxnc-cm-01-41.bilivideo.com
+  - cn-jxnc-cm-01-42.bilivideo.com
   - cn-jxnc-cmcc-bcache-01.bilivideo.com
   - cn-jxnc-cmcc-bcache-02.bilivideo.com
   - cn-jxnc-cmcc-bcache-03.bilivideo.com
@@ -648,6 +663,7 @@
   - cn-sdjn-fx-01-03.bilivideo.com
   - cn-sdjn-fx-01-05.bilivideo.com
   - cn-sdjn-fx-01-06.bilivideo.com
+  - cn-sdjn-fx-01-07.bilivideo.com
   - cn-sdjn-fx-01-08.bilivideo.com
   - cn-sdjn-fx-01-09.bilivideo.com
   - cn-sdjn-fx-01-10.bilivideo.com
@@ -678,9 +694,9 @@
   - cn-sdqd-cu-01-05.bilivideo.com
   - cn-sdqd-cu-01-06.bilivideo.com
   - cn-sdqd-cu-01-08.bilivideo.com
+  - cn-sdqd-cu-01-11.bilivideo.com
   - cn-sdqd-cu-01-13.bilivideo.com
   - cn-sdqd-cu-01-14.bilivideo.com
-  - cn-sdqd-cu-01-15.bilivideo.com
   - cn-sdqd-cu-01-16.bilivideo.com
   - cn-sdqd-cu-01-17.bilivideo.com
   - cn-sdqd-cu-01-18.bilivideo.com
@@ -713,8 +729,8 @@
   - cn-hnly-cu-01-10.bilivideo.com
   - cn-hnly-cu-01-11.bilivideo.com
   - cn-hnly-cu-01-12.bilivideo.com
-  - cn-hnly-cu-01-13.bilivideo.com
   - cn-hnly-cu-01-14.bilivideo.com
+  - cn-hnly-cu-01-15.bilivideo.com
   - cn-hnly-cu-01-16.bilivideo.com
   - cn-hnly-cu-01-17.bilivideo.com
   - cn-hnly-cu-01-18.bilivideo.com
@@ -772,6 +788,7 @@
 
 湖北-宜昌:
   - cn-hbyc-ct-01-01.bilivideo.com
+  - cn-hbyc-ct-01-02.bilivideo.com
   - cn-hbyc-ct-01-05.bilivideo.com
   - cn-hbyc-ct-01-06.bilivideo.com
   - cn-hbyc-ct-01-07.bilivideo.com
@@ -797,7 +814,6 @@
   - cn-hbyc-ct-01-27.bilivideo.com
   - cn-hbyc-ct-01-28.bilivideo.com
   - cn-hbyc-ct-01-29.bilivideo.com
-  - cn-hbyc-ct-01-30.bilivideo.com
 
 湖北-武汉:
   - cn-hbwh-cm-01-01.bilivideo.com
@@ -878,6 +894,7 @@
   - cn-hnld-ct-01-15.bilivideo.com
   - cn-hnld-ct-01-16.bilivideo.com
   - cn-hnld-ct-01-17.bilivideo.com
+  - cn-hnld-ct-01-18.bilivideo.com
   - cn-hnld-ct-01-19.bilivideo.com
   - cn-hnld-ct-01-20.bilivideo.com
   - cn-hnld-ct-01-21.bilivideo.com
@@ -885,7 +902,6 @@
   - cn-hnld-ct-01-23.bilivideo.com
   - cn-hnld-ct-01-24.bilivideo.com
   - cn-hnld-ct-01-25.bilivideo.com
-  - cn-hnld-ct-01-26.bilivideo.com
   - cn-hnld-ct-01-27.bilivideo.com
   - cn-hnld-ct-01-28.bilivideo.com
   - cn-hnld-ct-01-29.bilivideo.com
@@ -954,6 +970,7 @@
   - cn-gddg-cm-01-11.bilivideo.com
   - cn-gddg-cm-01-12.bilivideo.com
   - cn-gddg-cm-01-13.bilivideo.com
+  - cn-gddg-cm-01-14.bilivideo.com
   - cn-gddg-cm-01-18.bilivideo.com
   - cn-gddg-cm-01-19.bilivideo.com
   - cn-gddg-cm-01-20.bilivideo.com
@@ -1001,7 +1018,7 @@
   - cn-gddg-ct-01-35.bilivideo.com
   - cn-gddg-ct-01-36.bilivideo.com
   - cn-gddg-cu-01-02.bilivideo.com
-  - cn-gddg-cu-01-04.bilivideo.com
+  - cn-gddg-cu-01-03.bilivideo.com
   - cn-gddg-cu-01-06.bilivideo.com
   - cn-gddg-cu-01-07.bilivideo.com
   - cn-gddg-cu-01-08.bilivideo.com
@@ -1094,6 +1111,7 @@
   - ec-gdgz-ct-01-01.bilivideo.com
   - ec-gdgz-ct-01-02.bilivideo.com
   - ec-gdgz-cu-01-01.bilivideo.com
+  - ec-gdgz-cu-01-02.bilivideo.com
 
 广东-江门:
   - cn-gdjm-cm-01-01.bilivideo.com
@@ -1152,9 +1170,9 @@
   - cn-sccd-ct-02-22.bilivideo.com
   - cn-sccd-ct-02-23.bilivideo.com
   - cn-sccd-ct-02-24.bilivideo.com
-  - cn-sccd-fx-01-01.bilivideo.com
   - cn-sccd-fx-01-02.bilivideo.com
   - cn-sccd-fx-01-03.bilivideo.com
+  - cn-sccd-fx-01-04.bilivideo.com
   - cn-sccd-fx-01-05.bilivideo.com
   - cn-sccd-fx-01-06.bilivideo.com
   - cn-sccd3-cmcc-live-02.bilivideo.com
@@ -1166,6 +1184,7 @@
   - cn-sccd3-cmcc-v-10.bilivideo.com
   - cn-sccd3-cmcc-v-13.bilivideo.com
   - cn-sccd3-cmcc-v-14.bilivideo.com
+  - cn-sccd3-cmcc-v-15.bilivideo.com
   - cn-sccd3-cmcc-v-16.bilivideo.com
   - cn-sccd3-cmcc-v-17.bilivideo.com
   - cn-sccd3-cmcc-v-18.bilivideo.com
@@ -1211,6 +1230,7 @@
   - cn-xj-ct-01-01.bilivideo.com
   - cn-xj-ct-01-02.bilivideo.com
   - cn-xj-ct-01-03.bilivideo.com
+  - cn-xj-ct-01-04.bilivideo.com
   - cn-xj-ct-01-05.bilivideo.com
 
 香港:
@@ -1235,10 +1255,10 @@ UPOS-其他:
   - upos-cs-upcdnbldsa.bilivideo.com
   - upos-sz-estgoss.bilivideo.com
   - upos-sz-estgoss02.bilivideo.com
+  - upos-sz-mirror08h.bilivideo.com
   - upos-sz-originbstar.bilivideo.com
 
 UPOS-华为云:
-  - upos-sz-estghw.bilivideo.com
   - upos-sz-mirrorhw.bilivideo.com
   - upos-sz-mirrorhwdisp.bilivideo.com
 
@@ -1258,9 +1278,7 @@ UPOS-腾讯云:
   - upos-sz-staticcos.bilivideo.com
 
 UPOS-阿里云:
-  - upos-sz-mirrorali.bilivideo.com
   - upos-sz-mirroralib.bilivideo.com
-  - upos-sz-mirroralibstar1.bilivideo.com
   - upos-sz-mirroraliov.bilivideo.com
 
 Gotcha-TF:
@@ -1271,20 +1289,25 @@ Gotcha-TF:
 Gotcha-国内:
   - c0--cn-gotcha01.bilivideo.com
   - c1--cn-gotcha208.bilivideo.com
+  - c1--cn-gotcha208b.bilivideo.com
   - d0--cn-gotcha09.bilivideo.com
+  - d0--cn-gotcha209.bilivideo.com
   - d1--cn-gotcha04b.bilivideo.com
+  - d1--cn-gotcha07b.bilivideo.com
   - d1--cn-gotcha104b.bilivideo.com
   - d1--cn-gotcha105.bilivideo.com
+  - d1--cn-gotcha108.bilivideo.com
+  - d1--cn-gotcha11.bilivideo.com
   - d1--cn-gotcha111.bilivideo.com
   - d1--cn-gotcha204-1.bilivideo.com
   - d1--cn-gotcha204-3.bilivideo.com
   - d1--cn-gotcha204-4.bilivideo.com
   - d1--cn-gotcha204b.bilivideo.com
   - d1--cn-gotcha207.bilivideo.com
+  - d1--cn-gotcha208.bilivideo.com
   - d1--cn-gotcha209-1.bilivideo.com
   - d1--cn-gotcha209.bilivideo.com
   - d1--cn-gotcha209b.bilivideo.com
-  - d1--cn-gotcha303.bilivideo.com
   - d1--cn-gotcha304.bilivideo.com
   - d1--cn-gotcha309.bilivideo.com
   - d1--p1--cn-gotcha04.bilivideo.com
@@ -1296,7 +1319,6 @@ Gotcha-海外:
   - d1--ov-gotcha107.bilivideo.com
   - d1--ov-gotcha207.bilivideo.com
   - d1--ov-gotcha207b.bilivideo.com
-  - d1--ov-gotcha208.bilivideo.com
   - d1--ov-gotcha209.bilivideo.com
   - d1--ov-gotcha209b.bilivideo.com
   - d1--ov-gotcha210.bilivideo.com
