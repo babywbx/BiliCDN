@@ -164,6 +164,16 @@
     ]
   },
   {
+    "domain": "cn-bj-se-01-03.bilivideo.com",
+    "region": "北京",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-bj-se-01-04.bilivideo.com",
     "region": "北京",
     "family": "standard-cn",
@@ -190,6 +200,15 @@
     "usage": "shared",
     "usages": [
       "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-bj-se-bcache-03.bilivideo.com",
+    "region": "北京",
+    "family": "video-edge",
+    "usage": "video",
+    "usages": [
       "video"
     ]
   },
@@ -531,6 +550,16 @@
     ]
   },
   {
+    "domain": "cn-fjfz-fx-01-03.bilivideo.com",
+    "region": "福建-福州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-fjfz-fx-01-04.bilivideo.com",
     "region": "福建-福州",
     "family": "standard-cn",
@@ -863,16 +892,6 @@
   },
   {
     "domain": "cn-gddg-cm-01-22.bilivideo.com",
-    "region": "广东-东莞",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-gddg-cm-01-23.bilivideo.com",
     "region": "广东-东莞",
     "family": "standard-cn",
     "usage": "shared",
@@ -2055,6 +2074,16 @@
     ]
   },
   {
+    "domain": "cn-gdjm-cm-01-04.bilivideo.com",
+    "region": "广东-江门",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-gdjm-cm-01-05.bilivideo.com",
     "region": "广东-江门",
     "family": "standard-cn",
@@ -3138,6 +3167,16 @@
     ]
   },
   {
+    "domain": "cn-hbyc-ct-01-02.bilivideo.com",
+    "region": "湖北-宜昌",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-hbyc-ct-01-05.bilivideo.com",
     "region": "湖北-宜昌",
     "family": "standard-cn",
@@ -3219,16 +3258,6 @@
   },
   {
     "domain": "cn-hbyc-ct-01-13.bilivideo.com",
-    "region": "湖北-宜昌",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-hbyc-ct-01-14.bilivideo.com",
     "region": "湖北-宜昌",
     "family": "standard-cn",
     "usage": "shared",
@@ -3740,6 +3769,16 @@
     ]
   },
   {
+    "domain": "cn-hncs-fx-01-02.bilivideo.com",
+    "region": "湖南-长沙",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-hncs-fx-01-03.bilivideo.com",
     "region": "湖南-长沙",
     "family": "standard-cn",
@@ -3761,16 +3800,6 @@
   },
   {
     "domain": "cn-hncs-fx-01-05.bilivideo.com",
-    "region": "湖南-长沙",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-hncs-fx-01-06.bilivideo.com",
     "region": "湖南-长沙",
     "family": "standard-cn",
     "usage": "shared",
@@ -3936,6 +3965,16 @@
   },
   {
     "domain": "cn-hnld-ct-01-18.bilivideo.com",
+    "region": "湖南-娄底",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-hnld-ct-01-19.bilivideo.com",
     "region": "湖南-娄底",
     "family": "standard-cn",
     "usage": "shared",
@@ -4115,16 +4154,6 @@
     ]
   },
   {
-    "domain": "cn-hnld-ct-01-37.bilivideo.com",
-    "region": "湖南-娄底",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
     "domain": "cn-hnld-ct-01-38.bilivideo.com",
     "region": "湖南-娄底",
     "family": "standard-cn",
@@ -4275,6 +4304,16 @@
     ]
   },
   {
+    "domain": "cn-hnly-cu-01-03.bilivideo.com",
+    "region": "河南-洛阳",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-hnly-cu-01-04.bilivideo.com",
     "region": "河南-洛阳",
     "family": "standard-cn",
@@ -4306,16 +4345,6 @@
   },
   {
     "domain": "cn-hnly-cu-01-07.bilivideo.com",
-    "region": "河南-洛阳",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-hnly-cu-01-08.bilivideo.com",
     "region": "河南-洛阳",
     "family": "standard-cn",
     "usage": "shared",
@@ -4426,6 +4455,16 @@
   },
   {
     "domain": "cn-hnly-cu-01-19.bilivideo.com",
+    "region": "河南-洛阳",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-hnly-cu-01-20.bilivideo.com",
     "region": "河南-洛阳",
     "family": "standard-cn",
     "usage": "shared",
@@ -4887,6 +4926,16 @@
     ]
   },
   {
+    "domain": "cn-jsnj-gd-01-01.bilivideo.com",
+    "region": "江苏-南京",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-jsnj-gd-01-02.bilivideo.com",
     "region": "江苏-南京",
     "family": "standard-cn",
@@ -5007,6 +5056,16 @@
     ]
   },
   {
+    "domain": "cn-jsnt-ct-01-07.bilivideo.com",
+    "region": "江苏-南通",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-jsnt-ct-01-11.bilivideo.com",
     "region": "江苏-南通",
     "family": "standard-cn",
@@ -5058,16 +5117,6 @@
   },
   {
     "domain": "cn-jsnt-ct-01-21.bilivideo.com",
-    "region": "江苏-南通",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-jsnt-ct-01-22.bilivideo.com",
     "region": "江苏-南通",
     "family": "standard-cn",
     "usage": "shared",
@@ -5218,6 +5267,16 @@
   },
   {
     "domain": "cn-jsnt-ct-01-38.bilivideo.com",
+    "region": "江苏-南通",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-jsnt-ct-01-39.bilivideo.com",
     "region": "江苏-南通",
     "family": "standard-cn",
     "usage": "shared",
@@ -5419,6 +5478,15 @@
   },
   {
     "domain": "cn-jsnt-dx-v-06.bilivideo.com",
+    "region": "江苏-南通",
+    "family": "video-edge",
+    "usage": "video",
+    "usages": [
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-jsnt-dx-v-07.bilivideo.com",
     "region": "江苏-南通",
     "family": "video-edge",
     "usage": "video",
@@ -5732,6 +5800,16 @@
     ]
   },
   {
+    "domain": "cn-jssz-cm-02-08.bilivideo.com",
+    "region": "江苏-苏州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-jssz-cm-02-10.bilivideo.com",
     "region": "江苏-苏州",
     "family": "standard-cn",
@@ -5972,16 +6050,6 @@
     ]
   },
   {
-    "domain": "cn-jssz-cm-02-39.bilivideo.com",
-    "region": "江苏-苏州",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
     "domain": "cn-jssz-cm-02-41.bilivideo.com",
     "region": "江苏-苏州",
     "family": "standard-cn",
@@ -6135,6 +6203,16 @@
     ]
   },
   {
+    "domain": "cn-jstz-cu-01-02.bilivideo.com",
+    "region": "江苏-泰州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-jstz-cu-01-03.bilivideo.com",
     "region": "江苏-泰州",
     "family": "standard-cn",
@@ -6165,6 +6243,16 @@
     ]
   },
   {
+    "domain": "cn-jstz-cu-01-06.bilivideo.com",
+    "region": "江苏-泰州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-jstz-cu-01-07.bilivideo.com",
     "region": "江苏-泰州",
     "family": "standard-cn",
@@ -6176,16 +6264,6 @@
   },
   {
     "domain": "cn-jstz-cu-01-08.bilivideo.com",
-    "region": "江苏-泰州",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-jstz-cu-01-09.bilivideo.com",
     "region": "江苏-泰州",
     "family": "standard-cn",
     "usage": "shared",
@@ -7146,16 +7224,6 @@
     ]
   },
   {
-    "domain": "cn-jxnc-cm-01-41.bilivideo.com",
-    "region": "江西-南昌",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
     "domain": "cn-jxnc-cm-01-42.bilivideo.com",
     "region": "江西-南昌",
     "family": "standard-cn",
@@ -7346,7 +7414,7 @@
     ]
   },
   {
-    "domain": "cn-lndl-ct-01-01.bilivideo.com",
+    "domain": "cn-lndl-ct-01-02.bilivideo.com",
     "region": "辽宁-大连",
     "family": "standard-cn",
     "usage": "shared",
@@ -7357,6 +7425,16 @@
   },
   {
     "domain": "cn-lndl-ct-01-03.bilivideo.com",
+    "region": "辽宁-大连",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-lndl-ct-01-04.bilivideo.com",
     "region": "辽宁-大连",
     "family": "standard-cn",
     "usage": "shared",
@@ -7466,7 +7544,27 @@
     ]
   },
   {
+    "domain": "cn-lnsy-cm-01-14.bilivideo.com",
+    "region": "辽宁-沈阳",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-lnsy-cm-01-15.bilivideo.com",
+    "region": "辽宁-沈阳",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-lnsy-cm-01-17.bilivideo.com",
     "region": "辽宁-沈阳",
     "family": "standard-cn",
     "usage": "shared",
@@ -7916,6 +8014,16 @@
     ]
   },
   {
+    "domain": "cn-sccd-cm-03-07.bilivideo.com",
+    "region": "四川-成都",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sccd-cm-03-08.bilivideo.com",
     "region": "四川-成都",
     "family": "standard-cn",
@@ -8315,6 +8423,26 @@
     ]
   },
   {
+    "domain": "cn-sccd-fx-01-03.bilivideo.com",
+    "region": "四川-成都",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-sccd-fx-01-04.bilivideo.com",
+    "region": "四川-成都",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sccd-fx-01-05.bilivideo.com",
     "region": "四川-成都",
     "family": "standard-cn",
@@ -8623,6 +8751,16 @@
     ]
   },
   {
+    "domain": "cn-sdjn-fx-01-07.bilivideo.com",
+    "region": "山东-济南",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sdjn-fx-01-08.bilivideo.com",
     "region": "山东-济南",
     "family": "standard-cn",
@@ -8634,16 +8772,6 @@
   },
   {
     "domain": "cn-sdjn-fx-01-09.bilivideo.com",
-    "region": "山东-济南",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-sdjn-fx-01-10.bilivideo.com",
     "region": "山东-济南",
     "family": "standard-cn",
     "usage": "shared",
@@ -8865,6 +8993,16 @@
     ]
   },
   {
+    "domain": "cn-sdqd-cu-01-14.bilivideo.com",
+    "region": "山东-青岛",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sdqd-cu-01-19.bilivideo.com",
     "region": "山东-青岛",
     "family": "standard-cn",
@@ -8876,16 +9014,6 @@
   },
   {
     "domain": "cn-sdqd-cu-01-20.bilivideo.com",
-    "region": "山东-青岛",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-sdqd-cu-01-21.bilivideo.com",
     "region": "山东-青岛",
     "family": "standard-cn",
     "usage": "shared",
@@ -9193,6 +9321,16 @@
     ]
   },
   {
+    "domain": "cn-sxty-cu-03-03.bilivideo.com",
+    "region": "山西-太原",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sxty-cu-03-04.bilivideo.com",
     "region": "山西-太原",
     "family": "standard-cn",
@@ -9223,7 +9361,7 @@
     ]
   },
   {
-    "domain": "cn-sxty-cu-03-07.bilivideo.com",
+    "domain": "cn-sxty-cu-03-08.bilivideo.com",
     "region": "山西-太原",
     "family": "standard-cn",
     "usage": "shared",
@@ -9454,6 +9592,16 @@
     ]
   },
   {
+    "domain": "cn-sxxa-ct-03-03.bilivideo.com",
+    "region": "陕西-西安",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-sxxa-ct-03-04.bilivideo.com",
     "region": "陕西-西安",
     "family": "standard-cn",
@@ -9475,16 +9623,6 @@
   },
   {
     "domain": "cn-sxxa-ct-03-06.bilivideo.com",
-    "region": "陕西-西安",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-sxxa-ct-03-07.bilivideo.com",
     "region": "陕西-西安",
     "family": "standard-cn",
     "usage": "shared",
@@ -9624,6 +9762,16 @@
     ]
   },
   {
+    "domain": "cn-tj-cu-01-03.bilivideo.com",
+    "region": "天津",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-tj-cu-01-04.bilivideo.com",
     "region": "天津",
     "family": "standard-cn",
@@ -9635,6 +9783,16 @@
   },
   {
     "domain": "cn-tj-cu-01-05.bilivideo.com",
+    "region": "天津",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-tj-cu-01-06.bilivideo.com",
     "region": "天津",
     "family": "standard-cn",
     "usage": "shared",
@@ -9695,16 +9853,6 @@
   },
   {
     "domain": "cn-tj-cu-01-12.bilivideo.com",
-    "region": "天津",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-tj-cu-01-13.bilivideo.com",
     "region": "天津",
     "family": "standard-cn",
     "usage": "shared",
@@ -9808,6 +9956,16 @@
     ]
   },
   {
+    "domain": "cn-xj-ct-01-01.bilivideo.com",
+    "region": "新疆",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-xj-ct-01-02.bilivideo.com",
     "region": "新疆",
     "family": "standard-cn",
@@ -9829,16 +9987,6 @@
   },
   {
     "domain": "cn-xj-ct-01-04.bilivideo.com",
-    "region": "新疆",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
-    "domain": "cn-xj-ct-01-05.bilivideo.com",
     "region": "新疆",
     "family": "standard-cn",
     "usage": "shared",
@@ -10059,6 +10207,26 @@
     ]
   },
   {
+    "domain": "cn-zjhz-cu-01-03.bilivideo.com",
+    "region": "浙江-杭州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-zjhz-cu-01-04.bilivideo.com",
+    "region": "浙江-杭州",
+    "family": "standard-cn",
+    "usage": "shared",
+    "usages": [
+      "live",
+      "video"
+    ]
+  },
+  {
     "domain": "cn-zjhz-cu-01-05.bilivideo.com",
     "region": "浙江-杭州",
     "family": "standard-cn",
@@ -10107,6 +10275,24 @@
   },
   {
     "domain": "cn-zjhz-cu-v-02.bilivideo.com",
+    "region": "浙江-杭州",
+    "family": "video-edge",
+    "usage": "video",
+    "usages": [
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-zjhz-cu-v-03.bilivideo.com",
+    "region": "浙江-杭州",
+    "family": "video-edge",
+    "usage": "video",
+    "usages": [
+      "video"
+    ]
+  },
+  {
+    "domain": "cn-zjhz-cu-v-04.bilivideo.com",
     "region": "浙江-杭州",
     "family": "video-edge",
     "usage": "video",
@@ -10394,16 +10580,6 @@
     ]
   },
   {
-    "domain": "cn-zjjh-ct-04-34.bilivideo.com",
-    "region": "浙江-金华",
-    "family": "standard-cn",
-    "usage": "shared",
-    "usages": [
-      "live",
-      "video"
-    ]
-  },
-  {
     "domain": "cn-zjjh-ct-04-35.bilivideo.com",
     "region": "浙江-金华",
     "family": "standard-cn",
@@ -10524,7 +10700,7 @@
     ]
   },
   {
-    "domain": "d1--cn-gotcha04b.bilivideo.com",
+    "domain": "d0--cn-gotcha09.bilivideo.com",
     "region": "Gotcha-国内",
     "family": "gotcha",
     "usage": "live",
@@ -10533,7 +10709,16 @@
     ]
   },
   {
-    "domain": "d1--cn-gotcha07b.bilivideo.com",
+    "domain": "d0--cn-gotcha209.bilivideo.com",
+    "region": "Gotcha-国内",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
+    "domain": "d1--cn-gotcha04b.bilivideo.com",
     "region": "Gotcha-国内",
     "family": "gotcha",
     "usage": "live",
@@ -10552,6 +10737,24 @@
   },
   {
     "domain": "d1--cn-gotcha105.bilivideo.com",
+    "region": "Gotcha-国内",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
+    "domain": "d1--cn-gotcha108.bilivideo.com",
+    "region": "Gotcha-国内",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
+    "domain": "d1--cn-gotcha111.bilivideo.com",
     "region": "Gotcha-国内",
     "family": "gotcha",
     "usage": "live",
@@ -10596,7 +10799,16 @@
     ]
   },
   {
-    "domain": "d1--cn-gotcha209-1.bilivideo.com",
+    "domain": "d1--cn-gotcha209.bilivideo.com",
+    "region": "Gotcha-国内",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
+    "domain": "d1--cn-gotcha209b.bilivideo.com",
     "region": "Gotcha-国内",
     "family": "gotcha",
     "usage": "live",
@@ -10623,7 +10835,7 @@
     ]
   },
   {
-    "domain": "d1--cn-gotcha308.bilivideo.com",
+    "domain": "d1--cn-gotcha309.bilivideo.com",
     "region": "Gotcha-国内",
     "family": "gotcha",
     "usage": "live",
@@ -10659,6 +10871,24 @@
     ]
   },
   {
+    "domain": "d1--ov-gotcha107.bilivideo.com",
+    "region": "Gotcha-海外",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
+    "domain": "d1--ov-gotcha207.bilivideo.com",
+    "region": "Gotcha-海外",
+    "family": "gotcha",
+    "usage": "live",
+    "usages": [
+      "live"
+    ]
+  },
+  {
     "domain": "d1--ov-gotcha209.bilivideo.com",
     "region": "Gotcha-海外",
     "family": "gotcha",
@@ -10686,15 +10916,6 @@
     ]
   },
   {
-    "domain": "d1--p1--cn-gotcha04.bilivideo.com",
-    "region": "Gotcha-国内",
-    "family": "gotcha",
-    "usage": "live",
-    "usages": [
-      "live"
-    ]
-  },
-  {
     "domain": "d1--tf-gotcha04.bilivideo.com",
     "region": "Gotcha-TF",
     "family": "gotcha",
@@ -10705,15 +10926,6 @@
   },
   {
     "domain": "d1--tf-gotcha204.bilivideo.com",
-    "region": "Gotcha-TF",
-    "family": "gotcha",
-    "usage": "live",
-    "usages": [
-      "live"
-    ]
-  },
-  {
-    "domain": "d1--tf-gotcha209.bilivideo.com",
     "region": "Gotcha-TF",
     "family": "gotcha",
     "usage": "live",
@@ -11214,7 +11426,37 @@
     ]
   },
   {
+    "domain": "upos-sz-mirrorali.bilivideo.com",
+    "region": "UPOS-阿里云",
+    "family": "upos",
+    "usage": "storage",
+    "usages": [
+      "video",
+      "storage"
+    ]
+  },
+  {
+    "domain": "upos-sz-mirrorali02.bilivideo.com",
+    "region": "UPOS-阿里云",
+    "family": "upos",
+    "usage": "storage",
+    "usages": [
+      "video",
+      "storage"
+    ]
+  },
+  {
     "domain": "upos-sz-mirroralib.bilivideo.com",
+    "region": "UPOS-阿里云",
+    "family": "upos",
+    "usage": "storage",
+    "usages": [
+      "video",
+      "storage"
+    ]
+  },
+  {
+    "domain": "upos-sz-mirroralibstar1.bilivideo.com",
     "region": "UPOS-阿里云",
     "family": "upos",
     "usage": "storage",
@@ -11316,16 +11558,6 @@
   {
     "domain": "upos-sz-mirrorcosov.bilivideo.com",
     "region": "UPOS-腾讯云",
-    "family": "upos",
-    "usage": "storage",
-    "usages": [
-      "video",
-      "storage"
-    ]
-  },
-  {
-    "domain": "upos-sz-mirrorhw.bilivideo.com",
-    "region": "UPOS-华为云",
     "family": "upos",
     "usage": "storage",
     "usages": [
